@@ -17,7 +17,6 @@
  */
 package com.watabou.pixeldungeon.windows;
 
-import com.watabou.noosa.NinePatch;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.npcs.Blacksmith;
 import com.watabou.pixeldungeon.items.Item;
@@ -114,7 +113,6 @@ public class WndBlacksmith extends Window {
 
 	public static class ItemButton{
 
-		protected NinePatch bg;
 		protected ItemSlot slot;
 
 		public Item item = null;

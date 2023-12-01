@@ -18,7 +18,6 @@
 package com.watabou.pixeldungeon.windows;
 
 import com.nikita22007.multiplayer.noosa.audio.Sample;
-import com.watabou.noosa.NinePatch;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.ui.Window;
 
@@ -65,10 +64,6 @@ public class WndTabbed extends Window {
 		this.width = w;
 		this.height = h;
 
-		chrome.size(
-			width + chrome.marginHor(),
-			height + chrome.marginVer() );
-
 		ArrayList<Tab> tabs = new ArrayList<Tab>( this.tabs );
 		this.tabs.clear();
 
@@ -91,25 +86,10 @@ public class WndTabbed extends Window {
 
 		protected boolean selected;
 
-		protected NinePatch bg;
-
-		@Override
-		public void layout() {
-			super.layout();
-
-			if (bg != null) {
-				bg.size( width, height );
-			}
-		}
-
 		protected void select( boolean value ) {
 
 			active = !(selected = value);
 
-			if (bg != null) {
-			}
-
-			addToBack( bg );
 
 			layout();
 		}

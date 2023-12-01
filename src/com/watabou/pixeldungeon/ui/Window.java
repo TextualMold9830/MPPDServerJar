@@ -18,14 +18,9 @@
 package com.watabou.pixeldungeon.ui;
 
 
-
-import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.NinePatch;
-import com.watabou.pixeldungeon.Chrome;
 import com.watabou.pixeldungeon.Settings;
 import com.watabou.pixeldungeon.actors.hero.Hero;
-import com.watabou.pixeldungeon.effects.ShadowBox;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 
 import org.json.JSONObject;
@@ -37,8 +32,6 @@ public class Window extends Group{
 	protected int width;
 	protected int height;
 
-	protected ShadowBox shadow;
-	protected NinePatch chrome;
 
 	//todo: memory leak. Remove entries when hero removes
 	//todo: use Hero.NetworkID instead of Hero?
@@ -79,25 +72,10 @@ public class Window extends Group{
 		windows.get(hero).put(getId(), this);
 	}
 
-	public Window( int width, int height ) {
-		this( width, height, null);
-	}
-
-	public Window( int width, int height, NinePatch chrome ) {
+	public Window( int width, int height ){
 		super();
-		this.chrome = chrome;
 		this.width = width;
 		this.height = height;
-		shadow = new ShadowBox();
-		shadow.am = 0.5f;
-		add( shadow );
-
-		chrome.x = -chrome.marginLeft();
-		chrome.y = -chrome.marginTop();
-		chrome.size(
-			width - chrome.x + chrome.marginRight(),
-			height - chrome.y + chrome.marginBottom() );
-		add( chrome );
 
 	}
 
@@ -117,10 +95,6 @@ public class Window extends Group{
 	public void resize( int w, int h ) {
 		this.width = w;
 		this.height = h;
-
-		chrome.size(
-			width + chrome.marginHor(),
-			height + chrome.marginVer() );
 
 
 	}

@@ -120,7 +120,7 @@ public class Game {
 
 
 	protected void switchScene() {
-
+		if (requestedScene == scene) return;
 
 		scene = requestedScene;
 		if (onChange != null) onChange.beforeCreate();
