@@ -26,10 +26,13 @@ import com.watabou.utils.Random;
 public class WeakFloorPainter extends Painter {
 
 	public static void paint( Level level, Room room ) {
-
-		Room.Door door = room.entrance();
+		
+		fill( level, room, Terrain.WALL );
+		fill( level, room, 1, Terrain.CHASM );
+		
+		Room.Door door = room.entrance(); 
 		door.set( Room.Door.Type.REGULAR );
-
+		
 		if (door.x == room.left) {
 			for (int i=room.top + 1; i < room.bottom; i++) {
 				drawInside( level, room, new Point( room.left, i ), Random.IntRange( 1, room.width() - 2 ), Terrain.EMPTY_SP );

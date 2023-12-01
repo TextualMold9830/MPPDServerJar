@@ -31,7 +31,9 @@ public class ArmoryPainter extends Painter {
 
 	public static void paint( Level level, Room room ) {
 
-
+		fill( level, room, Terrain.WALL );
+		fill( level, room, 1, Terrain.EMPTY );
+		
 		Room.Door entrance = room.entrance();
 		Point statue = null;
 		if (entrance.x == room.left) {
@@ -46,7 +48,7 @@ public class ArmoryPainter extends Painter {
 		if (statue != null) {
 			set( level, statue, Terrain.STATUE );
 		}
-
+		
 		int n = 3 + (Random.Int( 4 ) == 0 ? 1 : 0);
 		for (int i=0; i < n; i++) {
 			int pos;
@@ -55,16 +57,16 @@ public class ArmoryPainter extends Painter {
 			} while (level.map[pos] != Terrain.EMPTY || level.heaps.get( pos ) != null);
 			level.drop( prize( level ), pos );
 		}
-
+		
 		entrance.set( Room.Door.Type.LOCKED );
 		level.addItemToSpawn( new IronKey() );
 	}
-
+	
 	private static Item prize( Level level ) {
 		return Random.Int( 6 ) == 0 ?
 			new Bomb().random() :
-			Generator.random( Random.oneOf(
-				Generator.Category.ARMOR,
+			Generator.random( Random.oneOf( 
+				Generator.Category.ARMOR, 
 				Generator.Category.WEAPON
 			) );
 	}

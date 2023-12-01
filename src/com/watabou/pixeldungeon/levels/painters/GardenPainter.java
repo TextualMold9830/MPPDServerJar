@@ -28,10 +28,13 @@ import com.watabou.utils.Random;
 public class GardenPainter extends Painter {
 
 	public static void paint( Level level, Room room ) {
-
-
+		
+		fill( level, room, Terrain.WALL );
+		fill( level, room, 1, Terrain.HIGH_GRASS );
+		fill( level, room, 2, Terrain.GRASS );
+		
 		room.entrance().set( Room.Door.Type.REGULAR );
-
+		
 		if (Random.Int( 2 ) == 0) {
 			level.drop( new Honeypot(), room.random() );
 		} else {
@@ -42,7 +45,7 @@ public class GardenPainter extends Painter {
 				level.plant( new Sungrass.Seed(), pos );
 			}
 		}
-
+		
 		Foliage light = (Foliage)level.blobs.get( Foliage.class );
 		if (light == null) {
 			light = new Foliage();

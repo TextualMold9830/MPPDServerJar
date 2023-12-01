@@ -30,15 +30,17 @@ import com.watabou.utils.Random;
 public class TrapsPainter extends Painter {
 
 	public static void paint( Level level, Room room ) {
-
+		 
 		Integer traps[] = {
-			Terrain.TOXIC_TRAP, Terrain.TOXIC_TRAP, Terrain.TOXIC_TRAP,
-			Terrain.PARALYTIC_TRAP, Terrain.PARALYTIC_TRAP,
+			Terrain.TOXIC_TRAP, Terrain.TOXIC_TRAP, Terrain.TOXIC_TRAP, 
+			Terrain.PARALYTIC_TRAP, Terrain.PARALYTIC_TRAP, 
 			!Dungeon.bossLevel( Dungeon.depth + 1 ) ? Terrain.CHASM : Terrain.SUMMONING_TRAP };
-
-		Room.Door door = room.entrance();
+		fill( level, room, Terrain.WALL );
+		fill( level, room, 1, Random.element( traps ) );
+		
+		Room.Door door = room.entrance(); 
 		door.set( Room.Door.Type.REGULAR );
-
+		
 		int lastRow = level.map[room.left + 1 + (room.top + 1) * Level.WIDTH] == Terrain.CHASM ? Terrain.CHASM : Terrain.EMPTY;
 
 		int x = -1;
@@ -60,7 +62,7 @@ public class TrapsPainter extends Painter {
 			y = room.top + 1;
 			fill( level, room.left + 1, y, room.width() - 1, 1 , lastRow );
 		}
-
+		
 		int pos = x + y * Level.WIDTH;
 		if (Random.Int( 3 ) == 0) {
 			if (lastRow == Terrain.CHASM) {
@@ -71,32 +73,32 @@ public class TrapsPainter extends Painter {
 			set( level, pos, Terrain.PEDESTAL );
 			level.drop( prize( level ), pos );
 		}
-
+		
 		level.addItemToSpawn( new PotionOfLevitation() );
 	}
-
+	
 	private static Item prize( Level level ) {
-
+		
 		Item prize = level.itemToSpanAsPrize();
 		if (prize != null) {
 			return prize;
 		}
-
-		prize = Generator.random( Random.oneOf(
-			Generator.Category.WEAPON,
-			Generator.Category.ARMOR
+		
+		prize = Generator.random( Random.oneOf(  
+			Generator.Category.WEAPON, 
+			Generator.Category.ARMOR 
 		) );
 
 		for (int i=0; i < 3; i++) {
-			Item another = Generator.random( Random.oneOf(
-				Generator.Category.WEAPON,
-				Generator.Category.ARMOR
+			Item another = Generator.random( Random.oneOf(  
+				Generator.Category.WEAPON, 
+				Generator.Category.ARMOR 
 			) );
 			if (another.level() > prize.level()) {
 				prize = another;
 			}
 		}
-
+		
 		return prize;
 	}
 }

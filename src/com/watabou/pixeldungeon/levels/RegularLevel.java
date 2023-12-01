@@ -17,6 +17,11 @@
  */
 package com.watabou.pixeldungeon.levels;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+
 import com.watabou.pixeldungeon.Bones;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.Actor;
@@ -27,25 +32,20 @@ import com.watabou.pixeldungeon.items.Heap;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.scrolls.ScrollOfUpgrade;
 import com.watabou.pixeldungeon.levels.Room.Type;
-import com.watabou.pixeldungeon.levels.painters.Painter;
+import com.watabou.pixeldungeon.levels.painters.*;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+public abstract class RegularLevel extends Level {
 
-public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level {
+	protected HashSet<Room> rooms;
 
-	protected HashSet<com.watabou.pixeldungeon.levels.Room> rooms;
+	protected Room roomEntrance;
+	protected Room roomExit;
 
-	protected com.watabou.pixeldungeon.levels.Room roomEntrance;
-	protected com.watabou.pixeldungeon.levels.Room roomExit;
-
-	protected ArrayList<Type> specials;
+	protected ArrayList<Room.Type> specials;
 
 	public int secretDoors;
 
@@ -80,14 +80,14 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		roomEntrance.type = Type.ENTRANCE;
 		roomExit.type = Type.EXIT;
 
-		HashSet<com.watabou.pixeldungeon.levels.Room> connected = new HashSet<com.watabou.pixeldungeon.levels.Room>();
+		HashSet<Room> connected = new HashSet<Room>();
 		connected.add( roomEntrance );
 
 		Graph.buildDistanceMap( rooms, roomExit );
-		List<com.watabou.pixeldungeon.levels.Room> path = Graph.buildPath( rooms, roomEntrance, roomExit );
+		List<Room> path = Graph.buildPath( rooms, roomEntrance, roomExit );
 
-		com.watabou.pixeldungeon.levels.Room room = roomEntrance;
-		for (com.watabou.pixeldungeon.levels.Room next : path) {
+		Room room = roomEntrance;
+		for (Room next : path) {
 			room.connect( next );
 			room = next;
 			connected.add( room );
@@ -99,7 +99,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		path = Graph.buildPath( rooms, roomEntrance, roomExit );
 
 		room = roomEntrance;
-		for (com.watabou.pixeldungeon.levels.Room next : path) {
+		for (Room next : path) {
 			room.connect( next );
 			room = next;
 			connected.add( room );
@@ -107,8 +107,8 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 		int nConnected = (int)(rooms.size() * Random.Float( 0.5f, 0.7f ));
 		while (connected.size() < nConnected) {
-			com.watabou.pixeldungeon.levels.Room cr = Random.element( connected );
-			com.watabou.pixeldungeon.levels.Room or = Random.element( cr.neigbours );
+			Room cr = Random.element( connected );
+			Room or = Random.element( cr.neigbours );
 			if (!connected.contains( or )) {
 				cr.connect( or );
 				connected.add( or );
@@ -116,8 +116,8 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		}
 
 		if (Dungeon.shopOnLevel(Dungeon.depth)) {
-			com.watabou.pixeldungeon.levels.Room shop = null;
-			for (com.watabou.pixeldungeon.levels.Room r : roomEntrance.connected.keySet()) {
+			Room shop = null;
+			for (Room r : roomEntrance.connected.keySet()) {
 				if (r.connected.size() == 1 && r.width() >= 5 && r.height() >= 5) {
 					shop = r;
 					break;
@@ -127,13 +127,13 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 			if (shop == null) {
 				return false;
 			} else {
-				shop.type = Type.SHOP;
+				shop.type = Room.Type.SHOP;
 			}
 		}
 
-		specials = new ArrayList<Type>( com.watabou.pixeldungeon.levels.Room.SPECIALS );
+		specials = new ArrayList<Room.Type>( Room.SPECIALS );
 		if (Dungeon.bossLevel( Dungeon.depth + 1 )) {
-			specials.remove( Type.WEAK_FLOOR );
+			specials.remove( Room.Type.WEAK_FLOOR );
 		}
 		assignRoomType();
 
@@ -147,13 +147,14 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 	}
 
 	protected boolean initRooms() {
-		rooms = new HashSet<com.watabou.pixeldungeon.levels.Room>();
+		rooms = new HashSet<Room>();
+		split( new Rect( 0, 0, WIDTH - 1, HEIGHT - 1 ) );
 
 		if (rooms.size() < 8) {
 			return false;
 		}
 
-		com.watabou.pixeldungeon.levels.Room[] ra = rooms.toArray( new com.watabou.pixeldungeon.levels.Room[0] );
+		Room[] ra = rooms.toArray( new Room[0] );
 		for (int i=0; i < ra.length-1; i++) {
 			for (int j=i+1; j < ra.length; j++) {
 				ra[i].addNeigbour( ra[j] );
@@ -167,13 +168,13 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 		int specialRooms = 0;
 
-		for (com.watabou.pixeldungeon.levels.Room r : rooms) {
+		for (Room r : rooms) {
 			if (r.type == Type.NULL &&
-				r.connected.size() == 1) {
+					r.connected.size() == 1) {
 
 				if (specials.size() > 0 &&
-					r.width() > 3 && r.height() > 3 &&
-					Random.Int( specialRooms * specialRooms + 2 ) == 0) {
+						r.width() > 3 && r.height() > 3 &&
+						Random.Int( specialRooms * specialRooms + 2 ) == 0) {
 
 					if (pitRoomNeeded) {
 
@@ -203,17 +204,17 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 					}
 
-					com.watabou.pixeldungeon.levels.Room.useType( r.type );
+					Room.useType( r.type );
 					specials.remove( r.type );
 					specialRooms++;
 
 				} else if (Random.Int( 2 ) == 0){
 
-					HashSet<com.watabou.pixeldungeon.levels.Room> neigbours = new HashSet<com.watabou.pixeldungeon.levels.Room>();
-					for (com.watabou.pixeldungeon.levels.Room n : r.neigbours) {
+					HashSet<Room> neigbours = new HashSet<Room>();
+					for (Room n : r.neigbours) {
 						if (!r.connected.containsKey( n ) &&
-							!com.watabou.pixeldungeon.levels.Room.SPECIALS.contains( n.type ) &&
-							n.type != Type.PIT) {
+								!Room.SPECIALS.contains( n.type ) &&
+								n.type != Type.PIT) {
 
 							neigbours.add( n );
 						}
@@ -226,7 +227,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		}
 
 		int count = 0;
-		for (com.watabou.pixeldungeon.levels.Room r : rooms) {
+		for (Room r : rooms) {
 			if (r.type == Type.NULL) {
 				int connections = r.connected.size();
 				if (connections == 0) {
@@ -241,7 +242,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		}
 
 		while (count < 4) {
-			com.watabou.pixeldungeon.levels.Room r = randomRoom( Type.TUNNEL, 1 );
+			Room r = randomRoom( Type.TUNNEL, 1 );
 			if (r != null) {
 				r.type = Type.STANDARD;
 				count++;
@@ -252,8 +253,8 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 	protected void paintWater() {
 		boolean[] lake = water();
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == com.watabou.pixeldungeon.levels.Terrain.EMPTY && lake[i]) {
-				map[i] = com.watabou.pixeldungeon.levels.Terrain.WATER;
+			if (map[i] == Terrain.EMPTY && lake[i]) {
+				map[i] = Terrain.WATER;
 			}
 		}
 	}
@@ -263,7 +264,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 		if (feeling == Feeling.GRASS) {
 
-			for (com.watabou.pixeldungeon.levels.Room room : rooms) {
+			for (Room room : rooms) {
 				if (room.type != Type.NULL && room.type != Type.PASSAGE && room.type != Type.TUNNEL) {
 					grass[(room.left + 1) + (room.top + 1) * WIDTH] = true;
 					grass[(room.right - 1) + (room.top + 1) * WIDTH] = true;
@@ -274,14 +275,14 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		}
 
 		for (int i=WIDTH+1; i < LENGTH-WIDTH-1; i++) {
-			if (map[i] == com.watabou.pixeldungeon.levels.Terrain.EMPTY && grass[i]) {
+			if (map[i] == Terrain.EMPTY && grass[i]) {
 				int count = 1;
 				for (int n : NEIGHBOURS8) {
 					if (grass[i + n]) {
 						count++;
 					}
 				}
-				map[i] = (Random.Float() < count / 12f) ? com.watabou.pixeldungeon.levels.Terrain.HIGH_GRASS : com.watabou.pixeldungeon.levels.Terrain.GRASS;
+				map[i] = (Random.Float() < count / 12f) ? Terrain.HIGH_GRASS : Terrain.GRASS;
 			}
 		}
 	}
@@ -298,32 +299,32 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 			int trapPos = Random.Int( LENGTH );
 
-			if (map[trapPos] == com.watabou.pixeldungeon.levels.Terrain.EMPTY) {
+			if (map[trapPos] == Terrain.EMPTY) {
 				switch (Random.chances( trapChances )) {
-				case 0:
-					map[trapPos] = com.watabou.pixeldungeon.levels.Terrain.SECRET_TOXIC_TRAP;
-					break;
-				case 1:
-					map[trapPos] = com.watabou.pixeldungeon.levels.Terrain.SECRET_FIRE_TRAP;
-					break;
-				case 2:
-					map[trapPos] = com.watabou.pixeldungeon.levels.Terrain.SECRET_PARALYTIC_TRAP;
-					break;
-				case 3:
-					map[trapPos] = com.watabou.pixeldungeon.levels.Terrain.SECRET_POISON_TRAP;
-					break;
-				case 4:
-					map[trapPos] = com.watabou.pixeldungeon.levels.Terrain.SECRET_ALARM_TRAP;
-					break;
-				case 5:
-					map[trapPos] = com.watabou.pixeldungeon.levels.Terrain.SECRET_LIGHTNING_TRAP;
-					break;
-				case 6:
-					map[trapPos] = com.watabou.pixeldungeon.levels.Terrain.SECRET_GRIPPING_TRAP;
-					break;
-				case 7:
-					map[trapPos] = com.watabou.pixeldungeon.levels.Terrain.SECRET_SUMMONING_TRAP;
-					break;
+					case 0:
+						map[trapPos] = Terrain.SECRET_TOXIC_TRAP;
+						break;
+					case 1:
+						map[trapPos] = Terrain.SECRET_FIRE_TRAP;
+						break;
+					case 2:
+						map[trapPos] = Terrain.SECRET_PARALYTIC_TRAP;
+						break;
+					case 3:
+						map[trapPos] = Terrain.SECRET_POISON_TRAP;
+						break;
+					case 4:
+						map[trapPos] = Terrain.SECRET_ALARM_TRAP;
+						break;
+					case 5:
+						map[trapPos] = Terrain.SECRET_LIGHTNING_TRAP;
+						break;
+					case 6:
+						map[trapPos] = Terrain.SECRET_GRIPPING_TRAP;
+						break;
+					case 7:
+						map[trapPos] = Terrain.SECRET_SUMMONING_TRAP;
+						break;
 				}
 			}
 		}
@@ -341,83 +342,135 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 	protected int minRoomSize = 7;
 	protected int maxRoomSize = 9;
 
+	protected void split( Rect rect ) {
 
+		int w = rect.width();
+		int h = rect.height();
+
+		if (w > maxRoomSize && h < minRoomSize) {
+
+			int vw = Random.Int( rect.left + 3, rect.right - 3 );
+			split( new Rect( rect.left, rect.top, vw, rect.bottom ) );
+			split( new Rect( vw, rect.top, rect.right, rect.bottom ) );
+
+		} else
+		if (h > maxRoomSize && w < minRoomSize) {
+
+			int vh = Random.Int( rect.top + 3, rect.bottom - 3 );
+			split( new Rect( rect.left, rect.top, rect.right, vh ) );
+			split( new Rect( rect.left, vh, rect.right, rect.bottom ) );
+
+		} else
+		if ((Math.random() <= (minRoomSize * minRoomSize / rect.square()) && w <= maxRoomSize && h <= maxRoomSize) || w < minRoomSize || h < minRoomSize) {
+
+			rooms.add( (Room)new Room().set( rect ) );
+
+		} else {
+
+			if (Random.Float() < (float)(w - 2) / (w + h - 4)) {
+				int vw = Random.Int( rect.left + 3, rect.right - 3 );
+				split( new Rect( rect.left, rect.top, vw, rect.bottom ) );
+				split( new Rect( vw, rect.top, rect.right, rect.bottom ) );
+			} else {
+				int vh = Random.Int( rect.top + 3, rect.bottom - 3 );
+				split( new Rect( rect.left, rect.top, rect.right, vh ) );
+				split( new Rect( rect.left, vh, rect.right, rect.bottom ) );
+			}
+
+		}
+	}
 
 	protected void paint() {
 
-		for (com.watabou.pixeldungeon.levels.Room r : rooms) {
+		for (Room r : rooms) {
 			if (r.type != Type.NULL) {
 				placeDoors( r );
 				r.type.paint( this, r );
 			} else {
+				if (feeling == Feeling.CHASM && Random.Int( 2 ) == 0) {
+					Painter.fill( this, r, Terrain.WALL );
+				}
 			}
 		}
 
-		for (com.watabou.pixeldungeon.levels.Room r : rooms) {
+		for (Room r : rooms) {
 			paintDoors( r );
 		}
 	}
 
-	private void placeDoors( com.watabou.pixeldungeon.levels.Room r ) {
-		for (com.watabou.pixeldungeon.levels.Room n : r.connected.keySet()) {
-			com.watabou.pixeldungeon.levels.Room.Door door = r.connected.get( n );
+	private void placeDoors( Room r ) {
+		for (Room n : r.connected.keySet()) {
+			Room.Door door = r.connected.get( n );
 			if (door == null) {
+
+				Rect i = r.intersect( n );
+				if (i.width() == 0) {
+					door = new Room.Door(
+							i.left,
+							Random.Int( i.top + 1, i.bottom ) );
+				} else {
+					door = new Room.Door(
+							Random.Int( i.left + 1, i.right ),
+							i.top);
+				}
+
 				r.connected.put( n, door );
 				n.connected.put( r, door );
 			}
 		}
 	}
 
-	protected void paintDoors( com.watabou.pixeldungeon.levels.Room r ) {
-		for (com.watabou.pixeldungeon.levels.Room n : r.connected.keySet()) {
+	protected void paintDoors( Room r ) {
+		for (Room n : r.connected.keySet()) {
 
 			if (joinRooms( r, n )) {
 				continue;
 			}
 
-			com.watabou.pixeldungeon.levels.Room.Door d = r.connected.get( n );
+			Room.Door d = r.connected.get( n );
 			int door = d.x + d.y * WIDTH;
 
 			switch (d.type) {
-			case EMPTY:
-				map[door] = com.watabou.pixeldungeon.levels.Terrain.EMPTY;
-				break;
-			case TUNNEL:
-				map[door] =  tunnelTile();
-				break;
-			case REGULAR:
-				if (Dungeon.depth <= 1) {
-					map[door] = com.watabou.pixeldungeon.levels.Terrain.DOOR;
-				} else {
-					boolean secret = (Dungeon.depth < 6 ? Random.Int( 12 - Dungeon.depth ) : Random.Int( 6 )) == 0;
-					map[door] = secret ? com.watabou.pixeldungeon.levels.Terrain.SECRET_DOOR : com.watabou.pixeldungeon.levels.Terrain.DOOR;
-					if (secret) {
-						secretDoors++;
+				case EMPTY:
+					map[door] = Terrain.EMPTY;
+					break;
+				case TUNNEL:
+					map[door] =  tunnelTile();
+					break;
+				case REGULAR:
+					if (Dungeon.depth <= 1) {
+						map[door] = Terrain.DOOR;
+					} else {
+						boolean secret = (Dungeon.depth < 6 ? Random.Int( 12 - Dungeon.depth ) : Random.Int( 6 )) == 0;
+						map[door] = secret ? Terrain.SECRET_DOOR : Terrain.DOOR;
+						if (secret) {
+							secretDoors++;
+						}
 					}
-				}
-				break;
-			case UNLOCKED:
-				map[door] = com.watabou.pixeldungeon.levels.Terrain.DOOR;
-				break;
-			case HIDDEN:
-				map[door] = com.watabou.pixeldungeon.levels.Terrain.SECRET_DOOR;
-				secretDoors++;
-				break;
-			case BARRICADE:
-				map[door] = Random.Int( 3 ) == 0 ? com.watabou.pixeldungeon.levels.Terrain.BOOKSHELF : com.watabou.pixeldungeon.levels.Terrain.BARRICADE;
-				break;
-			case LOCKED:
-				map[door] = com.watabou.pixeldungeon.levels.Terrain.LOCKED_DOOR;
-				break;
+					break;
+				case UNLOCKED:
+					map[door] = Terrain.DOOR;
+					break;
+				case HIDDEN:
+					map[door] = Terrain.SECRET_DOOR;
+					secretDoors++;
+					break;
+				case BARRICADE:
+					map[door] = Random.Int( 3 ) == 0 ? Terrain.BOOKSHELF : Terrain.BARRICADE;
+					break;
+				case LOCKED:
+					map[door] = Terrain.LOCKED_DOOR;
+					break;
 			}
 		}
 	}
 
-	protected boolean joinRooms(com.watabou.pixeldungeon.levels.Room r, com.watabou.pixeldungeon.levels.Room n ) {
+	protected boolean joinRooms( Room r, Room n ) {
 
-		if (r.type != Type.STANDARD || n.type != Type.STANDARD) {
+		if (r.type != Room.Type.STANDARD || n.type != Room.Type.STANDARD) {
 			return false;
 		}
+
 		Rect w = r.intersect( n );
 		if (w.left == w.right) {
 
@@ -438,7 +491,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 			w.right++;
 
-			Painter.fill( this, w.left, w.top, 1, w.height(), com.watabou.pixeldungeon.levels.Terrain.EMPTY );
+			Painter.fill( this, w.left, w.top, 1, w.height(), Terrain.EMPTY );
 
 		} else {
 
@@ -459,7 +512,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 			w.bottom++;
 
-			Painter.fill( this, w.left, w.top, w.width(), 1, com.watabou.pixeldungeon.levels.Terrain.EMPTY );
+			Painter.fill( this, w.left, w.top, w.width(), 1, Terrain.EMPTY );
 		}
 
 		return true;
@@ -495,13 +548,13 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 				return -1;
 			}
 
-			com.watabou.pixeldungeon.levels.Room room = randomRoom( Type.STANDARD, 10 );
+			Room room = randomRoom( Room.Type.STANDARD, 10 );
 			if (room == null) {
 				continue;
 			}
 
 			cell = room.random();
-			if (!Dungeon.visibleforAnyHero(cell) && Actor.findChar( cell ) == null && com.watabou.pixeldungeon.levels.Level.passable[cell]) {
+			if (!Dungeon.visibleforAnyHero(cell) && Actor.findChar( cell ) == null && Level.passable[cell]) {
 				return cell;
 			}
 
@@ -515,7 +568,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 		while (true) {
 
-			com.watabou.pixeldungeon.levels.Room room = Random.element( rooms );
+			Room room = Random.element( rooms );
 			if (room == null) {
 				continue;
 			}
@@ -539,20 +592,20 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		for (int i=0; i < nItems; i++) {
 			Heap.Type type = null;
 			switch (Random.Int( 20 )) {
-			case 0:
-				type = Heap.Type.SKELETON;
-				break;
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-				type = Heap.Type.CHEST;
-				break;
-			case 5:
-				type = Dungeon.depth > 1 ? Heap.Type.MIMIC : Heap.Type.CHEST;
-				break;
-			default:
-				type = Heap.Type.HEAP;
+				case 0:
+					type = Heap.Type.SKELETON;
+					break;
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					type = Heap.Type.CHEST;
+					break;
+				case 5:
+					type = Dungeon.depth > 1 ? Heap.Type.MIMIC : Heap.Type.CHEST;
+					break;
+				default:
+					type = Heap.Type.HEAP;
 			}
 			drop( Generator.random(), randomDropCell() ).type = type;
 		}
@@ -560,7 +613,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		for (Item item : itemsToSpawn) {
 			int cell = randomDropCell();
 			if (item instanceof ScrollOfUpgrade) {
-				while (map[cell] == com.watabou.pixeldungeon.levels.Terrain.FIRE_TRAP || map[cell] == Terrain.SECRET_FIRE_TRAP) {
+				while (map[cell] == Terrain.FIRE_TRAP || map[cell] == Terrain.SECRET_FIRE_TRAP) {
 					cell = randomDropCell();
 				}
 			}
@@ -573,9 +626,9 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		}
 	}
 
-	protected com.watabou.pixeldungeon.levels.Room randomRoom(Type type, int tries ) {
+	protected Room randomRoom( Room.Type type, int tries ) {
 		for (int i=0; i < tries; i++) {
-			com.watabou.pixeldungeon.levels.Room room = Random.element( rooms );
+			Room room = Random.element( rooms );
 			if (room.type == type) {
 				return room;
 			}
@@ -583,8 +636,8 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 		return null;
 	}
 
-	public com.watabou.pixeldungeon.levels.Room room(int pos ) {
-		for (com.watabou.pixeldungeon.levels.Room room : rooms) {
+	public Room room( int pos ) {
+		for (Room room : rooms) {
 			if (room.type != Type.NULL && room.inside( pos )) {
 				return room;
 			}
@@ -595,7 +648,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 	protected int randomDropCell() {
 		while (true) {
-			com.watabou.pixeldungeon.levels.Room room = randomRoom( Type.STANDARD, 1 );
+			Room room = randomRoom( Room.Type.STANDARD, 1 );
 			if (room != null) {
 				int pos = room.random();
 				if (passable[pos]) {
@@ -607,7 +660,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 
 	@Override
 	public int pitCell() {
-		for (com.watabou.pixeldungeon.levels.Room room : rooms) {
+		for (Room room : rooms) {
 			if (room.type == Type.PIT) {
 				return room.random();
 			}
@@ -627,7 +680,7 @@ public abstract class RegularLevel extends com.watabou.pixeldungeon.levels.Level
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 
-		rooms = new HashSet<com.watabou.pixeldungeon.levels.Room>( (Collection<com.watabou.pixeldungeon.levels.Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
+		rooms = new HashSet<Room>( (Collection<Room>) ((Collection<?>) bundle.getCollection( "rooms" )) );
 		for (Room r : rooms) {
 			if (r.type == Type.WEAK_FLOOR) {
 				weakFloorCreated = true;

@@ -28,7 +28,9 @@ public class AltarPainter extends Painter {
 
 	public static void paint( Level level, Room room ) {
 
-
+		fill( level, room, Terrain.WALL );
+		fill( level, room, 1, Dungeon.bossLevel( Dungeon.depth + 1 ) ? Terrain.HIGH_GRASS : Terrain.CHASM );
+		
 		Point c = room.center();
 		Room.Door door = room.entrance();
 		if (door.x == room.left || door.x == room.right) {
@@ -45,14 +47,14 @@ public class AltarPainter extends Painter {
 
 		fill( level, c.x - 1, c.y - 1, 3, 3, Terrain.EMBERS );
 		set( level, c, Terrain.PEDESTAL );
-
+		
 		SacrificialFire fire = (SacrificialFire)level.blobs.get( SacrificialFire.class );
 		if (fire == null) {
 			fire = new SacrificialFire();
 		}
 		fire.seed( c.x + c.y * Level.WIDTH, 5 + Dungeon.depth * 5 );
 		level.blobs.put( SacrificialFire.class, fire );
-
+		
 		door.set( Room.Door.Type.EMPTY );
 	}
 }
