@@ -44,6 +44,7 @@ import com.watabou.pixeldungeon.plants.Plant;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import com.watabou.pixeldungeon.sprites.HeroSprite;
 import com.watabou.pixeldungeon.ui.Window;
+import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.windows.WndBag;
 
 import javafx.scene.Parent;
@@ -76,8 +77,9 @@ public class GameScene extends PixelScene {     //only client, exclude static
 	private Group gases;
 	private Group spells;
 
-	public GameScene(Parent root) {
-		super(root);
+	public GameScene() {
+		super();
+		GLog.i("GameScene instanced");
 	}
 
 	@Override
@@ -88,6 +90,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		scene = this;
 
 		Server.startServerStepLoop();
+		GLog.i("GameScene created");
 		//todo
 	}
 	public void init() {
@@ -164,6 +167,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 
 	public static final double PING_TIME = 2.0;
 	private double lastPingTime = 0;
+
 	public synchronized void update() {
 
 

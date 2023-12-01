@@ -32,7 +32,7 @@ public enum Music {
 	INSTANCE;
 
 
-	private String lastPlayed;
+	private String lastPlayed = "";
 	private boolean looping;
 
 	private boolean enabled = true;

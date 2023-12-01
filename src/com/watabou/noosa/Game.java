@@ -1,6 +1,8 @@
 package com.watabou.noosa;
 
 import com.nikita22007.multiplayer.noosa.audio.Sample;
+import com.watabou.pixeldungeon.scenes.GameScene;
+import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.utils.SystemTime;
 import javafx.scene.Scene;
 
@@ -51,7 +53,10 @@ public class Game {
 
 	public Game( Class<? extends Scene> c ) {
 		super();
-		sceneClass = c;
+		instance = this;
+		switchScene(c);
+		step();
+
 	}
 
 
@@ -80,6 +85,10 @@ public class Game {
 	}
 
 	public static void switchScene(Class<? extends Scene> c, SceneChangeCallback callback) {
+		if (instance == null) {
+			instance = new Game(c);
+			return;
+		}
 		instance.sceneClass = c;
 		instance.requestedReset = true;
 		instance.onChange = callback;
@@ -115,18 +124,25 @@ public class Game {
 
 		scene = requestedScene;
 		if (onChange != null) onChange.beforeCreate();
+		if (scene instanceof PixelScene)
+		{
+			((PixelScene) scene).create();
+		}
 		if (onChange != null) onChange.afterCreate();
 		onChange = null;
 
 		Game.elapsed = 0f;
 		Game.timeScale = 1f;
 		Game.timeTotal = 0f;
+
 	}
 
 	protected void update() {
 		Game.elapsed = Game.timeScale * step * 0.001f;
 		Game.timeTotal += Game.elapsed;
-
+		if (scene instanceof GameScene) {
+			((GameScene) scene).update();
+		}
 	}
 
 	public interface SceneChangeCallback{

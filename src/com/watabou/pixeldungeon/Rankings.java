@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -84,7 +85,7 @@ public enum Rankings {
 
 			if (removedGame.gameFile.length() > 0) {
 				try {
-					Files.deleteIfExists(Path.of(removedGame.gameFile));
+					Files.deleteIfExists(Paths.get(removedGame.gameFile));
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
@@ -118,7 +119,7 @@ public enum Rankings {
 		bundle.put( WON, wonNumber );
 
 		try {
-			OutputStream output = Files.newOutputStream(Path.of("rankings.txt"));
+			OutputStream output = Files.newOutputStream(Paths.get("rankings.txt"));
 			Bundle.write( bundle, output );
 			output.close();
 		} catch (Exception e) {
@@ -134,7 +135,7 @@ public enum Rankings {
 		records = new ArrayList<Record>();
 
 		try {
-			InputStream input = Files.newInputStream(Path.of(RANKINGS_FILE));
+			InputStream input = Files.newInputStream(Paths.get(RANKINGS_FILE));
 			Bundle bundle = Bundle.read( input );
 			input.close();
 

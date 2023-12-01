@@ -18,6 +18,7 @@
 package com.watabou.pixeldungeon.sprites;
 
 
+import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.utils.Callback;
 
@@ -45,6 +46,18 @@ public class HeroSprite extends CharSprite {
 
 	public void updateArmor() {
 		idle = new Animation( 1, true );
+
+		run = new Animation( RUN_FRAMERATE, true );
+
+		die = new Animation( 20, false );
+		attack = new Animation( 15, false );
+
+		zap= new Animation( 15, false );
+
+		operate = new Animation( 8, false );
+
+		fly = new Animation( 1, true );
+		read = new Animation( 20, false );
 	}
 
 	@Override

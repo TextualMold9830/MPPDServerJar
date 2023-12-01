@@ -27,6 +27,7 @@ import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.effects.BadgeBanner;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 
 public class PixelScene extends Scene {
 
@@ -48,12 +49,15 @@ public class PixelScene extends Scene {
 		super(root);
 	}
 
+	public PixelScene() {
+		super(new Label(PixelScene.class.getName()));
+	}
 
 
 	public void create() {
 
 
-		GameScene.scene = null;
+		//GameScene.scene = null;
 
 		float minWidth, minHeight;
 		if (PixelDungeon.landscape()) {

@@ -21,6 +21,7 @@ import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 
 
+import java.io.Console;
 import java.util.regex.Pattern;
 
 public class GLog {
@@ -71,6 +72,7 @@ public class GLog {
 	}
 
 	protected static void sendMessage(Integer ID, String text) {
+		System.out.printf("%d: %s%n",(ID==null?-1:ID), text);
 		int color = CharSprite.DEFAULT;
 		if (text.startsWith(GLog.POSITIVE)) {
 			text = text.substring(GLog.POSITIVE.length());

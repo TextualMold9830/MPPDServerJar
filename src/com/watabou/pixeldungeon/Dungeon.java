@@ -67,6 +67,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static com.watabou.pixeldungeon.BuildConfig.DEBUG;
@@ -484,7 +485,7 @@ public class Dungeon {
 			com.watabou.pixeldungeon.Badges.saveLocal( badges );
 			bundle.put( BADGES, badges );
 
-			OutputStream output = Files.newOutputStream(Path.of("~/MPPD/save.txt"));
+			OutputStream output = Files.newOutputStream(Paths.get("~/MPPD/save.txt"));
 			Bundle.write( bundle, output );
 			output.close();
 
@@ -498,7 +499,7 @@ public class Dungeon {
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
 
-		OutputStream output = Files.newOutputStream(Path.of("level.txt"));
+		OutputStream output = Files.newOutputStream(Paths.get("level.txt"));
 		Bundle.write( bundle, output );
 		output.close();
 	}
@@ -610,7 +611,7 @@ public class Dungeon {
 		Dungeon.level = null;
 		Actor.clear();
 
-		InputStream input = Files.newInputStream(Path.of(Utils.format(depthFile(cl), depth))) ;
+		InputStream input = Files.newInputStream(Paths.get(Utils.format(depthFile(cl), depth))) ;
 		Bundle bundle = Bundle.read( input );
 		input.close();
 
@@ -628,7 +629,7 @@ public class Dungeon {
 	public static void deleteGame( boolean deleteLevels ) {
 
 		try {
-			Files.deleteIfExists(Path.of(GAME_FILE));
+			Files.deleteIfExists(Paths.get(GAME_FILE));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -637,7 +638,7 @@ public class Dungeon {
 			int depth = 1;
 			while (true) {
 				try {
-					if (!Files.deleteIfExists(Path.of(Utils.format(DEPTH_FILE, depth)))) break;
+					if (!Files.deleteIfExists(Paths.get(Utils.format(DEPTH_FILE, depth)))) break;
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
@@ -650,7 +651,7 @@ public class Dungeon {
 
 	public static Bundle gameBundle( String fileName ) throws IOException {
 
-		InputStream input = Files.newInputStream(Path.of(fileName));
+		InputStream input = Files.newInputStream(Paths.get(fileName));
 		Bundle bundle = Bundle.read( input );
 		input.close();
 

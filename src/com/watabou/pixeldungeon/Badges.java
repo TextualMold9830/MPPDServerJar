@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Badges {
@@ -207,7 +208,7 @@ public class Badges {
 
 	public static void loadGlobal() {
 		if (global == null) {
-
+			global = new HashSet<>();
 		}
 	}
 
@@ -221,7 +222,7 @@ public class Badges {
 			store( bundle, global );
 
 			try {
-				OutputStream output = Files.newOutputStream(Path.of("badges.txt"));
+				OutputStream output = Files.newOutputStream(Paths.get("badges.txt"));
 				Bundle.write( bundle, output );
 				output.close();
 				saveNeeded = false;

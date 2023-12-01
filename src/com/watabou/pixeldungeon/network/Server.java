@@ -33,7 +33,7 @@ public class Server extends Thread {
     //NSD
     public static volatile RegListenerState regListenerState = RegListenerState.NONE;
     protected static final int TIME_TO_STOP = 3000; //ms
-    protected static final int TIME_TO_START_LISTENER = 10000; //ms
+    protected static final int TIME_TO_START_LISTENER = 1000; //ms
     protected static final int SLEEP_TIME = 100; // ms
 
     protected static Thread serverStepThread;
@@ -50,7 +50,7 @@ public class Server extends Thread {
                     try {
                         while (!interrupted()) {
                             if (Game.instance != null) {
-                                if (Game.scene() instanceof GameScene) {
+                                if ((Game.scene() instanceof GameScene) || true) {
                                     Game.instance.server_step();
                                     sleep(0);
                                 } else {
@@ -84,7 +84,7 @@ public class Server extends Thread {
         }
         registerService(localPort);
         int timeToWait = TIME_TO_START_LISTENER;
-        while (regListenerState == RegListenerState.NONE) {
+        while ((regListenerState == RegListenerState.NONE) && (timeToWait >0)) {
             try {
                 sleep(SLEEP_TIME);
                 timeToWait -= SLEEP_TIME;

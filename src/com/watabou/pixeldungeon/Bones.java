@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Bones {
 
@@ -72,7 +73,7 @@ public class Bones {
 		bundle.put( ITEM, item );
 
 		try {
-			OutputStream output = Files.newOutputStream(Path.of("bonus.txt"));
+			OutputStream output = Files.newOutputStream(Paths.get("bonus.txt"));
 			Bundle.write( bundle, output );
 			output.close();
 		} catch (IOException e) {
@@ -84,7 +85,7 @@ public class Bones {
 		if (depth == -1) {
 
 			try {
-				InputStream input = Files.newInputStream(Path.of(BONES_FILE));
+				InputStream input = Files.newInputStream(Paths.get(BONES_FILE));
 				Bundle bundle = Bundle.read( input );
 				input.close();
 
@@ -100,7 +101,7 @@ public class Bones {
 		} else {
 			if (depth == Dungeon.depth) {
 				try {
-					Files.deleteIfExists(Path.of(BONES_FILE));
+					Files.deleteIfExists(Paths.get(BONES_FILE));
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
