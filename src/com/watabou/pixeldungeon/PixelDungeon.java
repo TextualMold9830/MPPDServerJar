@@ -27,9 +27,6 @@ import com.watabou.utils.Bundle;
 import textualmold9830.Preferences;
 
 public class PixelDungeon extends Game {
-	public static void main(String[] args) {
-		Server.startServer();
-	}
 
 	public PixelDungeon() {
 		super( TitleScene.class );

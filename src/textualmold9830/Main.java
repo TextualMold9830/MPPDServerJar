@@ -24,32 +24,16 @@ public class Main {
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        StageBuilder.create()
-                                .scene(SceneBuilder.create()
-                                        .width(320)
-                                        .height(240)
-                                        .root(LabelBuilder.create()
-                                                .font(Font.font("Arial", 54))
-                                                .text("JavaFX")
-                                                .build())
-                                        .build())
-                                .onCloseRequest(new EventHandler<WindowEvent>() {
-                                    @Override
-                                    public void handle(WindowEvent windowEvent) {
-                                        System.exit(0);
-                                    }
-                                })
-                                .build()
-                                .show();
+
+                        Server.startServer();
+                        Label l = new Label("Hello world!");
+                        Dungeon.init();
+                        InterLevelSceneServer.descend(null);
+
                     }
                 });
             }
         }).run();
-
-        Server.startServer();
-        Label l = new Label("Hello world!");
-        Dungeon.init();
-        InterLevelSceneServer.descend(null);
 
     }
 }
