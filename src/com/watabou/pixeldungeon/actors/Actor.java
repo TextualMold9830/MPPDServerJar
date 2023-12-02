@@ -18,14 +18,19 @@
 package com.watabou.pixeldungeon.actors;
 
 
+import com.watabou.noosa.Game;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.HeroHelp;
+import com.watabou.pixeldungeon.Settings;
 import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
+import com.watabou.pixeldungeon.items.armor.Armor;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.network.SendData;
+import com.watabou.pixeldungeon.scenes.GameScene;
+import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
@@ -118,6 +123,8 @@ public abstract class Actor implements Bundlable {
 	private static final HashSet<Actor> all = new HashSet<Actor>();
 	private volatile static Actor current;
 
+	private static float timeForAct = 2;
+
 	private static HashMap<Integer, Actor> ids = new HashMap<>();
 
 	private static float now = 0;
@@ -205,7 +212,12 @@ public abstract class Actor implements Bundlable {
 		boolean busy_hero = false;
 		if (current instanceof Hero) {
 			Hero hero = (Hero) current;
+			timeForAct -= Game.elapsed;
+			//GLog.i("%f",timeForAct);
 			if (hero.networkID == -1) {
+				hero.rest(false);
+			}
+			else if (timeForAct < 0){
 				hero.rest(false);
 			}
 			//busy_hero = !hero.getReady();
@@ -213,6 +225,9 @@ public abstract class Actor implements Bundlable {
 		if ((!busy_hero)&&(current != null)) {
 			return;
 		}
+
+
+		Actor last = current;
 
 		boolean doNext;
 		int tries = 0;
@@ -256,6 +271,10 @@ public abstract class Actor implements Bundlable {
 				doNext = false;
 				current = null;
 			}
+			if (doNext)
+			{
+				timeForAct = Settings.timeForAct;
+			}
 		} while (doNext);
 	}
 
@@ -294,9 +313,9 @@ public abstract class Actor implements Bundlable {
 				for (Buff buff : ch.buffs()) {
 					all.add(buff);
 					buff.onAdd();
-				}
-			}
+				}			}
 		}
+
 		SendData.sendActor(actor);
 	}
 
