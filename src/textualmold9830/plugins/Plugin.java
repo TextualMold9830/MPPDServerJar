@@ -4,10 +4,12 @@ public interface Plugin {
 
     String getName();
 
-    String getVersion();
+    default String getVersion(){
+        return "";
+    };
 
     void initialize();
 
     void shutdown();
-
+    default void playerJoinEvent(){}
 }
