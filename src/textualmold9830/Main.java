@@ -15,9 +15,8 @@ public class Main {
         initFolders();
         Preferences.load();
         Runtime.getRuntime().addShutdownHook(new Thread(Preferences::save));
-        Toolkit.getDefaultToolkit().beep();
         Platform.startup(()->{
-            System.out.println("Starting Server");
+            Toolkit.getDefaultToolkit().beep();
         });
         Server.startServer();
         Dungeon.init();
