@@ -34,4 +34,7 @@ public class PluginManager {
     public List<Plugin> getPlugins() {
         return plugins;
     }
+    public void fireEvent(Event event){
+        plugins.forEach((plugin)->plugin.handleEvent(event));
+    }
 }

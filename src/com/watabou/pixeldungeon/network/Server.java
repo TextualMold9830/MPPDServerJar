@@ -8,6 +8,7 @@ import com.watabou.pixeldungeon.Settings;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.utils.GLog;
+import textualmold9830.plugins.PluginManager;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import static com.watabou.pixeldungeon.Dungeon.heroes;
 
 
 public class Server extends Thread {
+    public static PluginManager pluginManager = new PluginManager();
 
     //primitive vars
     public static String serviceName;
@@ -33,7 +35,6 @@ public class Server extends Thread {
     //NSD
     public static volatile RegListenerState regListenerState = RegListenerState.NONE;
     protected static final int TIME_TO_STOP = 3000; //ms
-    protected static final int TIME_TO_START_LISTENER = 1000; //ms
     protected static final int SLEEP_TIME = 100; // ms
 
     protected static Thread serverStepThread;
@@ -83,15 +84,6 @@ public class Server extends Thread {
             return false;
         }
         registerService(localPort);
-        int timeToWait = TIME_TO_START_LISTENER;
-        while ((regListenerState == RegListenerState.NONE) && (timeToWait >0)) {
-            try {
-                sleep(SLEEP_TIME);
-                timeToWait -= SLEEP_TIME;
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
         started = true;
         serverThread = new Server();
@@ -204,9 +196,5 @@ public class Server extends Thread {
         localPort = serverSocket.getLocalPort();
         return true;
     }
-
-    protected static void initializeRegistrationListener() {}
-
-
     public static enum RegListenerState {NONE, UNREGISTERED, REGISTERED, REGISTRATION_FAILED, UNREGISTRATION_FAILED}
 }

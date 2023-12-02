@@ -72,10 +72,10 @@ public class AttackIndicator {
 		int heroPos = owner.pos;
 		candidates.clear();
 		int v = owner.visibleEnemies();
-		for (int i=0; i < v; i++) {
-			Mob mob = owner.visibleEnemy( i );
-			if (Level.adjacent( heroPos, mob.pos )) {
-				candidates.add( mob );
+		for (int i = 0; i < v; i++) {
+			Mob mob = owner.visibleEnemy(i);
+			if (Level.adjacent(heroPos, mob.pos)) {
+				candidates.add(mob);
 			}
 		}
 
@@ -83,11 +83,10 @@ public class AttackIndicator {
 			if (candidates.isEmpty()) {
 				setLastTarget(null);
 			} else {
-				setLastTarget(Random.element( candidates ));
+				setLastTarget(Random.element(candidates));
 			}
 		}
 	}
-
 	protected void onClick() {
 		if (lastTarget != null) {
 			owner.handle(lastTarget.pos);

@@ -102,8 +102,6 @@ public class Dungeon {
 	public static HashMap<Integer, ArrayList<Item>> droppedItems;
 
 	public static void init() {
-		//TODO SETTING MENU
-		Settings.maxPlayers=4;//
 		Dungeon.heroes=new Hero[Settings.maxPlayers];
 
 
@@ -226,7 +224,6 @@ public class Dungeon {
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
 		}
-
 		level.create();
 
 		Statistics.qualifiedForNoKilling = !bossLevel(depth);

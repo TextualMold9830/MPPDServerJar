@@ -187,13 +187,6 @@ public class PixelDungeon extends Game {
 		return textualmold9830.Preferences.music;
 	}
 
-	public static void donated( String value ) {
-	}
-
-	public static String donated() {
-		return "true";
-	}
-
 
 	public static int lastClass() {
 		return 0;
