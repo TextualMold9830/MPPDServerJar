@@ -51,7 +51,7 @@ public class Server extends Thread {
                     try {
                         while (!interrupted()) {
                             if (Game.instance != null) {
-                                if ((Game.scene() instanceof GameScene) || true) {
+                                if ((Game.scene() instanceof GameScene)) {
                                     Game.instance.server_step();
                                     sleep(0);
                                 } else {
@@ -105,16 +105,8 @@ public class Server extends Thread {
         serverStepThread.interrupt();
         //ClientThread.sendAll(Codes.SERVER_CLOSED); //todo
         unregisterService();
-        int sleep_time = TIME_TO_STOP;
-        try {
-            while ((regListenerState != RegListenerState.UNREGISTERED && regListenerState != RegListenerState.UNREGISTRATION_FAILED) && (sleep_time > 0)) {
-                //noinspection BusyWait
-                Thread.sleep(SLEEP_TIME);
-                sleep_time -= SLEEP_TIME;
-            }
-        } catch (InterruptedException ignored) {
-        }
-        return sleep_time >0;
+
+        return true;
     }
 
     public static void parseActions() {
