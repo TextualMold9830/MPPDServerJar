@@ -19,6 +19,7 @@ package com.watabou.pixeldungeon.actors.hero;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import com.nikita22007.multiplayer.noosa.Camera;
@@ -104,6 +105,7 @@ import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import com.watabou.pixeldungeon.sprites.HeroSprite;
 import com.nikita22007.multiplayer.server.ui.AttackIndicator;
+import com.watabou.pixeldungeon.ui.Window;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.windows.WndMessage;
 import com.watabou.pixeldungeon.windows.WndResurrect;
@@ -1498,6 +1500,11 @@ public class Hero extends Char {
 	public void setSTR(int STR) {
 		this.STR = STR;
 		SendHeroStrength(networkID,this.STR);
+	}
+
+	public boolean hasWindow() {
+		HashMap<Integer, Window> windows = Window.windows.getOrDefault(this, null);
+		return (windows != null) && !windows.isEmpty();
 	}
 
 	public static interface Doom {

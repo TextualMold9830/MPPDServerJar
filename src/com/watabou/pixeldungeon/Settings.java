@@ -9,7 +9,7 @@ public class Settings {
 
     public static int maxPlayers = 4; // todo setup while loading
     public static boolean killOnDisconnect = false;
-    public static float timeForAct = 2; //ms
+    public static float timeForAct = 5; //seconds
 
     public static enum ResurrectModeEnum {
         RESET_LEVEL, RESPAWN_HERO

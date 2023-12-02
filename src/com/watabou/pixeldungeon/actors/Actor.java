@@ -30,6 +30,7 @@ import com.watabou.pixeldungeon.items.armor.Armor;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.scenes.GameScene;
+import com.watabou.pixeldungeon.ui.Window;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
@@ -216,18 +217,21 @@ public abstract class Actor implements Bundlable {
 			//GLog.i("%f",timeForAct);
 			if (hero.networkID == -1) {
 				hero.rest(false);
-			}
-			else if (timeForAct < 0){
-				hero.rest(false);
+			} else {
+				if (hero.hasWindow())
+				{
+					timeForAct = Settings.timeForAct;
+				} else if (timeForAct < 0) {
+
+					hero.rest(false);
+					timeForAct = Settings.timeForAct;
+				}
 			}
 			//busy_hero = !hero.getReady();
 		}
 		if ((!busy_hero)&&(current != null)) {
 			return;
 		}
-
-
-		Actor last = current;
 
 		boolean doNext;
 		int tries = 0;
