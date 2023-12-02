@@ -50,6 +50,7 @@ import com.watabou.pixeldungeon.levels.features.AlchemyPot;
 import com.watabou.pixeldungeon.levels.features.Chasm;
 import com.watabou.pixeldungeon.levels.features.Sign;
 import com.watabou.pixeldungeon.network.SendData;
+import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.plants.Earthroot;
 import com.watabou.pixeldungeon.scenes.CellSelector;
 import com.watabou.pixeldungeon.scenes.GameScene;
@@ -394,6 +395,7 @@ public class Hero extends Char {
 			restoreHealth = false;
 			setReady(false);
 			HeroDoActionEvent event = new HeroDoActionEvent(this, curAction);
+			Server.pluginManager.fireEvent(event);
 			curAction = event.action;
 			if (!event.isCancelled()) {
 				if (curAction instanceof HeroAction.Move) {

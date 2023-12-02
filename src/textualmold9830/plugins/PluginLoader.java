@@ -32,7 +32,7 @@ public class PluginLoader {
                     while (entries.hasMoreElements()) {
                         JarEntry entry = entries.nextElement();
                         String entryName = entry.getName();
-                        if (entryName.endsWith(".class")) {
+                        if (entryName.endsWith(".class") && !entryName.contains("META-INF")) {
                             String className = entryName.substring(0, entryName.lastIndexOf(".class")).replace("/", ".");
                             Class<?> clazz = classLoader.loadClass(className);
                             if (Arrays.stream(clazz.getInterfaces()).anyMatch((iface)-> iface.getSimpleName().equals("Plugin")) && !clazz.isInterface()) {
