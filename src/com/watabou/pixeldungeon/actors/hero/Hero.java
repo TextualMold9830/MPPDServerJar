@@ -17,78 +17,30 @@
  */
 package com.watabou.pixeldungeon.actors.hero;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-
 import com.nikita22007.multiplayer.noosa.Camera;
 import com.nikita22007.multiplayer.noosa.audio.Sample;
-import com.watabou.pixeldungeon.BuildConfig;
-import com.watabou.pixeldungeon.Assets;
-import com.watabou.pixeldungeon.Badges;
-import com.watabou.pixeldungeon.Bones;
-import com.watabou.pixeldungeon.Dungeon;
-import com.watabou.pixeldungeon.GamesInProgress;
-import com.watabou.pixeldungeon.HeroHelp;
-import com.watabou.pixeldungeon.ResultDescriptions;
-import com.watabou.pixeldungeon.Settings;
+import com.nikita22007.multiplayer.server.effects.Flare;
+import com.nikita22007.multiplayer.server.ui.AttackIndicator;
+import com.watabou.pixeldungeon.*;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
-import com.watabou.pixeldungeon.actors.buffs.Barkskin;
-import com.watabou.pixeldungeon.actors.buffs.Bleeding;
-import com.watabou.pixeldungeon.actors.buffs.Blindness;
-import com.watabou.pixeldungeon.actors.buffs.Buff;
-import com.watabou.pixeldungeon.actors.buffs.Burning;
-import com.watabou.pixeldungeon.actors.buffs.Combo;
-import com.watabou.pixeldungeon.actors.buffs.Cripple;
-import com.watabou.pixeldungeon.actors.buffs.Fury;
-import com.watabou.pixeldungeon.actors.buffs.GasesImmunity;
-import com.watabou.pixeldungeon.actors.buffs.Hunger;
-import com.watabou.pixeldungeon.actors.buffs.Invisibility;
-import com.watabou.pixeldungeon.actors.buffs.Light;
-import com.watabou.pixeldungeon.actors.buffs.Ooze;
-import com.watabou.pixeldungeon.actors.buffs.Paralysis;
-import com.watabou.pixeldungeon.actors.buffs.Poison;
-import com.watabou.pixeldungeon.actors.buffs.Regeneration;
-import com.watabou.pixeldungeon.actors.buffs.Roots;
-import com.watabou.pixeldungeon.actors.buffs.Charm;
-import com.watabou.pixeldungeon.actors.buffs.SnipersMark;
-import com.watabou.pixeldungeon.actors.buffs.Vertigo;
-import com.watabou.pixeldungeon.actors.buffs.Weakness;
+import com.watabou.pixeldungeon.actors.buffs.*;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.actors.mobs.npcs.NPC;
 import com.watabou.pixeldungeon.effects.CheckedCell;
-import com.nikita22007.multiplayer.server.effects.Flare;
 import com.watabou.pixeldungeon.effects.Speck;
-import com.watabou.pixeldungeon.items.Amulet;
-import com.watabou.pixeldungeon.items.Ankh;
-import com.watabou.pixeldungeon.items.DewVial;
-import com.watabou.pixeldungeon.items.Dewdrop;
-import com.watabou.pixeldungeon.items.Heap;
+import com.watabou.pixeldungeon.items.*;
 import com.watabou.pixeldungeon.items.Heap.Type;
-import com.watabou.pixeldungeon.items.Item;
-import com.watabou.pixeldungeon.items.KindOfWeapon;
 import com.watabou.pixeldungeon.items.armor.Armor;
 import com.watabou.pixeldungeon.items.keys.GoldenKey;
+import com.watabou.pixeldungeon.items.keys.IronKey;
 import com.watabou.pixeldungeon.items.keys.Key;
 import com.watabou.pixeldungeon.items.keys.SkeletonKey;
-import com.watabou.pixeldungeon.items.keys.IronKey;
 import com.watabou.pixeldungeon.items.potions.Potion;
 import com.watabou.pixeldungeon.items.potions.PotionOfMight;
 import com.watabou.pixeldungeon.items.potions.PotionOfStrength;
-import com.watabou.pixeldungeon.items.rings.RingOfAccuracy;
-import com.watabou.pixeldungeon.items.rings.RingOfDetection;
-import com.watabou.pixeldungeon.items.rings.RingOfElements;
-import com.watabou.pixeldungeon.items.rings.RingOfEvasion;
-import com.watabou.pixeldungeon.items.rings.RingOfHaste;
-import com.watabou.pixeldungeon.items.rings.RingOfShadows;
-import com.watabou.pixeldungeon.items.rings.RingOfThorns;
-import com.watabou.pixeldungeon.items.scrolls.Scroll;
-import com.watabou.pixeldungeon.items.scrolls.ScrollOfMagicMapping;
-import com.watabou.pixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.watabou.pixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.watabou.pixeldungeon.items.scrolls.ScrollOfEnchantment;
+import com.watabou.pixeldungeon.items.rings.*;
+import com.watabou.pixeldungeon.items.scrolls.*;
 import com.watabou.pixeldungeon.items.wands.Wand;
 import com.watabou.pixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.watabou.pixeldungeon.items.weapon.missiles.MissileWeapon;
@@ -104,7 +56,6 @@ import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import com.watabou.pixeldungeon.sprites.HeroSprite;
-import com.nikita22007.multiplayer.server.ui.AttackIndicator;
 import com.watabou.pixeldungeon.ui.Window;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.windows.WndMessage;
@@ -112,10 +63,14 @@ import com.watabou.pixeldungeon.windows.WndResurrect;
 import com.watabou.pixeldungeon.windows.WndTradeItem;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import textualmold9830.plugins.events.HeroDoActionEvent;
 
-import static com.watabou.pixeldungeon.network.SendData.SendHeroLevel;
-import static com.watabou.pixeldungeon.network.SendData.SendHeroStrength;
-import static com.watabou.pixeldungeon.network.SendData.sendResumeButtonVisible;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import static com.watabou.pixeldungeon.network.SendData.*;
 
 public class Hero extends Char {
 
@@ -437,58 +392,50 @@ public class Hero extends Char {
 		} else {
 
 			restoreHealth = false;
-
 			setReady(false);
+			HeroDoActionEvent event = new HeroDoActionEvent(this, curAction);
+			curAction = event.action;
+			if (!event.isCancelled()) {
+				if (curAction instanceof HeroAction.Move) {
+					return actMove((HeroAction.Move) curAction);
 
-			if (curAction instanceof HeroAction.Move) {
+				} else if (curAction instanceof HeroAction.Interact) {
 
-				return actMove( (HeroAction.Move)curAction );
+					return actInteract((HeroAction.Interact) curAction);
 
-			} else
-			if (curAction instanceof HeroAction.Interact) {
+				} else if (curAction instanceof HeroAction.Buy) {
 
-				return actInteract( (HeroAction.Interact)curAction );
+					return actBuy((HeroAction.Buy) curAction);
 
-			} else
-			if (curAction instanceof HeroAction.Buy) {
+				} else if (curAction instanceof HeroAction.PickUp) {
 
-				return actBuy( (HeroAction.Buy)curAction );
+					return actPickUp((HeroAction.PickUp) curAction);
 
-			}else
-			if (curAction instanceof HeroAction.PickUp) {
+				} else if (curAction instanceof HeroAction.OpenChest) {
 
-				return actPickUp( (HeroAction.PickUp)curAction );
+					return actOpenChest((HeroAction.OpenChest) curAction);
 
-			} else
-			if (curAction instanceof HeroAction.OpenChest) {
+				} else if (curAction instanceof HeroAction.Unlock) {
 
-				return actOpenChest( (HeroAction.OpenChest)curAction );
+					return actUnlock((HeroAction.Unlock) curAction);
 
-			} else
-			if (curAction instanceof HeroAction.Unlock) {
+				} else if (curAction instanceof HeroAction.Descend) {
 
-				return actUnlock( (HeroAction.Unlock)curAction );
+					return actDescend((HeroAction.Descend) curAction);
 
-			} else
-			if (curAction instanceof HeroAction.Descend) {
+				} else if (curAction instanceof HeroAction.Ascend) {
 
-				return actDescend( (HeroAction.Descend)curAction );
+					return actAscend((HeroAction.Ascend) curAction);
 
-			} else
-			if (curAction instanceof HeroAction.Ascend) {
+				} else if (curAction instanceof HeroAction.Attack) {
 
-				return actAscend( (HeroAction.Ascend)curAction );
+					return actAttack((HeroAction.Attack) curAction);
 
-			} else
-			if (curAction instanceof HeroAction.Attack) {
+				} else if (curAction instanceof HeroAction.Cook) {
 
-				return actAttack( (HeroAction.Attack)curAction );
+					return actCook((HeroAction.Cook) curAction);
 
-			} else
-			if (curAction instanceof HeroAction.Cook) {
-
-				return actCook( (HeroAction.Cook)curAction );
-
+				}
 			}
 		}
 

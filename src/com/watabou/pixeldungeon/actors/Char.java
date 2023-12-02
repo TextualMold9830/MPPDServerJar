@@ -292,10 +292,8 @@ public abstract class Char extends Actor {
 	public void die( Object src ) {
 		CharDieEvent event = new CharDieEvent(this, src);
 		Server.pluginManager.fireEvent(event);
-		if (!event.isCancelled()) {
 			getSprite().die();
 			destroy();
-		}
 	}
 
 	public boolean isAlive() {
