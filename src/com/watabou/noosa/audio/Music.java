@@ -21,11 +21,6 @@
 
 package com.watabou.noosa.audio;
 
-import java.io.IOException;
-
-import com.watabou.noosa.Game;
-import javafx.scene.media.MediaPlayer;
-
 
 public enum Music {
 
