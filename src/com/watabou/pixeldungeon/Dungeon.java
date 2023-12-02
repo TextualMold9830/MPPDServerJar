@@ -102,8 +102,7 @@ public class Dungeon {
 	public static HashMap<Integer, ArrayList<Item>> droppedItems;
 
 	public static void init() {
-		Dungeon.heroes=new Hero[Settings.maxPlayers];
-
+		Dungeon.heroes = new Hero[Settings.maxPlayers];
 
 		challenges = PixelDungeon.challenges();
 
