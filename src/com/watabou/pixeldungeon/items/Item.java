@@ -40,6 +40,7 @@ import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.mechanics.Ballistica;
 import com.watabou.pixeldungeon.network.NetworkPacket;
 import com.watabou.pixeldungeon.network.SendData;
+import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.CellSelector;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.nikita22007.multiplayer.server.sprites.MissileSprite;
@@ -55,6 +56,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
+import textualmold9830.plugins.events.HeroCollectItemEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -333,6 +335,11 @@ public abstract class Item implements Bundlable {
 		}
 	}
 	public boolean collect(Hero hero) {
+		HeroCollectItemEvent event = new HeroCollectItemEvent(this, hero);
+		Server.pluginManager.fireEvent(event);
+		if (event.isCancelled()){
+			return false;
+		}
 		return collect( hero.belongings.backpack );
 	}
 
