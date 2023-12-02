@@ -34,10 +34,10 @@ public class PotionOfStrength extends Potion {
 		setKnown();
 		for (Hero h:
 			 Dungeon.heroes) {
-
-
-			h.setSTR(h.getSTR() + 1);
-			h.getSprite().showStatus(CharSprite.POSITIVE, "+1 str");
+			if (h != null) {
+				h.setSTR(h.getSTR() + 1);
+				h.getSprite().showStatus(CharSprite.POSITIVE, "+1 str");
+			}
 		}
 		GLog.p( "Newfound strength surges through your body." );
 

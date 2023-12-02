@@ -17,6 +17,7 @@ public class Preferences {
     public static String customRelayAddress = "";
     public static int customRelayPort = 0;
     public static boolean music = true;
+    public static float timeToSkipTurn = 900;
 
     public static void save() {
         try {

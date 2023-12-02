@@ -1,6 +1,8 @@
 package com.watabou.pixeldungeon;
 
 
+import textualmold9830.Preferences;
+
 public class Settings {
     public static String defaultRelayServerAddress = "195.43.142.107";
     //public static String relayServerAddress = "192.168.1.84";
@@ -9,7 +11,7 @@ public class Settings {
 
     public static int maxPlayers = 8; // todo setup while loading
     public static boolean killOnDisconnect = false;
-    public static float timeForAct = 5; //seconds
+    public static float timeForAct = Preferences.timeToSkipTurn; //seconds
 
     public static enum ResurrectModeEnum {
         RESET_LEVEL, RESPAWN_HERO
