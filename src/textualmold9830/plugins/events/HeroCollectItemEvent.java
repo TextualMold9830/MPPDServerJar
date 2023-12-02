@@ -7,8 +7,8 @@ import textualmold9830.plugins.Event;
 
 public class HeroCollectItemEvent extends Event implements Cancellable {
     boolean canceled = false;
-    Item item;
-    Hero hero;
+    public Item item;
+    public Hero hero;
 
     public HeroCollectItemEvent(Item item, Hero hero) {
         this.item = item;
@@ -24,4 +24,5 @@ public class HeroCollectItemEvent extends Event implements Cancellable {
     public void setCancelled(boolean cancel) {
         canceled = cancel;
     }
+
 }

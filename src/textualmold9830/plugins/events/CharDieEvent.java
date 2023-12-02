@@ -6,8 +6,8 @@ import textualmold9830.plugins.Event;
 
 public class CharDieEvent extends Event implements Cancellable {
     boolean cancelled = false;
-    Char character;
-    Object cause;
+    public Char character;
+    public Object cause;
 
     public CharDieEvent(Char character , Object cause) {
         this.character = character;

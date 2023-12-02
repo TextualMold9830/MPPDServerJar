@@ -11,6 +11,5 @@ public interface Plugin {
     void initialize();
 
     default void shutdown(){}
-    default void playerJoinEvent(){}
     default void handleEvent(Event event){}
 }
