@@ -28,6 +28,7 @@ public class MonkSprite extends MobSprite {
 		super();
 		texture( Assets.MONK );
 		idle = new Animation( 6, true );
+		kick = new Animation( 10, false );
 		play( idle );
 	}
 

@@ -22,6 +22,7 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.network.SendData;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +30,7 @@ import org.json.JSONObject;
  * Visual effect. Shows item sprite, colored in item enchantment color, above the {@link Char}'s head
  */
 public class Enchanting {
-    public static void show(Char ch, Item item) {
+    public static void show(@NotNull Char ch, @NotNull Item item) {
         JSONObject actionObj = new JSONObject();
         try {
             actionObj.put("action_type", "enchanting_visual");

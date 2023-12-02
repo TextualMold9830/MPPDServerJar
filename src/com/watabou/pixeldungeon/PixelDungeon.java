@@ -213,7 +213,7 @@ public class PixelDungeon extends Game {
 	 */
 
 	public static void reportException( Throwable tr ) {
-
+		tr.printStackTrace();
 	}
 
 

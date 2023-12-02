@@ -17,63 +17,63 @@
  */
 package com.watabou.pixeldungeon.levels;
 
+import java.util.Arrays;
+
+import javafx.scene.Scene;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.items.Amulet;
 import com.watabou.pixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
-import javafx.scene.Scene;
-
-import java.util.Arrays;
 
 public class LastLevel extends Level {
 
 	private static final int SIZE = 7;
-
+	
 	{
 		color1 = 0x801500;
 		color2 = 0xa68521;
 	}
-
+	
 	private int pedestal;
-
+	
 	@Override
 	public String tilesTex() {
 		return Assets.TILES_HALLS;
 	}
-
+	
 	@Override
 	public String waterTex() {
 		return Assets.WATER_HALLS;
 	}
-
+	
 	@Override
 	protected boolean build() {
 
-		Arrays.fill( map, com.watabou.pixeldungeon.levels.Terrain.WALL );
-		Painter.fill( this, 1, 1, SIZE, SIZE, com.watabou.pixeldungeon.levels.Terrain.WATER );
-		Painter.fill( this, 2, 2, SIZE-2, SIZE-2, com.watabou.pixeldungeon.levels.Terrain.EMPTY );
-		Painter.fill( this, SIZE/2, SIZE/2, 3, 3, com.watabou.pixeldungeon.levels.Terrain.EMPTY_SP );
-
+		Arrays.fill( map, Terrain.WALL );
+		Painter.fill( this, 1, 1, SIZE, SIZE, Terrain.WATER );
+		Painter.fill( this, 2, 2, SIZE-2, SIZE-2, Terrain.EMPTY );
+		Painter.fill( this, SIZE/2, SIZE/2, 3, 3, Terrain.EMPTY_SP );
+		
 		entrance = SIZE * WIDTH + SIZE / 2 + 1;
-		map[entrance] = com.watabou.pixeldungeon.levels.Terrain.ENTRANCE;
-
+		map[entrance] = Terrain.ENTRANCE;
+		
 		exit = entrance - WIDTH * SIZE;
-		map[exit] = com.watabou.pixeldungeon.levels.Terrain.LOCKED_EXIT;
-
+		map[exit] = Terrain.LOCKED_EXIT;
+		
 		pedestal = (SIZE / 2 + 1) * (WIDTH + 1);
-		map[pedestal] = com.watabou.pixeldungeon.levels.Terrain.PEDESTAL;
-		map[pedestal-1] = map[pedestal+1] = com.watabou.pixeldungeon.levels.Terrain.STATUE_SP;
-
+		map[pedestal] = Terrain.PEDESTAL;
+		map[pedestal-1] = map[pedestal+1] = Terrain.STATUE_SP;
+		
 		feeling = Feeling.NONE;
-
+		
 		return true;
 	}
 
 	@Override
 	protected void decorate() {
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == com.watabou.pixeldungeon.levels.Terrain.EMPTY && Random.Int( 10 ) == 0) {
-				map[i] = com.watabou.pixeldungeon.levels.Terrain.EMPTY_DECO;
+			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) { 
+				map[i] = Terrain.EMPTY_DECO;
 			}
 		}
 	}
@@ -86,7 +86,7 @@ public class LastLevel extends Level {
 	protected void createItems() {
 		drop( new Amulet(), pedestal );
 	}
-
+	
 	@Override
 	public int randomRespawnCell() {
 		return -1;
@@ -95,33 +95,33 @@ public class LastLevel extends Level {
 	@Override
 	public String tileName( int tile ) {
 		switch (tile) {
-		case com.watabou.pixeldungeon.levels.Terrain.WATER:
+		case Terrain.WATER:
 			return "Cold lava";
-		case com.watabou.pixeldungeon.levels.Terrain.GRASS:
+		case Terrain.GRASS:
 			return "Embermoss";
-		case com.watabou.pixeldungeon.levels.Terrain.HIGH_GRASS:
+		case Terrain.HIGH_GRASS:
 			return "Emberfungi";
-		case com.watabou.pixeldungeon.levels.Terrain.STATUE:
-		case com.watabou.pixeldungeon.levels.Terrain.STATUE_SP:
+		case Terrain.STATUE:
+		case Terrain.STATUE_SP:
 			return "Pillar";
 		default:
 			return super.tileName( tile );
 		}
 	}
-
+	
 	@Override
 	public String tileDesc(int tile) {
 		switch (tile) {
-		case com.watabou.pixeldungeon.levels.Terrain.WATER:
+		case Terrain.WATER:
 			return "It looks like lava, but it's cold and probably safe to touch.";
-		case com.watabou.pixeldungeon.levels.Terrain.STATUE:
+		case Terrain.STATUE:
 		case Terrain.STATUE_SP:
-			return "The pillar is made of real humanoid skulls. Awesome.";
+			return "The pillar is made of real humanoid skulls. Awesome."; 
 		default:
 			return super.tileDesc( tile );
 		}
 	}
-
+	
 	@Override
 	public void addVisuals( Scene scene ) {
 		HallsLevel.addVisuals( this, scene );

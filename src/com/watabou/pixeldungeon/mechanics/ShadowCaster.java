@@ -18,9 +18,10 @@
 package com.watabou.pixeldungeon.mechanics;
 
 
-import java.util.Arrays;
-
+import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.pixeldungeon.levels.Level;
+
+import java.util.Arrays;
 
 public final class ShadowCaster {
 
@@ -53,6 +54,7 @@ public final class ShadowCaster {
 		losBlocking = Level.losBlocking;
 
 		if (distance > MAX_DISTANCE) {
+			Log.e("PixelDungeonServer", String.format("view distance > MAX_DISTANCE.  distance: %d; set: %d", distance,  MAX_DISTANCE));
 			distance =  MAX_DISTANCE;
 		}
 

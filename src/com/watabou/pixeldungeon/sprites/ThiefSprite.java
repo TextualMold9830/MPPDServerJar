@@ -27,6 +27,9 @@ public class ThiefSprite extends MobSprite {
 		texture( Assets.THIEF );
 
 		idle = new Animation( 1, true );
+		run = new Animation( 15, true );
+		die = new Animation( 10, false );
+		attack = new Animation( 12, false );
 		idle();
 	}
 }

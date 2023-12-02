@@ -17,35 +17,31 @@
  */
 package com.watabou.pixeldungeon.effects.particles;
 
+import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
 
-public class ShadowParticle {
+public class ShadowParticle{
+	
+	public static final Emitter.Factory MISSILE = new Factory() {
 
-	public static final Factory MISSILE = new Factory() {
-
-		@Override
+        @Override
 		public String factoryName() {
 			return "shadow_missile";
 		}
 	};
-
-	public static final Factory CURSE = new Factory() {
-		@Override
+	
+	public static final Emitter.Factory CURSE = new Factory() {
+        @Override
 		public String factoryName() {
 			return "shadow_curse";
 		}
 	};
-
-	public static final Factory UP = new Factory() {
-		@Override
+	
+	public static final Emitter.Factory UP = new Factory() {
+        @Override
 		public String factoryName() {
 			return "shadow_up";
 		}
 	};
-
-	public void reset(float x, float y) {
-
-	}
-
 
 }

@@ -61,6 +61,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -295,7 +296,7 @@ public class Dungeon {
         }
 	}
 
-	private static void switchLevelChangePosition(int pos, Hero hero)
+	private static void switchLevelChangePosition(int pos, @NotNull Hero hero)
     {
         hero.pos = pos != -1 ? (Level.getNearClearCell(pos)) : Level.getNearClearCell(level.exit);
 
@@ -306,7 +307,7 @@ public class Dungeon {
 
         observe(hero);
     }
-	public static void switchLevel(final Level level, int pos, Hero hero ) {
+	public static void switchLevel(final Level level, int pos, @NotNull Hero hero ) {
 		switchLevelToAll(level, pos);  //todo change this for multilevels support
 		/*
 		switchLevel(level);
@@ -703,11 +704,11 @@ public class Dungeon {
 		}
 	}
 
-	public static void observe( Hero hero) {
+	public static void observe(@NotNull Hero hero) {
 	observe(hero, true);
 	}
 
-	public static void observe( Hero hero, boolean send){
+	public static void observe(@NotNull Hero hero, boolean send){
 
 		if (level == null) {
 			return;

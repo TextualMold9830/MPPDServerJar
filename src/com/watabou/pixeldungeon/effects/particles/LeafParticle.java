@@ -17,14 +17,15 @@
  */
 package com.watabou.pixeldungeon.effects.particles;
 
+import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
 import com.watabou.pixeldungeon.Dungeon;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LeafParticle {
+public class LeafParticle{
 
-	public static final Factory GENERAL = new Factory() {
+	public static final Emitter.Factory GENERAL = new Factory() {
 
         @Override
 		public String factoryName() {
@@ -43,8 +44,8 @@ public class LeafParticle {
 			return object;
 		}
 	};
-
-	public static final Factory LEVEL_SPECIFIC = new Factory() {
+	
+	public static final Emitter.Factory LEVEL_SPECIFIC = new Factory() {
         @Override
 			public String factoryName() {
 				return "leaf";
@@ -63,12 +64,4 @@ public class LeafParticle {
 			}
 	};
 
-	public LeafParticle() {
-		super();
-
-	}
-
-	public void reset( float x, float y ) {
-
-	}
 }

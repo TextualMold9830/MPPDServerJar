@@ -21,6 +21,8 @@ package com.nikita22007.multiplayer.server.effects;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.utils.PointF;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,6 +39,7 @@ public final class Flare {
 
 	private float angularSpeed;
 
+	@Nullable
 	private PointF position = null;
 	private int pos = -1;
 
@@ -96,6 +99,7 @@ public final class Flare {
 		}catch (JSONException ignore){}
 	}
 
+	@Contract ("_ -> this")
 	public Flare setAngularSpeed(float angularSpeed) {
 		this.angularSpeed = angularSpeed;
 		return this;

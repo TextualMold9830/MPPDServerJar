@@ -20,12 +20,12 @@ package com.watabou.pixeldungeon.sprites;
 import com.nikita22007.multiplayer.noosa.MovieClip;
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.nikita22007.multiplayer.noosa.particles.Emitter;
+import com.nikita22007.multiplayer.server.effects.EmoIcon;
+import com.nikita22007.multiplayer.server.effects.FloatingText;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.DungeonTilemap;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.actors.Char;
-import com.nikita22007.multiplayer.server.effects.EmoIcon;
-import com.nikita22007.multiplayer.server.effects.FloatingText;
 import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.effects.Splash;
 import com.watabou.pixeldungeon.effects.TorchHalo;
@@ -38,7 +38,6 @@ import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
-
 import org.json.JSONObject;
 
 import java.util.Set;
@@ -46,7 +45,6 @@ import java.util.concurrent.CopyOnWriteArraySet;
 
 import static com.watabou.pixeldungeon.network.SendData.sendCharSpriteAction;
 import static com.watabou.pixeldungeon.network.SendData.sendCharSpriteState;
-import static com.watabou.utils.PointF.PI;
 
 public class CharSprite extends MovieClip implements MovieClip.Listener {
 
@@ -79,12 +77,12 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 
 	protected final Set<State> states = new CopyOnWriteArraySet<State>();
 
-	protected Animation idle;
-	protected Animation run;
-	protected Animation attack;
-	protected Animation operate;
-	protected Animation zap;
-	protected Animation die;
+	protected Animation idle = new Animation(1,true);
+	protected Animation run = new Animation(1,true);
+	protected Animation attack = new Animation(1,false);
+	protected Animation operate = new Animation(1,false);
+	protected Animation zap = new Animation(1,false);
+	protected Animation die = new Animation(1,false);
 
 	protected Callback animCallback;
 
@@ -96,7 +94,7 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 	protected EmoIcon emo;
 
 	private Callback jumpCallback;
-
+	
 	protected boolean sleeping = false;
 
 	public Char ch;
@@ -158,9 +156,9 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 			}
 			if (ch != null) {
 				FloatingText.show( center().x, center().y - height / 2, ch.pos, text, color );
-				PixelDungeon.reportException(new RuntimeException("Showing status on CharSprite without Char!!!"));
 			} else {
 				FloatingText.show( center().x, center().y - height / 2, text, color );
+				PixelDungeon.reportException(new RuntimeException("Showing status on CharSprite without Char!!!"));
 			}
 		}
 	}
@@ -341,7 +339,7 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 			paused = true;
 			break;
 		case ILLUMINATED:
-			GameScene.effect( halo = new TorchHalo( this ) );
+			halo = new TorchHalo( this );
 			break;
 		}
 	}

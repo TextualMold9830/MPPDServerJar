@@ -25,6 +25,9 @@ public class StatueSprite extends MobSprite {
 		super();
 		texture( Assets.STATUE );
 		idle = new Animation( 2, true );
+		run = new Animation( 15, true );
+		attack = new Animation( 12, false );
+		die = new Animation( 5, false );
 		play( idle );
 	}
 

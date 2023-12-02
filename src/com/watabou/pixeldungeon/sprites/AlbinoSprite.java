@@ -25,6 +25,9 @@ public class AlbinoSprite extends MobSprite {
 		super();
 		texture( Assets.RAT );
 		idle = new Animation( 2, true );
+		run = new Animation( 10, true );
+		attack = new Animation( 15, false );
+		die = new Animation( 10, false );
 		play( idle );
 	}
 }

@@ -25,6 +25,7 @@ import com.watabou.pixeldungeon.items.quest.DwarfToken;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.utils.Utils;
 
+import org.jetbrains.annotations.NotNull;
 
 public class WndImp extends WndOptions {
 
@@ -39,11 +40,13 @@ public class WndImp extends WndOptions {
 	private static final int GAP		= 2;
 
 
+	@NotNull
 	private final Imp imp;
 
+	@NotNull
 	private final DwarfToken tokens;
 
-	public WndImp( final Hero owner,  final Imp imp,  final DwarfToken tokens ) {
+	public WndImp(@NotNull final Hero owner, @NotNull final Imp imp, @NotNull final DwarfToken tokens ) {
 		super(owner);
 		this.imp = imp;
 		this.tokens = tokens;

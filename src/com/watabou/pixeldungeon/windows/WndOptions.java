@@ -20,7 +20,11 @@ package com.watabou.pixeldungeon.windows;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.sprites.ItemSpriteGlowing;
+import com.watabou.pixeldungeon.ui.RedButton;
 import com.watabou.pixeldungeon.ui.Window;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,6 +77,13 @@ public abstract class WndOptions extends Window {
 
 		for (int i=0; i < options.length; i++) {
 			final int index = i;
+			RedButton btn = new RedButton( options[i] ) {
+				@Override
+				protected void onClick() {
+					hide();
+					onSelect( index );
+				}
+			};
 		}
 
 	}
@@ -82,11 +93,11 @@ public abstract class WndOptions extends Window {
 	};
 
 	protected static final class WndOptionsParams {
-		public  Integer icon = null;
-		public  ItemSpriteGlowing iconGlowing = null;
-		public  String title = "Untitled";
-		public  Integer titleColor = null;
-		public  String message = "MissingNo";
+		public @Nullable Integer icon = null;
+		public @Nullable ItemSpriteGlowing iconGlowing = null;
+		public @NotNull String title = "Untitled";
+		public @Nullable Integer titleColor = null;
+		public @NotNull String message = "MissingNo";
 		public ArrayList<String> options = new ArrayList<String>(3);
 
 		public JSONObject toJSONObject() {

@@ -17,11 +17,12 @@
  */
 package com.watabou.pixeldungeon.effects.particles;
 
+import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
 
 public class WoolParticle {
-
-	public static final Factory FACTORY = new Factory() {
+	
+	public static final Emitter.Factory FACTORY = new Factory() {
 
         @Override
 		public String factoryName() {
@@ -29,12 +30,4 @@ public class WoolParticle {
 		}
 	};
 
-	public WoolParticle() {
-		super();
-
-
-	}
-
-	public void reset( float x, float y ) {
-	}
 }

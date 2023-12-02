@@ -28,6 +28,9 @@ public class WraithSprite extends MobSprite {
 
 
 		idle = new Animation( 5, true );
+		run = new Animation( 10, true );
+		attack = new Animation( 10, false );
+		die = new Animation( 8, false );
 		play( idle );
 	}
 

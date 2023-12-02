@@ -25,6 +25,9 @@ public class SpinnerSprite extends MobSprite {
 		super();
 		texture( Assets.SPINNER );
 		idle = new Animation( 10, true );
+		run = new Animation( 15, true );
+		attack = new Animation( 12, false );
+		die = new Animation( 12, false );
 		play( idle );
 
 	}

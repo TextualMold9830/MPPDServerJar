@@ -38,13 +38,13 @@ import com.watabou.utils.Bundle;
 public enum HeroClass {
 
 	WARRIOR( "warrior" ), MAGE( "mage" ), ROGUE( "rogue" ), HUNTRESS( "huntress" );
-
+	
 	private String title;
-
+	
 	private HeroClass( String title ) {
 		this.title = title;
 	}
-
+	
 	public static final String[] WAR_PERKS = {
 		"Warriors start with 11 points of Strength.",
 		"Warriors start with a unique short sword. This sword can be later \"reforged\" to upgrade another melee weapon.",
@@ -52,7 +52,7 @@ public enum HeroClass {
 		"Any piece of food restores some health when eaten.",
 		"Potions of Strength are identified from the beginning.",
 	};
-
+	
 	public static final String[] MAG_PERKS = {
 		"Mages start with a unique Wand of Magic Missile. This wand can be later \"disenchanted\" to upgrade another wand.",
 		"Mages recharge their wands faster.",
@@ -60,7 +60,7 @@ public enum HeroClass {
 		"Mages can use wands as a melee weapon.",
 		"Scrolls of Identify are identified from the beginning."
 	};
-
+	
 	public static final String[] ROG_PERKS = {
 		"Rogues start with a Ring of Shadows+1.",
 		"Rogues identify a type of a ring on equipping it.",
@@ -69,7 +69,7 @@ public enum HeroClass {
 		"Rogues can go without food longer.",
 		"Scrolls of Magic Mapping are identified from the beginning."
 	};
-
+	
 	public static final String[] HUN_PERKS = {
 		"Huntresses start with 15 points of Health.",
 		"Huntresses start with a unique upgradeable boomerang.",
@@ -77,44 +77,44 @@ public enum HeroClass {
 		"Huntresses gain more health from dewdrops.",
 		"Huntresses sense neighbouring monsters even if they are hidden behind obstacles."
 	};
-
-	public void initHero( com.watabou.pixeldungeon.actors.hero.Hero hero ) {
-
+	
+	public void initHero( Hero hero ) {
+		
 		hero.heroClass = this;
-
+		
 		initCommon( hero );
-
+		
 		switch (this) {
 		case WARRIOR:
 			initWarrior( hero );
 			break;
-
+			
 		case MAGE:
 			initMage( hero );
 			break;
-
+			
 		case ROGUE:
 			initRogue( hero );
 			break;
-
+			
 		case HUNTRESS:
 			initHuntress( hero );
 			break;
 		}
-
+		
 		if (Badges.isUnlocked( masteryBadge() )) {
 			new TomeOfMastery().collect(hero);
 		}
-
+		
 		hero.updateAwareness();
 	}
-
-	private static void initCommon( com.watabou.pixeldungeon.actors.hero.Hero hero ) {
+	
+	private static void initCommon( Hero hero ) {
 		(hero.belongings.setArmor(new ClothArmor())).identify();
 		new Food().identify().collect(hero);
 		new Keyring().collect(hero);
 	}
-
+	
 	public Badges.Badge masteryBadge() {
 		switch (this) {
 		case WARRIOR:
@@ -128,50 +128,50 @@ public enum HeroClass {
 		}
 		return null;
 	}
-
-	private static void initWarrior( com.watabou.pixeldungeon.actors.hero.Hero hero ) {
+	
+	private static void initWarrior( Hero hero ) {
 		hero.STR = hero.STR + 1;
-
+		
 		(hero.belongings.setWeapon(new ShortSword())).identify();
 		new Dart( 8 ).identify().collect(hero);
 
 		new PotionOfStrength().setKnown();
 	}
-
-	private static void initMage( com.watabou.pixeldungeon.actors.hero.Hero hero ) {
+	
+	private static void initMage( Hero hero ) {	
 		(hero.belongings.setWeapon(new Knuckles())).identify();
-
+		
 		WandOfMagicMissile wand = new WandOfMagicMissile();
 		wand.identify().collect(hero);
 
 		new ScrollOfIdentify().setKnown();
 	}
-
-	private static void initRogue( com.watabou.pixeldungeon.actors.hero.Hero hero ) {
+	
+	private static void initRogue( Hero hero ) {
 		(hero.belongings.setWeapon(new Dagger())).identify();
 		(hero.belongings.setRing1(new RingOfShadows())).upgrade().identify();
 		new Dart( 8 ).identify().collect(hero);
-
+		
 		hero.belongings.getRing1().activate( hero );
 
 		new ScrollOfMagicMapping().setKnown();
 	}
-
+	
 	private static void initHuntress( Hero hero ) {
-
+		
 		hero.setHP((hero.setHT(hero.getHT() - 5)));
-
+		
 		(hero.belongings.setWeapon(new Dagger())).identify();
 		Boomerang boomerang = new Boomerang();
 		boomerang.identify().collect(hero);
 	}
-
+	
 	public String title() {
 		return title;
 	}
-
+	
 	public String spritesheet() {
-
+		
 		switch (this) {
 		case WARRIOR:
 			return Assets.WARRIOR;
@@ -182,12 +182,12 @@ public enum HeroClass {
 		case HUNTRESS:
 			return Assets.HUNTRESS;
 		}
-
+		
 		return null;
 	}
-
+	
 	public String[] perks() {
-
+		
 		switch (this) {
 		case WARRIOR:
 			return WAR_PERKS;
@@ -198,16 +198,16 @@ public enum HeroClass {
 		case HUNTRESS:
 			return HUN_PERKS;
 		}
-
+		
 		return null;
 	}
 
 	private static final String CLASS	= "class";
-
+	
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( CLASS, toString() );
 	}
-
+	
 	public static HeroClass restoreInBundle( Bundle bundle ) {
 		String value = bundle.getString( CLASS );
 		return value.length() > 0 ? valueOf( value ) : ROGUE;

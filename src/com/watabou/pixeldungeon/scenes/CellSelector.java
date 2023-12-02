@@ -21,6 +21,7 @@ import com.watabou.pixeldungeon.DungeonTilemap;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.network.SendData;
 
+import org.jetbrains.annotations.Nullable;
 
 public class CellSelector{
 	private Listener listener = null;
@@ -67,7 +68,7 @@ public class CellSelector{
 	}
 
 	public interface Listener {
-		void onSelect( Integer cellz );
-		String prompt();
+		void onSelect( @Nullable Integer cellz );
+		@Nullable String prompt();
 	}
 }

@@ -17,16 +17,14 @@
  */
 package com.watabou.pixeldungeon.scenes;
 
-import com.nikita22007.multiplayer.server.ui.Banner;
-import com.watabou.noosa.Group;
-import com.watabou.noosa.Visual;
-import com.watabou.noosa.audio.Music;
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.nikita22007.multiplayer.noosa.particles.Emitter;
+import com.nikita22007.multiplayer.server.ui.Banner;
+import com.nikita22007.multiplayer.utils.Log;
+import com.watabou.noosa.audio.Music;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.Dungeon;
-import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.Statistics;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.blobs.Blob;
@@ -34,7 +32,6 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.effects.BannerSprites;
 import com.watabou.pixeldungeon.effects.BlobEmitter;
-import com.watabou.pixeldungeon.effects.SpellSprite;
 import com.watabou.pixeldungeon.items.Heap;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.potions.Potion;
@@ -44,10 +41,8 @@ import com.watabou.pixeldungeon.plants.Plant;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import com.watabou.pixeldungeon.sprites.HeroSprite;
 import com.watabou.pixeldungeon.ui.Window;
-import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.windows.WndBag;
-
-import javafx.scene.Parent;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,18 +65,6 @@ public class GameScene extends PixelScene {     //only client, exclude static
 
 	static GameScene scene;
 
-
-	//graphics
-	private Group mobs;
-	private Group effects;
-	private Group gases;
-	private Group spells;
-
-	public GameScene() {
-		super();
-		GLog.i("GameScene instanced");
-	}
-
 	@Override
 	public void create() {
 		super.create();
@@ -90,7 +73,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		scene = this;
 
 		Server.startServerStepLoop();
-		GLog.i("GameScene created");
+		Log.i("GameScene created");
 		//todo
 	}
 	public void init() {
@@ -102,8 +85,6 @@ public class GameScene extends PixelScene {     //only client, exclude static
 
 		Dungeon.level.addVisuals( this );
 
-		effects = new Group();
-
 		for (Mob mob : Dungeon.level.mobs) {
 			addMobSprite( mob );
 			if (Statistics.amuletHeroID>-1) {
@@ -112,14 +93,12 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		}
 
 
-		gases = new Group();
 
 		for (Blob blob : Dungeon.level.blobs.values()) {
 			blob.emitter = null;
 			addBlobSprite( blob );
 		}
 
-		spells = new Group();
 
 		for ( Hero heroobj:Dungeon.heroes) {
 			if (heroobj == null){
@@ -212,7 +191,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		sprite.link( mob );
 	}
 
-	public void addHeroSprite(Hero hero){
+	public static void addHeroSprite(Hero hero){
 		CharSprite sprite  = hero.getSprite();
 		sprite.visible = true;
 		sprite.link(hero);
@@ -249,10 +228,6 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		scene.addMobSprite( mob );
 	}
 
-	public static void effect( Visual effect ) {
-		scene.effects.add( effect );
-	}
-
 	public static void ripple( int pos ) {
 		JSONObject actionObj = new JSONObject();
 		try {
@@ -261,10 +236,6 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		} catch (JSONException ignore) {
 		}
 		SendData.sendCustomActionForAll(actionObj);
-	}
-
-	public static SpellSprite spellSprite() {
-		return (SpellSprite)scene.spells.recycle( SpellSprite.class );
 	}
 
 	public static Emitter emitter() {
@@ -295,6 +266,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 	public static void show( Window wnd ) {
 		cancelCellSelector(wnd.getOwnerHero());
 		if (wnd.getOwnerHero() == null) {
+			throw new RuntimeException("Window without owner");
 		}
 	}
 
@@ -310,7 +282,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		SendData.sendCustomActionForAll(obj);
 	}
 
-	public static void gameOver( Hero hero) {
+	public static void gameOver(@NotNull Hero hero) {
 		Banner.show(hero, BannerSprites.Type.GAME_OVER, 0x000000, 1f);
 		Sample.INSTANCE.play(Assets.SND_DEATH);
 	}
@@ -367,7 +339,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		}
 	}
 
-	public static void ready( Hero hero) {
+	public static void ready(@NotNull Hero hero) {
 		selectCell(hero, hero.defaultCellListener );
 	}
 

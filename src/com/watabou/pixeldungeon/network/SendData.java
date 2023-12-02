@@ -1,6 +1,6 @@
 package com.watabou.pixeldungeon.network;
 
-
+import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.actors.Actor;
@@ -14,6 +14,8 @@ import com.watabou.pixeldungeon.plants.Plant;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import com.watabou.pixeldungeon.windows.WndStory;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -139,17 +141,17 @@ public class SendData {
 
     public static void sendBadgeStrengthAttained(int ID, int bLevel) {
         if ((ID != -1) && (clients[ID] != null)) {
-            clients[ID].send(com.watabou.pixeldungeon.network.Codes.BADGE_STRENGTH_ATTAINED, bLevel);
+            clients[ID].send(Codes.BADGE_STRENGTH_ATTAINED, bLevel);
         }
     }
 
     public static void sendAllBadgeBossSlain(int bLevel) {
-        ClientThread.sendAll(com.watabou.pixeldungeon.network.Codes.BADGE_BOSS_SLAIN, bLevel);
+        ClientThread.sendAll(Codes.BADGE_BOSS_SLAIN, bLevel);
     }
 
     public static void sendBadgeMastery(int ID) {
         if ((ID != -1) && (clients[ID] != null)) {
-            clients[ID].sendCode(com.watabou.pixeldungeon.network.Codes.BADGE_MASTERY);
+            clients[ID].sendCode(Codes.BADGE_MASTERY);
         }
     }
 
@@ -183,7 +185,7 @@ public class SendData {
     }
 
     //-----------------------------Windows
-    public static void sendWindow(int ID, String type, int windowID,  JSONObject args) {
+    public static void sendWindow(int ID, String type, int windowID, @Nullable JSONObject args) {
         if ((ID != -1) && (clients[ID] != null)) {
             clients[ID].packet.packAndAddWindow(type, windowID, args);
             clients[ID].flush();
@@ -191,7 +193,7 @@ public class SendData {
     }
 
     public static void sendWindowStory(int storyID) {
-        ClientThread.sendAll(com.watabou.pixeldungeon.network.Codes.SHOW_WINDOW, WndStory.ID());
+        ClientThread.sendAll(Codes.SHOW_WINDOW, WndStory.ID());
     }
 
     //----------
@@ -321,6 +323,7 @@ public class SendData {
             data.put("color", color);
             data.put("ignore_position", ignorePosition);
         } catch (JSONException e) {
+            Log.wtf("SendData", "Exception while adding showstatus", e);
             return;
         }
         for (ClientThread client : clients) {
@@ -332,6 +335,8 @@ public class SendData {
                 try {
                     addToArray(ref.get(), "actions", data);
                 } catch (JSONException e) {
+                    Log.w("SendData", "failed to send \"Show_status\"");
+                    continue;
                 }
             }
         }
@@ -468,13 +473,13 @@ public class SendData {
 
     }
 
-    public static void sendCustomActionForAll( JSONObject action_obj) {
+    public static void sendCustomActionForAll(@NotNull JSONObject action_obj) {
         for (int i = 0; i < clients.length; i++) {
             sendCustomAction(action_obj, i);
         }
     }
 
-    public static void sendCustomAction( JSONObject action_obj,  Hero hero) {
+    public static void sendCustomAction(@NotNull JSONObject action_obj, @NotNull Hero hero) {
         if (hero.networkID <= -1) {
             return;
         }
@@ -534,7 +539,7 @@ public class SendData {
             e.printStackTrace();
         }
     }
-    public static void sendHeroAttackIndicator( Integer target, int networkID) {
+    public static void sendHeroAttackIndicator(@Nullable Integer target, int networkID) {
         sendHeroAttackIndicator(target == null? -1: target, networkID);
     }
 

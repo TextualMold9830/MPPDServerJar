@@ -37,39 +37,40 @@ import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import javafx.scene.Scene;
+import org.jetbrains.annotations.NotNull;
 
 public class CavesBossLevel extends Level {
-
+	
 	{
 		color1 = 0x534f3e;
 		color2 = 0xb9d661;
-
+		
 		viewDistance = 6;
 	}
-
+	
 	private static final int ROOM_LEFT		= WIDTH / 2 - 2;
 	private static final int ROOM_RIGHT		= WIDTH / 2 + 2;
 	private static final int ROOM_TOP		= HEIGHT / 2 - 2;
 	private static final int ROOM_BOTTOM	= HEIGHT / 2 + 2;
-
+	
 	private int arenaDoor;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
-
+	
 	@Override
 	public String tilesTex() {
 		return Assets.TILES_CAVES;
 	}
-
+	
 	@Override
 	public String waterTex() {
 		return Assets.WATER_CAVES;
 	}
-
+	
 	private static final String DOOR	= "door";
 	private static final String ENTERED	= "entered";
 	private static final String DROPPED	= "droppped";
-
+	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
@@ -77,7 +78,7 @@ public class CavesBossLevel extends Level {
 		bundle.put( ENTERED, enteredArena );
 		bundle.put( DROPPED, keyDropped );
 	}
-
+	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
@@ -85,12 +86,12 @@ public class CavesBossLevel extends Level {
 		enteredArena = bundle.getBoolean( ENTERED );
 		keyDropped = bundle.getBoolean( DROPPED );
 	}
-
+	
 	@Override
 	protected boolean build() {
-
+		
 		int topMost = Integer.MAX_VALUE;
-
+		
 		for (int i=0; i < 8; i++) {
 			int left, right, top, bottom;
 			if (Random.Int( 2 ) == 0) {
@@ -107,93 +108,93 @@ public class CavesBossLevel extends Level {
 				top = ROOM_LEFT - 3;
 				bottom = Random.Int( ROOM_TOP + 3, HEIGHT - 1 );
 			}
-
-			Painter.fill( this, left, top, right - left + 1, bottom - top + 1, com.watabou.pixeldungeon.levels.Terrain.EMPTY );
-
+			
+			Painter.fill( this, left, top, right - left + 1, bottom - top + 1, Terrain.EMPTY );
+			
 			if (top < topMost) {
 				topMost = top;
 				exit = Random.Int( left, right ) + (top - 1) * WIDTH;
 			}
 		}
-
-		map[exit] = com.watabou.pixeldungeon.levels.Terrain.LOCKED_EXIT;
-
+		
+		map[exit] = Terrain.LOCKED_EXIT;
+		
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == com.watabou.pixeldungeon.levels.Terrain.EMPTY && Random.Int( 6 ) == 0) {
-				map[i] = com.watabou.pixeldungeon.levels.Terrain.INACTIVE_TRAP;
+			if (map[i] == Terrain.EMPTY && Random.Int( 6 ) == 0) {
+				map[i] = Terrain.INACTIVE_TRAP;
 			}
 		}
-
-		Painter.fill( this, ROOM_LEFT - 1, ROOM_TOP - 1,
-			ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, com.watabou.pixeldungeon.levels.Terrain.WALL );
-		Painter.fill( this, ROOM_LEFT, ROOM_TOP + 1,
-			ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP, com.watabou.pixeldungeon.levels.Terrain.EMPTY );
-
-		Painter.fill( this, ROOM_LEFT, ROOM_TOP,
-			ROOM_RIGHT - ROOM_LEFT + 1, 1, com.watabou.pixeldungeon.levels.Terrain.TOXIC_TRAP );
-
+		
+		Painter.fill( this, ROOM_LEFT - 1, ROOM_TOP - 1, 
+			ROOM_RIGHT - ROOM_LEFT + 3, ROOM_BOTTOM - ROOM_TOP + 3, Terrain.WALL );
+		Painter.fill( this, ROOM_LEFT, ROOM_TOP + 1, 
+			ROOM_RIGHT - ROOM_LEFT + 1, ROOM_BOTTOM - ROOM_TOP, Terrain.EMPTY );
+		
+		Painter.fill( this, ROOM_LEFT, ROOM_TOP, 
+			ROOM_RIGHT - ROOM_LEFT + 1, 1, Terrain.TOXIC_TRAP );
+		
 		arenaDoor = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + (ROOM_BOTTOM + 1) * WIDTH;
-		map[arenaDoor] = com.watabou.pixeldungeon.levels.Terrain.DOOR;
-
-		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) +
+		map[arenaDoor] = Terrain.DOOR;
+		
+		entrance = Random.Int( ROOM_LEFT + 1, ROOM_RIGHT - 1 ) + 
 			Random.Int( ROOM_TOP + 1, ROOM_BOTTOM - 1 ) * WIDTH;
-		map[entrance] = com.watabou.pixeldungeon.levels.Terrain.ENTRANCE;
-
+		map[entrance] = Terrain.ENTRANCE;
+		
 		boolean[] patch = Patch.generate( 0.45f, 6 );
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == com.watabou.pixeldungeon.levels.Terrain.EMPTY && patch[i]) {
-				map[i] = com.watabou.pixeldungeon.levels.Terrain.WATER;
+			if (map[i] == Terrain.EMPTY && patch[i]) {
+				map[i] = Terrain.WATER;
 			}
 		}
-
+		
 		return true;
 	}
-
+	
 	@Override
-	protected void decorate() {
-
+	protected void decorate() {	
+		
 		for (int i=WIDTH + 1; i < LENGTH - WIDTH; i++) {
-			if (map[i] == com.watabou.pixeldungeon.levels.Terrain.EMPTY) {
+			if (map[i] == Terrain.EMPTY) {
 				int n = 0;
-				if (map[i+1] == com.watabou.pixeldungeon.levels.Terrain.WALL) {
+				if (map[i+1] == Terrain.WALL) {
 					n++;
 				}
-				if (map[i-1] == com.watabou.pixeldungeon.levels.Terrain.WALL) {
+				if (map[i-1] == Terrain.WALL) {
 					n++;
 				}
-				if (map[i+WIDTH] == com.watabou.pixeldungeon.levels.Terrain.WALL) {
+				if (map[i+WIDTH] == Terrain.WALL) {
 					n++;
 				}
-				if (map[i-WIDTH] == com.watabou.pixeldungeon.levels.Terrain.WALL) {
+				if (map[i-WIDTH] == Terrain.WALL) {
 					n++;
 				}
 				if (Random.Int( 8 ) <= n) {
-					map[i] = com.watabou.pixeldungeon.levels.Terrain.EMPTY_DECO;
+					map[i] = Terrain.EMPTY_DECO;
 				}
 			}
 		}
-
+		
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == com.watabou.pixeldungeon.levels.Terrain.WALL && Random.Int( 8 ) == 0) {
-				map[i] = com.watabou.pixeldungeon.levels.Terrain.WALL_DECO;
+			if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) {
+				map[i] = Terrain.WALL_DECO;
 			}
 		}
-
+		
 		int sign;
 		do {
 			sign = Random.Int( ROOM_LEFT, ROOM_RIGHT ) + Random.Int( ROOM_TOP, ROOM_BOTTOM ) * WIDTH;
 		} while (sign == entrance);
-		map[sign] = com.watabou.pixeldungeon.levels.Terrain.SIGN;
+		map[sign] = Terrain.SIGN;
 	}
-
+	
 	@Override
-	protected void createMobs() {
+	protected void createMobs() {	
 	}
-
+	
 	public Actor respawner() {
 		return null;
 	}
-
+	
 	@Override
 	protected void createItems() {
 		Item item = Bones.get();
@@ -201,25 +202,25 @@ public class CavesBossLevel extends Level {
 			int pos;
 			do {
 				pos = Random.IntRange( ROOM_LEFT, ROOM_RIGHT ) + Random.IntRange( ROOM_TOP + 1, ROOM_BOTTOM ) * WIDTH;
-			} while (pos == entrance || map[pos] == com.watabou.pixeldungeon.levels.Terrain.SIGN);
+			} while (pos == entrance || map[pos] == Terrain.SIGN);
 			drop( item, pos ).type = Heap.Type.SKELETON;
 		}
 	}
-
+	
 	@Override
 	public int randomRespawnCell() {
 		return -1;
 	}
-
+	
 	@Override
 	public void press( int cell, Char hero ) {
-
+		
 		super.press( cell, hero );
-
+		
 		if (!enteredArena && outsideEntraceRoom( cell ) && hero instanceof Hero) {
-
+			
 			enteredArena = true;
-
+			
 			Mob boss = Bestiary.mob( Dungeon.depth );
 			boss.state = boss.HUNTING;
 			do {
@@ -229,63 +230,63 @@ public class CavesBossLevel extends Level {
 				!outsideEntraceRoom( boss.pos ) ||
 				Dungeon.visibleforAnyHero(boss.pos));
 			GameScene.add( boss );
-
-			set( arenaDoor, com.watabou.pixeldungeon.levels.Terrain.WALL );
+			
+			set( arenaDoor, Terrain.WALL );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
-
+			
 			CellEmitter.get( arenaDoor ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
 			Camera.shake( 3, 0.7f );
 			Sample.INSTANCE.play( Assets.SND_ROCKS );
 		}
 	}
-
-
+	
+	@NotNull
     @Override
 	public Heap drop( Item item, int cell ) {
-
+		
 		if (!keyDropped && item instanceof SkeletonKey) {
-
+			
 			keyDropped = true;
-
+			
 			CellEmitter.get( arenaDoor ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
-
-			set( arenaDoor, com.watabou.pixeldungeon.levels.Terrain.EMPTY_DECO );
+			
+			set( arenaDoor, Terrain.EMPTY_DECO );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
 		}
-
+		
 		return super.drop( item, cell );
 	}
-
+	
 	private boolean outsideEntraceRoom( int cell ) {
 		int cx = cell % WIDTH;
 		int cy = cell / WIDTH;
 		return cx < ROOM_LEFT-1 || cx > ROOM_RIGHT+1 || cy < ROOM_TOP-1 || cy > ROOM_BOTTOM+1;
 	}
-
+	
 	@Override
 	public String tileName( int tile ) {
 		switch (tile) {
-		case com.watabou.pixeldungeon.levels.Terrain.GRASS:
+		case Terrain.GRASS:
 			return "Fluorescent moss";
-		case com.watabou.pixeldungeon.levels.Terrain.HIGH_GRASS:
+		case Terrain.HIGH_GRASS:
 			return "Fluorescent mushrooms";
-		case com.watabou.pixeldungeon.levels.Terrain.WATER:
+		case Terrain.WATER:
 			return "Freezing cold water.";
 		default:
 			return super.tileName( tile );
 		}
 	}
-
+	
 	@Override
 	public String tileDesc( int tile ) {
 		switch (tile) {
-		case com.watabou.pixeldungeon.levels.Terrain.ENTRANCE:
+		case Terrain.ENTRANCE:
 			return "The ladder leads up to the upper depth.";
-		case com.watabou.pixeldungeon.levels.Terrain.EXIT:
+		case Terrain.EXIT:
 			return "The ladder leads down to the lower depth.";
-		case com.watabou.pixeldungeon.levels.Terrain.HIGH_GRASS:
+		case Terrain.HIGH_GRASS:
 			return "Huge mushrooms block the view.";
 		case Terrain.WALL_DECO:
 			return "A vein of some ore is visible on the wall. Gold?";
@@ -293,8 +294,9 @@ public class CavesBossLevel extends Level {
 			return super.tileDesc( tile );
 		}
 	}
-
+	
 	@Override
 	public void addVisuals( Scene scene ) {
+		CavesLevel.addVisuals( this, scene );
 	}
 }

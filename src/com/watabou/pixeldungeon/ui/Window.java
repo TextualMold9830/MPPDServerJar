@@ -18,11 +18,13 @@
 package com.watabou.pixeldungeon.ui;
 
 
+import  com.nikita22007.multiplayer.utils.Log;
 import com.watabou.noosa.Group;
 import com.watabou.pixeldungeon.Settings;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -88,6 +90,7 @@ public class Window extends Group{
 			windows.get(hero).get(ID).onSelect(button, res);
 		}
 		} catch (NullPointerException e){
+			Log.i("Window", "No such window.");
 		}
 
 	}

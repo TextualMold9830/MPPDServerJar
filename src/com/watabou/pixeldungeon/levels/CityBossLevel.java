@@ -34,40 +34,41 @@ import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 import javafx.scene.Scene;
+import org.jetbrains.annotations.NotNull;
 
 public class CityBossLevel extends Level {
-
+	
 	{
 		color1 = 0x4b6636;
 		color2 = 0xf2f2f2;
 	}
-
+	
 	private static final int TOP			= 2;
 	private static final int HALL_WIDTH		= 7;
 	private static final int HALL_HEIGHT	= 15;
 	private static final int CHAMBER_HEIGHT	= 3;
-
+	
 	private static final int LEFT	= (WIDTH - HALL_WIDTH) / 2;
 	private static final int CENTER	= LEFT + HALL_WIDTH / 2;
-
+	
 	private int arenaDoor;
 	private boolean enteredArena = false;
 	private boolean keyDropped = false;
-
+	
 	@Override
 	public String tilesTex() {
 		return Assets.TILES_CITY;
 	}
-
+	
 	@Override
 	public String waterTex() {
 		return Assets.WATER_CITY;
 	}
-
+	
 	private static final String DOOR	= "door";
 	private static final String ENTERED	= "entered";
 	private static final String DROPPED	= "droppped";
-
+	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
@@ -75,7 +76,7 @@ public class CityBossLevel extends Level {
 		bundle.put( ENTERED, enteredArena );
 		bundle.put( DROPPED, keyDropped );
 	}
-
+	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
@@ -83,58 +84,58 @@ public class CityBossLevel extends Level {
 		enteredArena = bundle.getBoolean( ENTERED );
 		keyDropped = bundle.getBoolean( DROPPED );
 	}
-
+	
 	@Override
 	protected boolean build() {
-
-		Painter.fill( this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, com.watabou.pixeldungeon.levels.Terrain.EMPTY );
-		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, com.watabou.pixeldungeon.levels.Terrain.EMPTY_SP );
-
+		
+		Painter.fill( this, LEFT, TOP, HALL_WIDTH, HALL_HEIGHT, Terrain.EMPTY );
+		Painter.fill( this, CENTER, TOP, 1, HALL_HEIGHT, Terrain.EMPTY_SP );
+		
 		int y = TOP + 1;
 		while (y < TOP + HALL_HEIGHT) {
-			map[y * WIDTH + CENTER - 2] = com.watabou.pixeldungeon.levels.Terrain.STATUE_SP;
-			map[y * WIDTH + CENTER + 2] = com.watabou.pixeldungeon.levels.Terrain.STATUE_SP;
+			map[y * WIDTH + CENTER - 2] = Terrain.STATUE_SP;
+			map[y * WIDTH + CENTER + 2] = Terrain.STATUE_SP;
 			y += 2;
 		}
-
+		
 		int left = pedestal( true );
 		int right = pedestal( false );
-		map[left] = map[right] = com.watabou.pixeldungeon.levels.Terrain.PEDESTAL;
+		map[left] = map[right] = Terrain.PEDESTAL;
 		for (int i=left+1; i < right; i++) {
-			map[i] = com.watabou.pixeldungeon.levels.Terrain.EMPTY_SP;
+			map[i] = Terrain.EMPTY_SP;
 		}
-
+		
 		exit = (TOP - 1) * WIDTH + CENTER;
-		map[exit] = com.watabou.pixeldungeon.levels.Terrain.LOCKED_EXIT;
-
+		map[exit] = Terrain.LOCKED_EXIT;
+		
 		arenaDoor = (TOP + HALL_HEIGHT) * WIDTH + CENTER;
-		map[arenaDoor] = com.watabou.pixeldungeon.levels.Terrain.DOOR;
-
-		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, CHAMBER_HEIGHT, com.watabou.pixeldungeon.levels.Terrain.EMPTY );
-		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, com.watabou.pixeldungeon.levels.Terrain.BOOKSHELF );
-		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, com.watabou.pixeldungeon.levels.Terrain.BOOKSHELF );
-
-		entrance = (TOP + HALL_HEIGHT + 2 + Random.Int( CHAMBER_HEIGHT - 1 )) * WIDTH + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 ));
-		map[entrance] = com.watabou.pixeldungeon.levels.Terrain.ENTRANCE;
-
+		map[arenaDoor] = Terrain.DOOR;
+		
+		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, HALL_WIDTH, CHAMBER_HEIGHT, Terrain.EMPTY );
+		Painter.fill( this, LEFT, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
+		Painter.fill( this, LEFT + HALL_WIDTH - 1, TOP + HALL_HEIGHT + 1, 1, CHAMBER_HEIGHT, Terrain.BOOKSHELF );
+		
+		entrance = (TOP + HALL_HEIGHT + 2 + Random.Int( CHAMBER_HEIGHT - 1 )) * WIDTH + LEFT + (/*1 +*/ Random.Int( HALL_WIDTH-2 )); 
+		map[entrance] = Terrain.ENTRANCE;
+		
 		return true;
 	}
-
+	
 	@Override
-	protected void decorate() {
-
+	protected void decorate() {	
+		
 		for (int i=0; i < LENGTH; i++) {
-			if (map[i] == com.watabou.pixeldungeon.levels.Terrain.EMPTY && Random.Int( 10 ) == 0) {
-				map[i] = com.watabou.pixeldungeon.levels.Terrain.EMPTY_DECO;
-			} else if (map[i] == com.watabou.pixeldungeon.levels.Terrain.WALL && Random.Int( 8 ) == 0) {
-				map[i] = com.watabou.pixeldungeon.levels.Terrain.WALL_DECO;
+			if (map[i] == Terrain.EMPTY && Random.Int( 10 ) == 0) { 
+				map[i] = Terrain.EMPTY_DECO;
+			} else if (map[i] == Terrain.WALL && Random.Int( 8 ) == 0) { 
+				map[i] = Terrain.WALL_DECO;
 			}
 		}
-
+		
 		int sign = arenaDoor + WIDTH + 1;
-		map[sign] = com.watabou.pixeldungeon.levels.Terrain.SIGN;
+		map[sign] = Terrain.SIGN;
 	}
-
+	
 	public static int pedestal( boolean left ) {
 		if (left) {
 			return (TOP + HALL_HEIGHT / 2) * WIDTH + CENTER - 2;
@@ -142,43 +143,43 @@ public class CityBossLevel extends Level {
 			return (TOP + HALL_HEIGHT / 2) * WIDTH + CENTER + 2;
 		}
 	}
-
+	
 	@Override
-	protected void createMobs() {
+	protected void createMobs() {	
 	}
-
+	
 	public Actor respawner() {
 		return null;
 	}
-
+	
 	@Override
 	protected void createItems() {
 		Item item = Bones.get();
 		if (item != null) {
 			int pos;
 			do {
-				pos =
-					Random.IntRange( LEFT + 1, LEFT + HALL_WIDTH - 2 ) +
+				pos = 
+					Random.IntRange( LEFT + 1, LEFT + HALL_WIDTH - 2 ) + 
 					Random.IntRange( TOP + HALL_HEIGHT + 1, TOP + HALL_HEIGHT  + CHAMBER_HEIGHT ) * WIDTH;
-			} while (pos == entrance || map[pos] == com.watabou.pixeldungeon.levels.Terrain.SIGN);
+			} while (pos == entrance || map[pos] == Terrain.SIGN);
 			drop( item, pos ).type = Heap.Type.SKELETON;
 		}
 	}
-
+	
 	@Override
 	public int randomRespawnCell() {
 		return -1;
 	}
-
+	
 	@Override
 	public void press( int cell, Char hero ) {
-
+		
 		super.press( cell, hero );
-
+		
 		if (!enteredArena && outsideEntraceRoom( cell ) && hero instanceof Hero) {
-
+			
 			enteredArena = true;
-
+			
 			Mob boss = Bestiary.mob( Dungeon.depth );
 			boss.state = boss.HUNTING;
 			int count = 0;
@@ -189,65 +190,65 @@ public class CityBossLevel extends Level {
 				!outsideEntraceRoom( boss.pos ) ||
 				(Dungeon.visibleforAnyHero(boss.pos) && count++ < 20));
 			GameScene.add( boss );
-
+			
 			if (Dungeon.visibleforAnyHero(boss.pos)) {
 				boss.notice();
 				boss.getSprite().alpha( 0 );
 				AlphaTweener.showAlphaTweener(boss.getSprite(), 1, 0.1f );
 			}
-
-			set( arenaDoor, com.watabou.pixeldungeon.levels.Terrain.LOCKED_DOOR );
+			
+			set( arenaDoor, Terrain.LOCKED_DOOR );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
 		}
 	}
-
-
+	
+	@NotNull
 	@Override
 	public Heap drop(Item item, int cell ) {
-
+		
 		if (!keyDropped && item instanceof SkeletonKey) {
-
+			
 			keyDropped = true;
-
-			set( arenaDoor, com.watabou.pixeldungeon.levels.Terrain.DOOR );
+			
+			set( arenaDoor, Terrain.DOOR );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
 		}
-
+		
 		return super.drop( item, cell );
 	}
-
+	
 	private boolean outsideEntraceRoom( int cell ) {
 		return cell / WIDTH < arenaDoor / WIDTH;
 	}
-
+	
 	@Override
 	public String tileName( int tile ) {
 		switch (tile) {
-		case com.watabou.pixeldungeon.levels.Terrain.WATER:
+		case Terrain.WATER:
 			return "Suspiciously colored water";
-		case com.watabou.pixeldungeon.levels.Terrain.HIGH_GRASS:
+		case Terrain.HIGH_GRASS:
 			return "High blooming flowers";
 		default:
 			return super.tileName( tile );
 		}
 	}
-
+	
 	@Override
 	public String tileDesc(int tile) {
 		switch (tile) {
-		case com.watabou.pixeldungeon.levels.Terrain.ENTRANCE:
+		case Terrain.ENTRANCE:
 			return "A ramp leads up to the upper depth.";
-		case com.watabou.pixeldungeon.levels.Terrain.EXIT:
+		case Terrain.EXIT:
 			return "A ramp leads down to the lower depth.";
-		case com.watabou.pixeldungeon.levels.Terrain.WALL_DECO:
-		case com.watabou.pixeldungeon.levels.Terrain.EMPTY_DECO:
+		case Terrain.WALL_DECO:
+		case Terrain.EMPTY_DECO:
 			return "Several tiles are missing here.";
-		case com.watabou.pixeldungeon.levels.Terrain.EMPTY_SP:
+		case Terrain.EMPTY_SP:
 			return "Thick carpet covers the floor.";
-		case com.watabou.pixeldungeon.levels.Terrain.STATUE:
-		case com.watabou.pixeldungeon.levels.Terrain.STATUE_SP:
+		case Terrain.STATUE:
+		case Terrain.STATUE_SP:
 			return "The statue depicts some dwarf standing in a heroic stance.";
 		case Terrain.BOOKSHELF:
 			return "The rows of books on different disciplines fill the bookshelf.";
@@ -255,7 +256,7 @@ public class CityBossLevel extends Level {
 			return super.tileDesc( tile );
 		}
 	}
-
+	
 	@Override
 	public void addVisuals( Scene scene ) {
 		CityLevel.addVisuals( this, scene );

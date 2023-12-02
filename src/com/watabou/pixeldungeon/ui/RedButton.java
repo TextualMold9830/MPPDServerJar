@@ -33,6 +33,10 @@ public class RedButton extends Button {
 
 	}
 
+
+	protected void onClick() {
+
+	}
 	protected void createChildren() {
 	}
 

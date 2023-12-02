@@ -18,25 +18,26 @@
 package com.watabou.pixeldungeon.sprites;
 
 
-import com.watabou.noosa.Game;
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.effects.Halo;
 import com.watabou.pixeldungeon.effects.particles.ElmoParticle;
-import com.watabou.utils.PointF;
 
 public class WandmakerSprite extends MobSprite {
-
+	
 	private Shield shield;
-
+	
 	public WandmakerSprite() {
 		super();
+		
 		texture( Assets.MAKER );
 		idle = new Animation( 10, true );
+		run = new Animation( 20, true );
+		die = new Animation( 20, false );
 		play( idle );
 	}
-
+	
 	@Override
 	public void link( Char ch ) {
 		super.link( ch );
@@ -46,62 +47,25 @@ public class WandmakerSprite extends MobSprite {
 		}
 		*/
 	}
-
+	
 	@Override
 	public void die() {
 		super.die();
-
+		
 		if (shield != null) {
 			shield.putOut();
 		}
 		emitter().start( ElmoParticle.FACTORY, 0.03f, 60 );
-
+		
 		if (visible) {
 			Sample.INSTANCE.play( Assets.SND_BURNING );
 		}
 	}
-
+	
 	public class Shield extends Halo {
-
-		private float phase;
-
 		public Shield() {
-
-			super( 14, 0xBBAACC, 1f );
-
-			am = -1;
-			aa = +1;
-
-			phase = 1;
-		}
-
-		@Override
-		public void update() {
-			super.update();
-
-			if (phase < 1) {
-				if ((phase -= Game.elapsed) <= 0) {
-					killAndErase();
-				} else {
-					scale.set( (2 - phase) * radius / RADIUS );
-					am = phase * (-1);
-					aa = phase * (+1);
-				}
-			}
-
-			if (visible = WandmakerSprite.this.visible) {
-				PointF p = WandmakerSprite.this.center();
-				point(p.x, p.y );
-			}
-		}
-
-		@Override
-		public void draw() {
-			super.draw();
-		}
-
-		public void putOut() {
-			phase = 0.999f;
+			
+			super(WandmakerSprite.this, 14, 0xBBAACC, 1f );
 		}
 	}
 

@@ -17,6 +17,7 @@
  */
 package com.watabou.pixeldungeon.items;
 
+import  com.nikita22007.multiplayer.utils.Log;
 
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
@@ -50,10 +51,16 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 import static com.watabou.pixeldungeon.DungeonTilemap.tileCenterToWorld;
 import static com.watabou.pixeldungeon.network.SendData.sendRemoveItemFromInventory;
@@ -114,12 +121,12 @@ public abstract class Item implements Bundlable {
 		}
 	};
 
-	public static JSONObject packItem(Item item, Hero hero) {
+	public static JSONObject packItem(@NotNull Item item, @Nullable Hero hero) {
 		return item.toJsonObject(hero);
 	}
 
-	public final JSONObject toJsonObject( Hero hero) {
-		Item item = this;
+	public final JSONObject toJsonObject(@Nullable Hero hero) {
+		@NotNull Item item = this;
 		JSONObject itemObj = new JSONObject();
 		try {
 			if (hero != null) {
@@ -152,13 +159,15 @@ public abstract class Item implements Bundlable {
 				itemObj = NetworkPacket.packBag((Bag) item, hero, itemObj);
 			}
 		} catch (JSONException e) {
+			Log.e("Packet", "JSONException inside packItem. " + e.toString());
 		}
 		return itemObj;
 	}
 
-	protected JSONObject itemUI(Hero owner) throws JSONException {
+	@NotNull
+	protected JSONObject itemUI(@NotNull Hero owner) throws JSONException {
 		Objects.requireNonNull(owner);
-		Item item = this;
+		@NotNull Item item = this;
 		JSONObject ui = new JSONObject();
 		JSONObject topLeft = new JSONObject();
 		JSONObject topRight = new JSONObject();
@@ -179,7 +188,7 @@ public abstract class Item implements Bundlable {
 				if (str > owner.STR()) {
 					topRight.put("color", DEGRADED);
 				} else {
-					topRight.put("color", Optional.ofNullable(null));
+					topRight.put("color", JSONObject.NULL);
 				}
 			} else {
 				topRight.put("text", Utils.format(TXT_TYPICAL_STR, isArmor ?
@@ -188,7 +197,7 @@ public abstract class Item implements Bundlable {
 				topRight.put("color", WARNING);
 			}
 		} else {
-			topRight.put("text", Optional.ofNullable(null));
+			topRight.put("text", JSONObject.NULL);
 		}
 
 		int level = item.visiblyUpgraded();
@@ -196,7 +205,7 @@ public abstract class Item implements Bundlable {
 			bottomRight.put("text", item.levelKnown ? Utils.format(TXT_LEVEL, level) : TXT_CURSED);
 			bottomRight.put("color", level > 0 ? (item.isBroken() ? WARNING : UPGRADED) : DEGRADED);
 		} else {
-			bottomRight.put("text", Optional.ofNullable(null));
+			bottomRight.put("text", JSONObject.NULL);
 		}
 		ui.put("top_left", topLeft);
 		ui.put("top_right", topRight);
@@ -568,6 +577,7 @@ public abstract class Item implements Bundlable {
 
 	private ItemSpriteGlowing glowing = null;
 
+	@Nullable
 	public final ItemSpriteGlowing glowing() {
 		return glowing;
 	}

@@ -18,6 +18,7 @@ import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.windows.WndStory;
 import com.watabou.utils.Random;
 
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 
@@ -103,7 +104,7 @@ public class InterLevelSceneServer {
         }
     }
 
-    public static void descend( Hero hero)  {// спуск
+    public static void descend(@Nullable Hero hero)  {// спуск
 
         try {
             Generator.reset();
@@ -130,7 +131,7 @@ public class InterLevelSceneServer {
         }catch (IOException e){
             throw new RuntimeException(e);
         }
-        Game.switchScene( com.watabou.pixeldungeon.scenes.GameScene.class );
+        Game.switchScene( GameScene.class );
     }
     public static  void  fall(Hero  hero){
      fall(hero,false);
@@ -163,7 +164,7 @@ public class InterLevelSceneServer {
         }catch (IOException e){
             throw new RuntimeException(e);
         }
-        Game.switchScene( com.watabou.pixeldungeon.scenes.GameScene.class );
+        Game.switchScene( GameScene.class );
     }
     private static Level getNextLevel()throws IOException {
 
@@ -196,7 +197,7 @@ public class InterLevelSceneServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Game.switchScene( com.watabou.pixeldungeon.scenes.GameScene.class );
+        Game.switchScene( GameScene.class );
     }
 
     public static void returnTo(int  depth, int pos, Hero  hero) {
@@ -223,7 +224,7 @@ public class InterLevelSceneServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Game.switchScene( com.watabou.pixeldungeon.scenes.GameScene.class );
+        Game.switchScene( GameScene.class );
     }
 
     public static void restore() { //when loading from save
@@ -234,10 +235,10 @@ public class InterLevelSceneServer {
 
             GLog.wipe();
 
-            Dungeon.loadGame(com.watabou.pixeldungeon.scenes.StartScene.curClass);
+            Dungeon.loadGame(StartScene.curClass);
             if (Dungeon.depth == -1) {
                 Dungeon.depth = Statistics.deepestFloor;
-                Dungeon.switchLevel(Dungeon.loadLevel(com.watabou.pixeldungeon.scenes.StartScene.curClass));
+                Dungeon.switchLevel(Dungeon.loadLevel(StartScene.curClass));
             } else {
                 Level level = Dungeon.loadLevel(StartScene.curClass);
                 Dungeon.switchLevel(level);
@@ -245,7 +246,7 @@ public class InterLevelSceneServer {
         }catch (IOException  e){
             throw new RuntimeException(e);
         }
-        Game.switchScene( com.watabou.pixeldungeon.scenes.GameScene.class );
+        Game.switchScene( GameScene.class );
     }
 
     @SuppressWarnings("fallthrough")

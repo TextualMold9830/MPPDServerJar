@@ -26,6 +26,9 @@ public class YogSprite extends MobSprite {
 		super();
 		texture( Assets.YOG );
 		idle = new Animation( 10, true );
+		run = new Animation( 12, true );
+		attack = new Animation( 12, false );
+		die = new Animation( 10, false );
 		play( idle );
 	}
 

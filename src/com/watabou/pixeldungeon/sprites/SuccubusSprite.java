@@ -27,6 +27,9 @@ public class SuccubusSprite extends MobSprite {
 		super();
 		texture( Assets.SUCCUBUS );
 		idle = new Animation( 8, true );
+		run = new Animation( 15, true );
+		attack = new Animation( 12, false );
+		die = new Animation( 10, false );
 		play( idle );
 	}
 

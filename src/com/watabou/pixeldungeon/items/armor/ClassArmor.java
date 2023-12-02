@@ -23,27 +23,27 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
-abstract public class ClassArmor extends com.watabou.pixeldungeon.items.armor.Armor {
-
+abstract public class ClassArmor extends Armor {
+	
 	private static final String TXT_LOW_HEALTH		= "Your health is too low!";
 	private static final String TXT_NOT_EQUIPPED	= "You need to be wearing this armor to use its special power!";
-
+	
 	private int DR;
-
+	
 	{
 		levelKnown = true;
 		cursedKnown = true;
 		defaultAction = special();
 	}
-
+	
 	public ClassArmor() {
 		super( 6 );
 	}
-
+	
 	public static ClassArmor upgrade ( Hero owner, Armor armor ) {
-
+		
 		ClassArmor classArmor = null;
-
+		
 		switch (owner.heroClass) {
 		case WARRIOR:
 			classArmor = new WarriorArmor();
@@ -58,32 +58,32 @@ abstract public class ClassArmor extends com.watabou.pixeldungeon.items.armor.Ar
 			classArmor = new HuntressArmor();
 			break;
 		}
-
+		
 		classArmor.STR = armor.STR;
 		classArmor.DR = armor.DR();
-
+		
 		classArmor.inscribe( armor.glyph );
-
+		
 		return classArmor;
 	}
-
+	
 	private static final String ARMOR_STR	= "STR";
 	private static final String ARMOR_DR	= "DR";
-
+	
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
 		bundle.put( ARMOR_STR, STR );
 		bundle.put( ARMOR_DR, DR );
 	}
-
+	
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle( bundle );
 		STR = bundle.getInt( ARMOR_STR );
 		DR = bundle.getInt( ARMOR_DR );
 	}
-
+	
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
@@ -92,11 +92,11 @@ abstract public class ClassArmor extends com.watabou.pixeldungeon.items.armor.Ar
 		}
 		return actions;
 	}
-
+	
 	@Override
 	public void execute( Hero hero, String action ) {
 		if (action == special()) {
-
+			
 			if (hero.getHP() < 3) {
 				GLog.w( TXT_LOW_HEALTH );
 			} else if (!isEquipped( hero )) {
@@ -105,35 +105,35 @@ abstract public class ClassArmor extends com.watabou.pixeldungeon.items.armor.Ar
 				curUser = hero;
 				doSpecial();
 			}
-
-		} else {
-			super.execute( hero, action );
+			
+		} else {	
+			super.execute( hero, action );		
 		}
 	}
-
+	
 	abstract public String special();
 	abstract public void doSpecial();
-
+	
 	@Override
 	public int DR() {
 		return DR;
 	}
-
+	
 	@Override
 	public boolean isUpgradable() {
 		return false;
 	}
-
+	
 	@Override
 	public boolean isIdentified() {
 		return true;
 	}
-
+	
 	@Override
 	public int price() {
 		return 0;
 	}
-
+	
 	@Override
 	public String desc() {
 		return "The thing looks awesome!";

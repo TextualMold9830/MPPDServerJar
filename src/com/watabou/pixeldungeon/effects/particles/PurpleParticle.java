@@ -17,18 +17,19 @@
  */
 package com.watabou.pixeldungeon.effects.particles;
 
+import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
 
 public class PurpleParticle {
-
-	public static final Factory MISSILE = new Factory() {
+	
+	public static final Emitter.Factory MISSILE = new Factory() {
         @Override
 		public String factoryName() {
 			return "purple_missile";
 		}
 	};
-
-	public static final Factory BURST = new Factory() {
+	
+	public static final Emitter.Factory BURST = new Factory() {
         @Override
 		public boolean lightMode() {
 			return true;
@@ -40,13 +41,4 @@ public class PurpleParticle {
 		}
 	};
 
-	public PurpleParticle() {
-		super();
-
-	}
-
-	public void reset( float x, float y ) {}
-
-
-	public void update() {}
 }

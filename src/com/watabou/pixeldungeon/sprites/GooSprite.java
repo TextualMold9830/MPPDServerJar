@@ -34,6 +34,11 @@ public class GooSprite extends MobSprite {
 		super();
 		texture( Assets.GOO );
 		idle = new Animation( 10, true );
+		run = new Animation( 10, true );
+		pump = new Animation( 20, true );
+		jump = new Animation( 1, true );
+		attack = new Animation( 10, false );
+		die = new Animation( 10, false );
 		play( idle );
 	}
 

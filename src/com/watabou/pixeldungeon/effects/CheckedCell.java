@@ -23,11 +23,12 @@ package com.watabou.pixeldungeon.effects;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.network.SendData;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public final class CheckedCell {
-	public static void SendCheckedCell(int pos,  Hero hero){
+	public static void SendCheckedCell(int pos, @NotNull Hero hero){
 		try {
 			JSONObject actionObj = new JSONObject();
 			actionObj.put("action_type", "checked_cell_visual");

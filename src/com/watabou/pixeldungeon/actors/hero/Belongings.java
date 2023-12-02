@@ -38,6 +38,7 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -287,7 +288,7 @@ public class Belongings implements Iterable<Item> {
 		return new ItemIterator();
 	}
 
-	public List<Integer> pathOfItem( Item item) {
+	public List<Integer> pathOfItem(@NotNull Item item) {
 		assert (item != null) : "path of null item";
 		List<SpecialSlot> specialSlots = getSpecialSlots();
 		for (int i = 0; i < specialSlots.size(); i++) {

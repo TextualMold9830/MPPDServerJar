@@ -3,6 +3,8 @@ package com.watabou.pixeldungeon.levels;
 import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.items.scrolls.ScrollOfEnchantment;
+import com.watabou.pixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.watabou.pixeldungeon.items.weapon.melee.WarHammer;
 import com.watabou.pixeldungeon.levels.painters.Painter;
 
 import static com.watabou.pixeldungeon.levels.Terrain.ALARM_TRAP;

@@ -17,87 +17,21 @@
  */
 package com.watabou.pixeldungeon.sprites;
 
-import com.nikita22007.multiplayer.noosa.MovieClip;
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Dungeon;
-import com.watabou.pixeldungeon.DungeonTilemap;
 import com.watabou.pixeldungeon.effects.CellEmitter;
 import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.items.Gold;
 import com.watabou.pixeldungeon.items.Heap;
-import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.levels.Terrain;
 import com.watabou.pixeldungeon.scenes.GameScene;
-import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class ItemSprite extends MovieClip {
+public abstract class ItemSprite  {
 
 	public static final int SIZE	= 16;
-
-	private static final float DROP_INTERVAL = 0.4f;
-
-
-	public Heap heap;
-
-	@SuppressWarnings({"UnusedDeclaration", "FieldCanBeLocal"})
-	private ItemSpriteGlowing glowing;
-
-	private float dropInterval;
-
-	public ItemSprite() {
-		this( ItemSpriteSheet.SMTH, null );
-	}
-
-	public ItemSprite( Item item ) {
-		this( item.image(), item.glowing() );
-	}
-
-	public ItemSprite( int image, ItemSpriteGlowing glowing ) {
-		view( image, glowing );
-	}
-
-
-	public void link() {
-		link( heap );
-	}
-
-	public void link( Heap heap ) {
-		this.heap = heap;
-		view( heap.image(), heap.glowing() );
-		place( heap.pos );
-	}
-
-	public void revive() {
-		dropInterval = 0;
-
-		heap = null;
-	}
-
-	public PointF worldToCamera( int cell ) {
-		final int csize = DungeonTilemap.SIZE;
-
-		return new PointF(
-			cell % Level.WIDTH * csize + (csize - SIZE) * 0.5f,
-			cell / Level.WIDTH * csize + (csize - SIZE) * 0.5f
-		);
-	}
-
-	public void place( int p ) {
-	}
-
-	public ItemSprite view( int image, ItemSpriteGlowing glowing ) {
-		this.glowing = glowing;
-		if (glowing == null) {
-		}
-		return this;
-	}
-
-	@Override
-	public void update() {
-	}
 
 	public static void dropEffects(Heap heap) {
 
@@ -138,6 +72,11 @@ public class ItemSprite extends MovieClip {
 	}
 
 	public static int pick( int index, int x, int y ) {
+		/*Bitmap bmp = TextureCache.get( Assets.ITEMS ).bitmap;
+		int rows = bmp.getWidth() / SIZE;
+		int row = index / rows;
+		int col = index % rows;
+		return bmp.getPixel( col * SIZE + x, row * SIZE + y );*/
 		return 0;
 	}
 

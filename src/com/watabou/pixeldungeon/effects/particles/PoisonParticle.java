@@ -17,11 +17,12 @@
  */
 package com.watabou.pixeldungeon.effects.particles;
 
+import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
 
 public class PoisonParticle {
-
-	public static final Factory MISSILE = new Factory() {
+	
+	public static final Emitter.Factory MISSILE = new Factory() {
 		@Override
 		public boolean lightMode() {
 			return true;
@@ -32,8 +33,8 @@ public class PoisonParticle {
 			return "poison_missile";
 		}
 	};
-
-	public static final Factory SPLASH = new Factory() {
+	
+	public static final Emitter.Factory SPLASH = new Factory() {
 		@Override
 		public boolean lightMode() {
 			return true;
@@ -44,14 +45,4 @@ public class PoisonParticle {
 		}
 	};
 
-	public PoisonParticle() {
-		super();
-
-	}
-
-
-	public void update() {
-		// alpha: 1 -> 0; size: 1 -> 4
-		// color: 0x8844FF -> 0x00FF00
-	}
 }

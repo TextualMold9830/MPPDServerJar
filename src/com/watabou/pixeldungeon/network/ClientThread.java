@@ -1,7 +1,6 @@
 package com.watabou.pixeldungeon.network;
 
-
-import com.watabou.noosa.Game;
+import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.PixelDungeon;
@@ -15,16 +14,11 @@ import com.watabou.pixeldungeon.ui.Window;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Random;
-
-import javafx.scene.Scene;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.util.Iterator;
@@ -54,6 +48,7 @@ class ClientThread implements Callable<String> {
 
     protected final NetworkPacket packet = new NetworkPacket();
 
+    @NotNull
     private FutureTask<String> jsonCall;
 
     public ClientThread(int ThreadID, Socket clientSocket, Hero hero) {
@@ -99,11 +94,12 @@ class ClientThread implements Callable<String> {
         try {
             return reader.readLine();
         } catch (IOException e) {
+            Log.e("ParseThread", e.getMessage());
             return null;
         }
     }
 
-    public void parse(String json) throws JSONException {
+    public void parse(@NotNull String json) throws JSONException {
 
         JSONObject data = new JSONObject(json);
         for (Iterator<String> it = data.keys(); it.hasNext(); ) {
@@ -242,6 +238,7 @@ class ClientThread implements Callable<String> {
                 }
                 if (BuildConfig.DEBUG) {
                     try {
+                        Log.i("flush", "clientID: " + threadID + " data:" + packet.dataRef.get().toString(4));
                     } catch (JSONException ignored) {
                     }
                 }
@@ -253,8 +250,10 @@ class ClientThread implements Callable<String> {
                 packet.clearData();
             }
         } catch (IOException e) {
+            Log.e(String.format("ClientThread%d", threadID), String.format("IOException in threadID %s. Message: %s", threadID, e.getMessage()));
             disconnect();
         } catch (StackOverflowError e) {
+            Log.e("st", "st", e);
         }
     }
 
@@ -303,10 +302,8 @@ class ClientThread implements Callable<String> {
                 throw new RuntimeException("Can not find place for hero");
             }
         }
-        Scene scene = Game.scene();
-        if (scene instanceof GameScene) {
-            ((GameScene) scene).addHeroSprite(newHero);
-        }
+        GameScene.addHeroSprite(newHero);
+
         addAllCharsToSend();
 
         Dungeon.observe(newHero, false);
@@ -322,7 +319,7 @@ class ClientThread implements Callable<String> {
         flush();
     }
 
-    protected void addCharToSend( Char ch) {
+    protected void addCharToSend(@NotNull Char ch) {
         synchronized (packet) {
             packet.packAndAddActor(ch, ch == clientHero);
         }
@@ -406,15 +403,15 @@ class ClientThread implements Callable<String> {
     //send to all
     @Deprecated
     public static <T> void sendAll(int code) {
-        for (int i = 0; i < com.watabou.pixeldungeon.network.Server.clients.length; i++) {
-            com.watabou.pixeldungeon.network.Server.clients[i].sendCode(code);
+        for (int i = 0; i < Server.clients.length; i++) {
+            Server.clients[i].sendCode(code);
         }
     }
 
     @Deprecated
     public static void sendAll(int code, int data) {
-        for (int i = 0; i < com.watabou.pixeldungeon.network.Server.clients.length; i++) {
-            com.watabou.pixeldungeon.network.Server.clients[i].send(code, data);
+        for (int i = 0; i < Server.clients.length; i++) {
+            Server.clients[i].send(code, data);
         }
     }
 

@@ -258,9 +258,6 @@ public class BadgeBanner extends Image {
 		p.offset( image.point() );
 
 		com.watabou.pixeldungeon.effects.Speck star = new com.watabou.pixeldungeon.effects.Speck();
-		star.reset( 0, p.x, p.y, Speck.DISCOVER );
-		star.camera = image.camera();
-		image.parent.add( star );
 	}
 
 	public static BadgeBanner show( int image ) {

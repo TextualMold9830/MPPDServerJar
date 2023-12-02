@@ -17,26 +17,16 @@
  */
 package com.watabou.pixeldungeon.effects.particles;
 
+import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
 
-public class WebParticle {
-
-	public static final Factory FACTORY = new Factory() {
+public class WebParticle  {
+	
+	public static final Emitter.Factory FACTORY = new Factory() {
 
         @Override
 		public String factoryName() {
 			return "web";
 		}
 	};
-
-	public WebParticle() {
-		super();
-
-	}
-
-	public void reset( float x, float y ) {
-	}
-
-	public void update() {
-	}
 }

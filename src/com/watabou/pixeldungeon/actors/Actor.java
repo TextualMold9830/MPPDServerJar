@@ -18,6 +18,7 @@
 package com.watabou.pixeldungeon.actors;
 
 
+import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.noosa.Game;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.HeroHelp;
@@ -26,15 +27,11 @@ import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
-import com.watabou.pixeldungeon.items.armor.Armor;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.network.SendData;
-import com.watabou.pixeldungeon.scenes.GameScene;
-import com.watabou.pixeldungeon.ui.Window;
-import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -113,6 +110,7 @@ public abstract class Actor implements Bundlable {
 						max = a.id;
 					}
 				}
+				 Log.i("ACTOR", String.format("ACTOR %s GOTTEN ID %d", this, max+1));
 				return (id = max + 1);
 			}
 		}
@@ -289,15 +287,15 @@ public abstract class Actor implements Bundlable {
     If actor is not in Actor.all and gets id, some data can be lost
     */
 
-	public static void add(Actor actor ) {
+	public static void add(@NotNull Actor actor ) {
 		add( actor, now );
 	}
-
-	public static void addDelayed(Actor actor, float delay ) {
+	
+	public static void addDelayed(@NotNull Actor actor, float delay ) {
 		add( actor, now + delay );
 	}
-
-	private static void add(Actor actor, float time ) {
+	
+	private static void add( @NotNull Actor actor, float time ) {
 		synchronized (all) {
 			if (all.contains(actor)) {
 				return;

@@ -52,6 +52,7 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -174,7 +175,7 @@ public class Heap implements Bundlable {
 		return items.peek();
 	}
 
-	public void drop( Item item ) {
+	public void drop(@NotNull Item item ) {
 
 		if (item.stackable) {
 

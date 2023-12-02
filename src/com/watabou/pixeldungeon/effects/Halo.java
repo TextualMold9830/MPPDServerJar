@@ -17,33 +17,33 @@
  */
 package com.watabou.pixeldungeon.effects;
 
-import com.watabou.noosa.Image;
+import com.watabou.pixeldungeon.sprites.CharSprite;
 
-public class Halo extends Image {
-
-	private static final Object CACHE_KEY = Halo.class;
+public class Halo  {
 
 	protected static final int RADIUS	= 64;
-
 	protected float radius = RADIUS;
 	protected float brightness = 1;
+	protected int color;
+	float x,y;
+	CharSprite target;
 
-	public Halo() {
+	public Halo(CharSprite target) {
 		super();
+		this.target = target;
+	}
+	
+	public Halo(CharSprite target, float radius, int color, float brightness ) {
 
-
-		texture( CACHE_KEY );
-
-		origin.set( RADIUS );
+		this(target);
+		
+		hardlight( color );
+		this.brightness = brightness;
+		radius( radius );
 	}
 
-	public Halo( float radius, int color, float brightness ) {
-
-		this();
-
-		hardlight( color );
-		alpha( this.brightness = brightness );
-		radius( radius );
+	private void hardlight(int color) {
+		this.color = color;
 	}
 
 	public Halo point( float x, float y ) {
@@ -51,8 +51,13 @@ public class Halo extends Image {
 		this.y = y - RADIUS;
 		return this;
 	}
-
+	
 	public void radius( float value ) {
-		scale.set(  (this.radius = value) / RADIUS );
+		this.radius = value ;
+	}
+
+	public final void putOut()
+	{
+		//todo
 	}
 }

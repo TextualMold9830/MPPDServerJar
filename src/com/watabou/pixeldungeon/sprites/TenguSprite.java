@@ -32,6 +32,10 @@ public class TenguSprite extends MobSprite {
 		super();
 		texture( Assets.TENGU );
 		idle = new Animation( 2, true );
+		run = new Animation( 15, false );
+		attack = new Animation( 15, false );
+		cast  = new Animation( 15, false );
+		die = new Animation( 8, false );
 	}
 
 	@Override

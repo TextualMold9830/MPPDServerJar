@@ -27,6 +27,9 @@ public class UndeadSprite extends MobSprite {
 		super();
 		texture( Assets.UNDEAD );
 		idle = new Animation( 12, true );
+		run = new Animation( 15, true );
+		attack = new Animation( 15, false );
+		die = new Animation( 12, false );
 		play( idle );
 	}
 

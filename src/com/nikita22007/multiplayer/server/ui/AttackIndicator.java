@@ -27,22 +27,27 @@ import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.utils.Random;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class AttackIndicator {
 
+	@NotNull
 	private final Hero owner;
 
+	@Nullable
 	private Char lastTarget = null;
 	private final ArrayList<Char> candidates = new ArrayList<Char>();
 
-	public AttackIndicator(Hero owner) {
+	public AttackIndicator(@NotNull Hero owner) {
 		Objects.requireNonNull(owner,"Attack Indicator received null owner");
 		this.owner=owner;
 	}
 
+	@Nullable
 	private Char getLastTarget() {
 		return lastTarget;
 	}

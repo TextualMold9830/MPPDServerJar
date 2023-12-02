@@ -28,6 +28,7 @@ import com.watabou.pixeldungeon.items.rings.RingOfHaggler;
 import com.watabou.pixeldungeon.ui.ItemSlot;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.utils.Utils;
+import org.jetbrains.annotations.NotNull;
 
 public class WndTradeItem extends WndOptions {
 
@@ -50,7 +51,7 @@ public class WndTradeItem extends WndOptions {
 	private final boolean buy;
 	private final boolean canBuy;
 
-	public WndTradeItem(final Item item,  Hero owner) {
+	public WndTradeItem(final Item item, @NotNull Hero owner) {
 
 		super(owner);
 		this.item = item;

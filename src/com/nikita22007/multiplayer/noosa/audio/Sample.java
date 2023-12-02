@@ -19,11 +19,12 @@
 package com.nikita22007.multiplayer.noosa.audio;
 
 
+import com.nikita22007.multiplayer.utils.Log;
 import com.nikita22007.multiplayer.utils.Utils;
 import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.network.SendData;
-
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -97,9 +98,10 @@ public enum Sample {
 	public void play( String id, float leftVolume, float rightVolume, float rate ) {
 		play( id, leftVolume, rightVolume, rate, null );
 	}
-	public void play( String id, float leftVolume, float rightVolume, float rate, Hero hero) {
+	public void play( String id, float leftVolume, float rightVolume, float rate, @Nullable Hero hero) {
 		if (!ids.contains( id )) {
 			assert !BuildConfig.DEBUG: "playing unloaded sample: " + id;
+			Log.e("Sound", "playing unloaded sample: " + id);
 			load(id);
 		}
 

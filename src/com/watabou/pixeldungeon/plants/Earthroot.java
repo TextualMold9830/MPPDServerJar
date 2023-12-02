@@ -28,7 +28,7 @@ import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.ui.BuffIndicator;
 import com.watabou.utils.Bundle;
 
-public class Earthroot extends com.watabou.pixeldungeon.plants.Plant {
+public class Earthroot extends Plant {
 
 	private static final String TXT_DESC =
 		"When a creature touches an Earthroot, its roots " +

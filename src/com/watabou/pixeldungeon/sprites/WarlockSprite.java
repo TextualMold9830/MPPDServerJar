@@ -36,6 +36,7 @@ public class WarlockSprite extends MobSprite {
 
 		attack = new Animation( 12, false );
 
+		zap = new Animation( 12, false );
 		die = new Animation( 15, false );
 
 		play( idle );

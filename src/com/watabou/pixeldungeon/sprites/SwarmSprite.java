@@ -25,6 +25,9 @@ public class SwarmSprite extends MobSprite {
 		super();
 		texture( Assets.SWARM );
 		idle = new Animation( 15, true );
+		run = new Animation( 15, true );
+		attack = new Animation( 20, false );
+		die = new Animation( 15, false );
 		play( idle );
 	}
 

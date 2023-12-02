@@ -1,5 +1,6 @@
 package com.watabou.pixeldungeon.network;
 
+import  com.nikita22007.multiplayer.utils.Log;
 
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.actors.Actor;
@@ -15,6 +16,8 @@ import com.watabou.pixeldungeon.items.bags.Bag;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.plants.Plant;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +59,7 @@ public class NetworkPacket {
         }
     }
 
-    public void addAction(JSONObject actionObj) {
+    public void addAction(@NotNull JSONObject actionObj) {
         Objects.requireNonNull(actionObj);
         synchronized (dataRef) {
             try {
@@ -66,6 +69,7 @@ public class NetworkPacket {
                 }
                 data.getJSONArray("actions").put(actionObj);
             } catch (JSONException e) {
+                Log.w("NetworkPacket", "Failed to add action. " + e.toString());
             }
         }
     }
@@ -84,6 +88,7 @@ public class NetworkPacket {
                 JSONObject storage = dataRef.get();
                 addToArray(storage, token, message);
             } catch (JSONException e) {
+                Log.w("NetworkPacket", "Failed to add message. " + e.toString());
             }
         }
     }
@@ -118,7 +123,7 @@ public class NetworkPacket {
         }
     }
 
-    protected JSONObject packActorRemoving(Actor actor) {
+    protected JSONObject packActorRemoving(@NotNull Actor actor) {
 
         JSONObject object = new JSONObject();
         try {
@@ -130,6 +135,7 @@ public class NetworkPacket {
                 object.put("id", id);
                 object.put("type", "removed");
             } else {
+                Log.w("NetworkPacket:", "pack actor. Actor class: " + actor.getClass().toString());
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -137,7 +143,7 @@ public class NetworkPacket {
         return object;
     }
 
-    protected JSONObject packActor(Actor actor, boolean heroAsHero) {
+    protected JSONObject packActor(@NotNull Actor actor, boolean heroAsHero) {
 
         JSONObject object = new JSONObject();
         try {
@@ -189,6 +195,7 @@ public class NetworkPacket {
             } else if (actor instanceof Buff) {
                 //no warning
             } else {
+                Log.w("NetworkPacket", "remove actor. Actor class: " + actor.getClass().toString());
             }
         } catch (JSONException e) {
 
@@ -238,7 +245,7 @@ public class NetworkPacket {
         return object;
     }
 
-    protected JSONObject packHero( Hero hero) {
+    protected JSONObject packHero(@NotNull Hero hero) {
         int id = hero.id();
         if (id <= 0) {
             return new JSONObject();
@@ -263,15 +270,15 @@ public class NetworkPacket {
         return object;
     }
 
-    public void packAndAddHero( Hero hero) {
+    public void packAndAddHero(@NotNull Hero hero) {
         addActor(packActor(hero, true));
         addHero(packHero(hero));
     }
 
-    public void packAndAddHeroLevel( int lvl, int exp) {
+    public void packAndAddHeroLevel(@NotNull int lvl, int exp) {
         synchronized (dataRef) {
             JSONObject data = dataRef.get();
-
+            @NotNull
             JSONObject heroObj = data.optJSONObject("hero");
             if (heroObj == null){
                 heroObj = new JSONObject();
@@ -286,10 +293,10 @@ public class NetworkPacket {
         }
     }
 
-    public void packAndAddHeroStrength( int str) {
+    public void packAndAddHeroStrength(@NotNull int str) {
         synchronized (dataRef) {
             JSONObject data = dataRef.get();
-
+            @NotNull
             JSONObject heroObj = data.optJSONObject("hero");
             if (heroObj == null){
                 heroObj = new JSONObject();
@@ -393,7 +400,7 @@ public class NetworkPacket {
         packAndAddPlants(level);
     }
 
-    protected void addVisiblePositions( JSONArray visiblePositionsArray) {
+    protected void addVisiblePositions(@NotNull JSONArray visiblePositionsArray) {
         try {
             synchronized (dataRef) {
                 JSONObject data = dataRef.get();
@@ -473,8 +480,8 @@ public class NetworkPacket {
         packAndAddInterlevelSceneState(state, null);
     }
 
-
-    public static JSONArray packActions( Item item,  Hero hero) {
+    @NotNull
+    public static JSONArray packActions(@NotNull Item item, @NotNull Hero hero) {
         JSONArray actionsArr = new JSONArray();
         for (String action : item.actions(hero)) {
             actionsArr.put(action);
@@ -482,7 +489,7 @@ public class NetworkPacket {
         return actionsArr;
     }
 
-
+    @NotNull
     public JSONObject packBag(Bag bag) {
         if ((bag.owner != null) && (bag.owner instanceof Hero)) {
             return packBag(bag, (Hero) bag.owner);
@@ -491,14 +498,15 @@ public class NetworkPacket {
         }
     }
 
-
-    public JSONObject packBag( Bag bag, Hero hero) {
+    @NotNull
+    public JSONObject packBag(@NotNull Bag bag, Hero hero) {
         return Item.packItem(bag, hero);
     }
 
-
-    public static JSONObject packBag( Bag bag,  Hero hero,  JSONObject itemObj) {
+    @NotNull
+    public static JSONObject packBag(@NotNull Bag bag, @Nullable Hero hero, @NotNull JSONObject itemObj) {
         if ((bag.owner != null) && (bag.owner != hero)) {
+            Log.w("Packet", "bag.owner != gotten_hero");
         }
 
         JSONArray bagItems = new JSONArray();
@@ -507,6 +515,7 @@ public class NetworkPacket {
             JSONObject serializedItem;
             serializedItem = Item.packItem(item, hero);
             if (serializedItem.length() == 0) {
+                Log.w("Packet", "item hadn't serialized");
             }
             bagItems.put(serializedItem);
         }
@@ -518,12 +527,13 @@ public class NetworkPacket {
             bagObj.put("owner", hero != null ? hero.id() : null);
             bagObj.put("icon", bag.icon());
         } catch (JSONException e) {
+            Log.e("Packet", "JSONException inside packBag. " + e.toString());
         }
 
         return bagObj;
     }
 
-    public JSONArray packBags( Bag... bags) {
+    public JSONArray packBags(@NotNull Bag... bags) {
         Objects.requireNonNull(bags);
         JSONArray bagsObj = new JSONArray();
         for (Bag bag : bags) {
@@ -532,6 +542,7 @@ public class NetworkPacket {
             }
             JSONObject bagObj = packBag(bag);
             if (bagObj.length() == 0) {
+                Log.w("Packet", "bag hadn't serialized");
             } else {
                 bagsObj.put(bagObj);
             }
@@ -539,15 +550,16 @@ public class NetworkPacket {
         return bagsObj;
     }
 
-
-    public JSONObject packHeroBags( Belongings belongings) {
+    @NotNull
+    public JSONObject packHeroBags(@NotNull Belongings belongings) {
         Bag backpack = belongings.backpack;
         return packBag(backpack);
     }
 
-
-    public JSONObject packHeroBags( Hero hero) {
+    @NotNull
+    public JSONObject packHeroBags(@NotNull Hero hero) {
         if (hero.belongings == null) {
+            Log.w("Packet", "Hero belongings is null");
             return new JSONObject();
         }
         return packHeroBags(hero.belongings);
@@ -555,7 +567,7 @@ public class NetworkPacket {
 
     protected static final String INVENTORY = "inventory";
 
-    public void addHeroBags( Hero hero) {
+    public void addHeroBags(@NotNull Hero hero) {
 
         JSONObject bagsObj = packHeroBags(hero);
         try {
@@ -571,6 +583,7 @@ public class NetworkPacket {
                 inv.put("backpack", bagsObj);
             }
         } catch (JSONException e) {
+            Log.e("Packet", "JSONException inside addInventory. " + e.toString());
         }
     }
 
@@ -585,6 +598,7 @@ public class NetworkPacket {
                 slotObj.put("image_id", slot.image_id);
                 slotObj.put("item", (slot.item != null) ? Item.packItem(slot.item, hero) : JSONObject.NULL);
             } catch (JSONException e) {
+                Log.wtf("NetworkPacket", "JsonException while adding special slot" + e.toString());
             }
             slotsArr.put(slotObj);
         }
@@ -601,10 +615,11 @@ public class NetworkPacket {
                 inv.put("special_slots", slotsArr);
             }
         } catch (JSONException e) {
+            Log.e("Packet", "JSONException inside addSpectialSlots. " + e.toString());
         }
     }
 
-    public void addInventoryFull( Hero hero) {
+    public void addInventoryFull(@NotNull Hero hero) {
         if (hero == null) {
             throw new IllegalArgumentException("hero is null");
         }
@@ -688,7 +703,7 @@ public class NetworkPacket {
 
     }
 
-    public void packAndAddWindow(String type, int windowID,  JSONObject args) {
+    public void packAndAddWindow(String type, int windowID, @Nullable JSONObject args) {
         try {
             JSONObject obj = new JSONObject();
             obj.put("id", windowID);
@@ -729,7 +744,9 @@ public class NetworkPacket {
     }
 
     public void packAndAddPlants(Level level) {
-
+        for (int pos = 0; pos < level.LENGTH; pos++) {
+            packAndAddPlant(pos, level.plants.getOrDefault(pos, null));
+        }
     }
 
     public void packAndAddPlant(int pos, Plant plant) {

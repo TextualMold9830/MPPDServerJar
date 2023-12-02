@@ -17,61 +17,42 @@
  */
 package com.watabou.pixeldungeon.effects.particles;
 
-import com.watabou.noosa.Group;
+import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
+import com.watabou.noosa.Group;
 import com.watabou.pixeldungeon.DungeonTilemap;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-public class WindParticle{
+public class WindParticle  {
 
-	public static final Factory FACTORY = new Factory() {
+	public static final Emitter.Factory FACTORY = new Factory() {
 
         @Override
 		public String factoryName() {
 			return "wind";
 		}
 	};
-
-	private static float angle = Random.Float( PointF.PI2 );
-	private static PointF speed = new PointF().polar( angle, 5 );
-
-	private float size;
-
-	public WindParticle() {
-		super();
-
-	}
-
-	public void reset( float x, float y ) {
-		angle += Random.Float( -0.1f, +0.1f );
-		speed = new PointF().polar( angle, 5 );
-
-	}
-
-	public void update() {
-	}
-
 	public static class Wind extends Group {
-
+		
 		private int pos;
-
+		
 		private float x;
 		private float y;
-
+		
 		private float delay;
-
+		
 		public Wind( int pos ) {
 			super();
-
+			
 			this.pos = pos;
 			PointF p = DungeonTilemap.tileToWorld( pos );
 			x = p.x;
 			y = p.y;
-
+			
 			delay = Random.Float( 5 );
 		}
-
+		
 		@Override
 		public void update() {
 

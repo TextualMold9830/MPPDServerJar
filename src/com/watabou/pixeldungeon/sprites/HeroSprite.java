@@ -47,6 +47,7 @@ public class HeroSprite extends CharSprite {
 	public void updateArmor() {
 		idle = new Animation( 1, true );
 
+		idle = new Animation( 1, true );
 		run = new Animation( RUN_FRAMERATE, true );
 
 		die = new Animation( 20, false );

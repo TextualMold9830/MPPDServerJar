@@ -17,60 +17,22 @@
  */
 package com.watabou.pixeldungeon.effects.particles;
 
-import com.watabou.noosa.Group;
+import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
-import com.watabou.pixeldungeon.DungeonTilemap;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
+import com.watabou.noosa.Group;
 
 public class FlowParticle {
 
-	public static final Factory FACTORY = new Factory() {
+	public static final Emitter.Factory FACTORY = new Factory() {
 
 		@Override
 		public String factoryName() {
 			return "flow";
 		}
 	};
-
-	public FlowParticle() {
-		super();
-
-	}
-
-	public void reset( float x, float y ) {
-
-	}
-
-	public void update() {
-	}
-
 	public static class Flow extends Group {
 
-		private static final float DELAY	= 0.1f;
-
-		private int pos;
-
-		private float x;
-		private float y;
-
-		private float delay;
-
 		public Flow( int pos ) {
-			super();
-
-			this.pos = pos;
-
-			PointF p = DungeonTilemap.tileToWorld( pos );
-			x = p.x;
-			y = p.y + DungeonTilemap.SIZE - 1;
-
-			delay = Random.Float( DELAY );
-		}
-
-		@Override
-		public void update() {
-
 		}
 	}
 }

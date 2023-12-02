@@ -35,6 +35,7 @@ import com.watabou.pixeldungeon.windows.WndChooseWay;
 
 import java.util.ArrayList;
 
+import org.jetbrains.annotations.NotNull;
 
 public class TomeOfMastery extends Item {
 
@@ -54,7 +55,7 @@ public class TomeOfMastery extends Item {
 		unique = true;
 	}
 
-
+	@NotNull
 	public String name(Hero owner) {
 		return owner != null && owner.subClass != HeroSubClass.NONE ? "Tome of Remastery" : "Tome of Mastery";
 	}

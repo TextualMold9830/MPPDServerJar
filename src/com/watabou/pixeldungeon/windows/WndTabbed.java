@@ -58,20 +58,6 @@ public class WndTabbed extends Window {
 		}
 	}
 
-	@Override
-	public void resize( int w, int h ) {
-		// -> super.resize(...)
-		this.width = w;
-		this.height = h;
-
-		ArrayList<Tab> tabs = new ArrayList<Tab>( this.tabs );
-		this.tabs.clear();
-
-		for (Tab tab : tabs) {
-			add( tab );
-		}
-	}
-
 	protected int tabHeight() {
 		return 25;
 	}

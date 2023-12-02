@@ -21,10 +21,8 @@ import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.armor.Armor;
 import com.watabou.pixeldungeon.items.weapon.Weapon;
 import com.watabou.pixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.pixeldungeon.sprites.ItemSprite;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.pixeldungeon.utils.Utils;
 
 import java.awt.*;
 
@@ -80,9 +78,6 @@ public class ItemSlot extends Button { //UI  only -> Client  Only
 
 
 		} else {
-
-
-			icon.view(item.image(), item.glowing());
 
 
 			boolean isArmor = item instanceof Armor;

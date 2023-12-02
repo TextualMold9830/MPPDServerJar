@@ -21,6 +21,7 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.effects.BannerSprites;
 import com.watabou.pixeldungeon.network.SendData;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +29,7 @@ import java.util.Locale;
 
 public class Banner {
 
-    public static void show(Hero actor, BannerSprites.Type banner, int color, float fadeTime, float showTime) {
+    public static void show(@NotNull Hero actor, @NotNull BannerSprites.Type banner, int color, float fadeTime, float showTime) {
         JSONObject obj = new JSONObject();
         try {
             obj.put("action_type", "show_banner");
@@ -42,7 +43,7 @@ public class Banner {
         SendData.sendCustomAction(obj, actor);
     }
 
-    public static void show(Hero actor, BannerSprites.Type banner, int color, float fadeTime) {
+    public static void show(@NotNull Hero actor, @NotNull BannerSprites.Type banner, int color, float fadeTime) {
         show(actor, banner, color, fadeTime, Float.MAX_VALUE);
     }
 }

@@ -17,11 +17,12 @@
  */
 package com.watabou.pixeldungeon.effects.particles;
 
+import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
 
 public class ShaftParticle {
-
-	public static final Factory FACTORY = new Factory() {
+	
+	public static final Emitter.Factory FACTORY = new Factory() {
         @Override
 		public boolean lightMode() {
 			return true;
@@ -33,16 +34,4 @@ public class ShaftParticle {
 		}
 	};
 
-	public ShaftParticle() {
-		super();
-
-	}
-
-	private float offs;
-
-	public void reset( float x, float y ) {
-	}
-
-	public void update() {
-	}
 }
