@@ -21,7 +21,6 @@
 
 package com.watabou.noosa.audio;
 
-
 public enum Music {
 
 	INSTANCE;

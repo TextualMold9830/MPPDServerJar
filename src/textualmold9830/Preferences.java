@@ -14,13 +14,13 @@ public class Preferences {
     public static boolean onlineMode = true;
     public static String serverName = "Nik-MPPDJarServer";
     public static boolean useCustomRelay = false;
-    public static String customRelayAdress = "";
+    public static String customRelayAddress = "";
     public static int customRelayPort = 0;
     public static boolean music = true;
 
     public static void save() {
         try {
-            Files.write(Path.of("config.json"), gson.toJson(new PreferncesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAdress, customRelayPort, music)).getBytes());
+            Files.write(Path.of("config.json"), gson.toJson(new PreferncesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, music)).getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,7 @@ public class Preferences {
                 onlineMode = prefs.onlineMode;
                 serverName = prefs.serverName;
                 useCustomRelay = prefs.useCustomRelay;
-                customRelayAdress = prefs.customRelayAdress;
+                customRelayAddress = prefs.customRelayAddress;
                 customRelayPort = prefs.customRelayPort;
                 music = prefs.music;
             } catch (IOException e) {

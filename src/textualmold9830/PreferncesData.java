@@ -6,7 +6,7 @@ public class PreferncesData {
     public  boolean onlineMode = true;
     public  String serverName = "Nik-MPPDJarServer";
     public  boolean useCustomRelay = false;
-    public  String customRelayAdress = "";
+    public  String customRelayAddress = "";
     public  int customRelayPort = 0;
     public  boolean music = false;
 
@@ -18,7 +18,7 @@ public class PreferncesData {
         this.onlineMode = onlineMode;
         this.serverName = serverName;
         this.useCustomRelay = useCustomRelay;
-        this.customRelayAdress = customRelayAdress;
+        this.customRelayAddress = customRelayAdress;
         this.customRelayPort = customRelayPort;
         this.music = music;
     }
