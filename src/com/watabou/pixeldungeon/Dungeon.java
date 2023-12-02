@@ -486,7 +486,7 @@ public class Dungeon {
 			com.watabou.pixeldungeon.Badges.saveLocal( badges );
 			bundle.put( BADGES, badges );
 
-			OutputStream output = Files.newOutputStream(Paths.get("~/MPPD/save.txt"));
+			OutputStream output = Files.newOutputStream(Path.of(GAME_FILE));
 			Bundle.write( bundle, output );
 			output.close();
 
@@ -500,7 +500,7 @@ public class Dungeon {
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
 
-		OutputStream output = Files.newOutputStream(Paths.get("level.txt"));
+		OutputStream output = Files.newOutputStream(Path.of(Utils.format(depthFile(StartScene.curClass), depth)));
 		Bundle.write( bundle, output );
 		output.close();
 	}

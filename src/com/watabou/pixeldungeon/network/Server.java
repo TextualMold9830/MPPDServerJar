@@ -93,7 +93,7 @@ public class Server extends Thread {
             }
         }
 
-        started = (regListenerState == RegListenerState.REGISTERED);
+        started = true;
         serverThread = new Server();
 
         serverThread.start();
