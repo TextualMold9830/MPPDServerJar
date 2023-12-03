@@ -41,6 +41,13 @@ public class SendData {
         }
     }
 
+    public static void addToSendLevelVisitedState(Level level, boolean[] diff) {
+        for (int ID =0; ID < clients.length; ID++)
+        {
+            addToSendLevelVisitedState(level,ID,diff);
+        }
+    }
+
     public static void sendLevel(Level level, int ID) {
         if ((ID != -1) && (clients[ID] != null)) {
             clients[ID].packet.packAndAddLevel(level, clients[ID].clientHero);
@@ -544,6 +551,10 @@ public class SendData {
     }
 
     public static void sendHeroAttackIndicator(int target, int networkID) {
+        if (networkID <0)
+        {
+            return;
+        }
         if (clients[networkID] == null) {
             return;
         }

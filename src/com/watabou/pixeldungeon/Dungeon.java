@@ -721,9 +721,11 @@ public class Dungeon {
 		boolean[] diff;
 		diff = BArray.xor(level.visited, newVisited, null);
 				level.visited  = newVisited;
+			//todo fix this
+			addToSendLevelVisitedState(level, diff);
+
 		if (send) {
 			int networkID = getHeroID(hero);
-			addToSendLevelVisitedState(level, networkID, diff);
 			addToSendHeroVisibleCells(hero.fieldOfView,networkID);
 			SendData.flush(networkID);
 		}
