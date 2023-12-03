@@ -6,7 +6,7 @@
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.ideaLibSources/json-20231013-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/json/json/20231013/json-20231013-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
