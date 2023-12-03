@@ -26,7 +26,7 @@ import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.levels.Room.Type;
 import com.watabou.utils.Graph;
 import com.watabou.utils.Random;
-import javafx.scene.Scene;
+import com.watabou.noosa.Scene;
 
 import java.util.List;
 

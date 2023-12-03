@@ -19,7 +19,7 @@ package com.watabou.pixeldungeon.levels;
 
 import java.util.Arrays;
 
-import javafx.scene.Scene;
+import com.watabou.noosa.Scene;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.items.Amulet;
 import com.watabou.pixeldungeon.levels.painters.Painter;

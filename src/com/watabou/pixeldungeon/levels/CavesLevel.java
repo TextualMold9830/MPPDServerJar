@@ -25,7 +25,7 @@ import com.watabou.pixeldungeon.levels.Room.Type;
 import com.watabou.pixeldungeon.levels.painters.Painter;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
-import javafx.scene.Scene;
+import com.watabou.noosa.Scene;
 
 public class CavesLevel extends RegularLevel {
 

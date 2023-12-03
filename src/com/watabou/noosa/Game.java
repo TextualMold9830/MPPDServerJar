@@ -1,16 +1,8 @@
 package com.watabou.noosa;
 
-import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.utils.SystemTime;
-import javafx.scene.Scene;
-
-import javax.naming.NameNotFoundException;
-import javax.swing.text.View;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
 
 public class Game {
 

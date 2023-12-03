@@ -20,7 +20,7 @@ package com.watabou.pixeldungeon.levels;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.scene.Scene;
+import com.watabou.noosa.Scene;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Bones;
 import com.watabou.pixeldungeon.Dungeon;

@@ -26,7 +26,7 @@ import com.watabou.pixeldungeon.items.DewVial;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
-import javafx.scene.Scene;
+import com.watabou.noosa.Scene;
 import org.json.JSONException;
 import org.json.JSONObject;
 

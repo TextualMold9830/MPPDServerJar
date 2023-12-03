@@ -36,7 +36,7 @@ import com.watabou.pixeldungeon.levels.painters.Painter;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
-import javafx.scene.Scene;
+import com.watabou.noosa.Scene;
 import org.jetbrains.annotations.NotNull;
 
 public class CavesBossLevel extends Level {

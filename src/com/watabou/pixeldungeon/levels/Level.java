@@ -72,7 +72,7 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import javafx.scene.Scene;
+import com.watabou.noosa.Scene;
 
 public abstract class Level implements Bundlable {
 

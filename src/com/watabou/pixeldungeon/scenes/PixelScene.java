@@ -20,14 +20,12 @@ package com.watabou.pixeldungeon.scenes;
 
 import com.nikita22007.multiplayer.noosa.Camera;
 import com.watabou.noosa.Game;
+import com.watabou.noosa.Scene;
 import com.watabou.noosa.Visual;
-import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.effects.BadgeBanner;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
 
 public class PixelScene extends Scene {
 
@@ -46,11 +44,11 @@ public class PixelScene extends Scene {
 	public static Camera uiCamera;
 
 	public PixelScene(Parent root) {
-		super(root);
+		super();
 	}
 
 	public PixelScene() {
-		super(new Label(PixelScene.class.getName()));
+		super();
 	}
 
 

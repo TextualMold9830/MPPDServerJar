@@ -22,7 +22,7 @@ import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.items.Torch;
 import com.watabou.utils.Random;
-import javafx.scene.Scene;
+import com.watabou.noosa.Scene;
 
 public class HallsLevel extends RegularLevel {
 
