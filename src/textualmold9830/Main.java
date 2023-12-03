@@ -25,6 +25,7 @@ public class Main {
     private static void initFolders(){
         try {
             Files.createDirectory(Path.of("plugins"));
+            Files.createDirectory(Path.of("config"));
         } catch (IOException e) {
         }
     }
