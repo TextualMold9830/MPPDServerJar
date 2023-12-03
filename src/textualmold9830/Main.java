@@ -15,9 +15,7 @@ public class Main {
         initFolders();
         Preferences.load();
         Runtime.getRuntime().addShutdownHook(new Thread(Preferences::save));
-        Platform.startup(()->{
-            Toolkit.getDefaultToolkit().beep();
-        });
+        Platform.startup(Toolkit.getDefaultToolkit()::beep);
         Server.startServer();
         Dungeon.init();
         InterLevelSceneServer.descend(null);

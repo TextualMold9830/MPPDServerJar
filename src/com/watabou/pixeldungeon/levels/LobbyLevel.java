@@ -2,14 +2,13 @@ package com.watabou.pixeldungeon.levels;
 
 import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.actors.Actor;
-import com.watabou.pixeldungeon.actors.mobs.Albino;
-import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.items.scrolls.ScrollOfEnchantment;
 import com.watabou.pixeldungeon.levels.painters.Painter;
 
 import static com.watabou.pixeldungeon.levels.Terrain.*;
 
 public class LobbyLevel extends DeadEndLevel {
+    int cell = -1;
 
     public LobbyLevel() {
         super(7);
@@ -46,9 +45,6 @@ public class LobbyLevel extends DeadEndLevel {
                 Painter.set(this, pos,GRIPPING_TRAP);
                 pos+=1;
                 Painter.set(this, pos,SUMMONING_TRAP);
-                pos+=1;
-                Mob mob = new Albino();
-                mob.pos = pos;
             }
             ScrollOfEnchantment n = new ScrollOfEnchantment();
             drop(n,center+1);
