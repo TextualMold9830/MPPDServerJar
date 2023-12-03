@@ -51,7 +51,7 @@ public class LobbyLevel extends DeadEndLevel {
                 mob.pos = pos;
             }
             ScrollOfEnchantment n = new ScrollOfEnchantment();
-            this.drop(n,center+1);
+            drop(n,center+1);
         }
 
         return true;
