@@ -9,11 +9,12 @@ public class PreferncesData {
     public  String customRelayAddress = "";
     public  int customRelayPort = 0;
     public  boolean music = false;
+    public float timeToSkipTurn = 10;
 
     public PreferncesData() {
     }
 
-    public PreferncesData(int challenges, boolean onlineMode, String serverName, boolean useCustomRelay, String customRelayAddress, int customRelayPort, boolean music) {
+    public PreferncesData(int challenges, boolean onlineMode, String serverName, boolean useCustomRelay, String customRelayAddress, int customRelayPort, boolean music, float timeToSkipTurn) {
         this.challenges = challenges;
         this.onlineMode = onlineMode;
         this.serverName = serverName;

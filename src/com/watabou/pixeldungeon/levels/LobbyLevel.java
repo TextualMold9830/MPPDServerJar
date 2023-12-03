@@ -3,18 +3,9 @@ package com.watabou.pixeldungeon.levels;
 import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.items.scrolls.ScrollOfEnchantment;
-import com.watabou.pixeldungeon.items.weapon.melee.MeleeWeapon;
-import com.watabou.pixeldungeon.items.weapon.melee.WarHammer;
 import com.watabou.pixeldungeon.levels.painters.Painter;
 
-import static com.watabou.pixeldungeon.levels.Terrain.ALARM_TRAP;
-import static com.watabou.pixeldungeon.levels.Terrain.FIRE_TRAP;
-import static com.watabou.pixeldungeon.levels.Terrain.GRIPPING_TRAP;
-import static com.watabou.pixeldungeon.levels.Terrain.LIGHTNING_TRAP;
-import static com.watabou.pixeldungeon.levels.Terrain.PARALYTIC_TRAP;
-import static com.watabou.pixeldungeon.levels.Terrain.POISON_TRAP;
-import static com.watabou.pixeldungeon.levels.Terrain.SUMMONING_TRAP;
-import static com.watabou.pixeldungeon.levels.Terrain.TOXIC_TRAP;
+import static com.watabou.pixeldungeon.levels.Terrain.*;
 
 public class LobbyLevel extends DeadEndLevel {
 
@@ -55,7 +46,6 @@ public class LobbyLevel extends DeadEndLevel {
                 Painter.set(this, pos,SUMMONING_TRAP);
                 pos+=1;
             }
-
             ScrollOfEnchantment n = new ScrollOfEnchantment();
             this.drop(n,center+1);
         }

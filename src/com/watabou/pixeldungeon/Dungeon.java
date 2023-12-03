@@ -62,6 +62,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 
 import org.jetbrains.annotations.NotNull;
+import textualmold9830.plugins.events.DungeonGenerateLevelEvent;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -223,6 +224,8 @@ public class Dungeon {
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
 		}
+		DungeonGenerateLevelEvent event = new DungeonGenerateLevelEvent(depth, level);
+		level = event.level;
 		level.create();
 
 		Statistics.qualifiedForNoKilling = !bossLevel(depth);

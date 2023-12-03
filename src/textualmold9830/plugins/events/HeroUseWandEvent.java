@@ -6,6 +6,11 @@ import textualmold9830.plugins.Cancellable;
 import textualmold9830.plugins.Event;
 
 public class HeroUseWandEvent extends Event implements Cancellable {
+    @Override
+    public String getEventName() {
+        return "hero_use_wand";
+    }
+
     boolean canceled = false;
     public Hero hero;
     public Wand wand;

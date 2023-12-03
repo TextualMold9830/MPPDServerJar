@@ -18,14 +18,13 @@
 package com.watabou.pixeldungeon.items.wands;
 
 import com.nikita22007.multiplayer.noosa.audio.Sample;
+import com.nikita22007.multiplayer.server.effects.MagicMissile;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.buffs.Slow;
-import com.nikita22007.multiplayer.server.effects.MagicMissile;
 import com.watabou.pixeldungeon.utils.GLog;
-import com.watabou.utils.Callback;
 
 public class WandOfSlowness extends Wand {
 
@@ -37,7 +36,6 @@ public class WandOfSlowness extends Wand {
 	protected void onZap( int cell ) {
 		Char ch = Actor.findChar( cell );
 		if (ch != null) {
-
 			Buff.affect( ch, Slow.class, Slow.duration( ch ) / 3 + power() );
 
 		} else {
