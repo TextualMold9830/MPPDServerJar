@@ -14,7 +14,6 @@ public class PluginManager {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("plugin_size: "+plugins.size());
         for (Plugin plugin : plugins) {
             plugin.initialize();
         }

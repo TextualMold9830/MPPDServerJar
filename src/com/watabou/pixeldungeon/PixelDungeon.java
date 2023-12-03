@@ -163,10 +163,10 @@ public class PixelDungeon extends Game {
 	}
 
 	public static String customRelayAddress(){
-		return textualmold9830.Preferences.customRelayAdress;
+		return textualmold9830.Preferences.customRelayAddress;
 	}
 	public static void customRelayAddress(String value) {
-		textualmold9830.Preferences.customRelayAdress = value;
+		textualmold9830.Preferences.customRelayAddress = value;
 	}
 
 	public static int customRelayPort(){

@@ -38,7 +38,6 @@ import com.watabou.utils.Callback;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -222,7 +221,7 @@ public class Badges {
 			store( bundle, global );
 
 			try {
-				OutputStream output = Files.newOutputStream(Paths.get("badges.txt"));
+				OutputStream output = Files.newOutputStream(Paths.get(BADGES_FILE));
 				Bundle.write( bundle, output );
 				output.close();
 				saveNeeded = false;

@@ -17,9 +17,10 @@
  */
 package com.watabou.pixeldungeon.items;
 
-import  com.nikita22007.multiplayer.utils.Log;
-
 import com.nikita22007.multiplayer.noosa.audio.Sample;
+import com.nikita22007.multiplayer.server.effects.Degradation;
+import com.nikita22007.multiplayer.server.sprites.MissileSprite;
+import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.Dungeon;
@@ -27,7 +28,6 @@ import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.buffs.SnipersMark;
 import com.watabou.pixeldungeon.actors.hero.Hero;
-import com.nikita22007.multiplayer.server.effects.Degradation;
 import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.items.armor.Armor;
 import com.watabou.pixeldungeon.items.bags.Bag;
@@ -40,10 +40,8 @@ import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.mechanics.Ballistica;
 import com.watabou.pixeldungeon.network.NetworkPacket;
 import com.watabou.pixeldungeon.network.SendData;
-import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.CellSelector;
 import com.watabou.pixeldungeon.scenes.GameScene;
-import com.nikita22007.multiplayer.server.sprites.MissileSprite;
 import com.watabou.pixeldungeon.sprites.ItemSpriteGlowing;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.utils.Utils;
@@ -51,23 +49,15 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
-import textualmold9830.plugins.events.HeroCollectItemEvent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.watabou.pixeldungeon.DungeonTilemap.tileCenterToWorld;
-import static com.watabou.pixeldungeon.network.SendData.sendRemoveItemFromInventory;
-import static com.watabou.pixeldungeon.network.SendData.sendUpdateItemCount;
-import static com.watabou.pixeldungeon.network.SendData.sendUpdateItemFull;
+import static com.watabou.pixeldungeon.network.SendData.*;
 
 public abstract class Item implements Bundlable {
 
@@ -335,11 +325,6 @@ public abstract class Item implements Bundlable {
 		}
 	}
 	public boolean collect(Hero hero) {
-		HeroCollectItemEvent event = new HeroCollectItemEvent(this, hero);
-		Server.pluginManager.fireEvent(event);
-		if (event.isCancelled()){
-			return false;
-		}
 		return collect( hero.belongings.backpack );
 	}
 

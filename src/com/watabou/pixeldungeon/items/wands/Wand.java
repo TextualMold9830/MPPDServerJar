@@ -17,9 +17,8 @@
  */
 package com.watabou.pixeldungeon.items.wands;
 
-import java.util.ArrayList;
-
 import com.nikita22007.multiplayer.noosa.audio.Sample;
+import com.nikita22007.multiplayer.server.effects.MagicMissile;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.actors.Char;
@@ -27,19 +26,22 @@ import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.buffs.Invisibility;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.hero.HeroClass;
-import com.nikita22007.multiplayer.server.effects.MagicMissile;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.ItemStatusHandler;
 import com.watabou.pixeldungeon.items.KindOfWeapon;
 import com.watabou.pixeldungeon.items.bags.Bag;
 import com.watabou.pixeldungeon.items.rings.RingOfPower.Power;
 import com.watabou.pixeldungeon.mechanics.Ballistica;
+import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.CellSelector;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import textualmold9830.plugins.events.HeroUseWandEvent;
+
+import java.util.ArrayList;
 
 public abstract class Wand extends KindOfWeapon {
 
@@ -415,23 +417,28 @@ public abstract class Wand extends KindOfWeapon {
 					return;
 				}
 
-				final Wand curWand = (Wand)Wand.curItem;
+				Wand curWand = (Wand)Wand.curItem;
 
 				curWand.setKnown();
 
-				final int cell = Ballistica.cast( curUser.pos, target, true, curWand.hitChars );
+				int cell = Ballistica.cast( curUser.pos, target, true, curWand.hitChars );
 				curUser.getSprite().zap( cell );
 
 				if (curWand.getCurCharges() > 0) {
+					HeroUseWandEvent event = new HeroUseWandEvent(curUser, curWand, cell);
+					Server.pluginManager.fireEvent(event);
+					if (!event.isCancelled()) {
+						curUser = event.hero;
+						curWand = event.wand;
+						cell = event.cell;
+						curUser.busy();
+						curWand.fx(cell);
 
-					curUser.busy();
-					curWand.fx( cell);
+						Invisibility.dispel(curUser);
 
-					Invisibility.dispel(curUser);
-
-					curWand.onZap( cell );
-					curWand.wandUsed(curUser);
-
+						curWand.onZap(cell);
+						curWand.wandUsed(curUser);
+					}
 				} else {
 
 					curUser.spendAndNext( TIME_TO_ZAP );

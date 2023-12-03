@@ -19,7 +19,7 @@ public class PluginLoader {
         List<Plugin> plugins = new ArrayList<>();
 
         File pluginDirectory = new File(PLUGINS_DIRECTORY);
-        System.out.println("Found plugins: " + Arrays.toString(pluginDirectory.listFiles()));
+        System.out.println("Found plugins: " + Arrays.toString(Arrays.stream(pluginDirectory.listFiles()).filter((file -> file.getName().endsWith(".jar"))).toArray()));
         if (pluginDirectory.exists() && pluginDirectory.isDirectory()) {
             for (File jarFile : pluginDirectory.listFiles()) {
                 if (jarFile.getName().endsWith(".jar")) {
@@ -45,7 +45,7 @@ public class PluginLoader {
                                     throw new RuntimeException(e);
                                 }
                                 plugins.add(plugin);
-                                System.out.println("found plugin: "+plugin.getName());
+                                System.out.println("found plugin: " + plugin.getName());
                             }
                         }
                     }

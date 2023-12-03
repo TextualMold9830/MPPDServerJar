@@ -13,12 +13,12 @@ public class PreferncesData {
     public PreferncesData() {
     }
 
-    public PreferncesData(int challenges, boolean onlineMode, String serverName, boolean useCustomRelay, String customRelayAdress, int customRelayPort, boolean music) {
+    public PreferncesData(int challenges, boolean onlineMode, String serverName, boolean useCustomRelay, String customRelayAddress, int customRelayPort, boolean music) {
         this.challenges = challenges;
         this.onlineMode = onlineMode;
         this.serverName = serverName;
         this.useCustomRelay = useCustomRelay;
-        this.customRelayAddress = customRelayAdress;
+        this.customRelayAddress = customRelayAddress;
         this.customRelayPort = customRelayPort;
         this.music = music;
     }

@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Bones {
@@ -73,7 +72,7 @@ public class Bones {
 		bundle.put( ITEM, item );
 
 		try {
-			OutputStream output = Files.newOutputStream(Paths.get("bonus.txt"));
+			OutputStream output = Files.newOutputStream(Paths.get(BONES_FILE));
 			Bundle.write( bundle, output );
 			output.close();
 		} catch (IOException e) {

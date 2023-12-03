@@ -4,7 +4,6 @@ import com.watabou.pixeldungeon.actors.Char;
 import textualmold9830.plugins.Event;
 
 public class CharDieEvent extends Event {
-    boolean cancelled = false;
     public Char character;
     public Object cause;
 

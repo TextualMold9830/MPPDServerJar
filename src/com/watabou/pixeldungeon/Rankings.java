@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -119,7 +118,7 @@ public enum Rankings {
 		bundle.put( WON, wonNumber );
 
 		try {
-			OutputStream output = Files.newOutputStream(Paths.get("rankings.txt"));
+			OutputStream output = Files.newOutputStream(Paths.get(RANKINGS_FILE));
 			Bundle.write( bundle, output );
 			output.close();
 		} catch (Exception e) {
@@ -132,7 +131,7 @@ public enum Rankings {
 			return;
 		}
 
-		records = new ArrayList<Record>();
+		records = new ArrayList<>();
 
 		try {
 			InputStream input = Files.newInputStream(Paths.get(RANKINGS_FILE));
