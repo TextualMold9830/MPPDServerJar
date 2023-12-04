@@ -42,7 +42,7 @@ public class PluginLoader {
                                     plugin = (Plugin) clazz.getDeclaredConstructor().newInstance();
                                 } catch (InstantiationException | NoSuchMethodException | InvocationTargetException |
                                          IllegalAccessException e) {
-                                    throw new RuntimeException(e);
+                                    e.printStackTrace();
                                 }
                                 plugins.add(plugin);
                                 System.out.println("found plugin: " + plugin.getName());
