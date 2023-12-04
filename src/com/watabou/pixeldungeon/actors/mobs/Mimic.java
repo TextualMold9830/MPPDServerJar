@@ -83,9 +83,9 @@ public class Mimic extends com.watabou.pixeldungeon.actors.mobs.Mob {
 	@Override
 	public int attackProc( Char enemy, int damage ) {
 		if (enemy instanceof Hero  && Random.Int( 3 ) == 0) {
-			Gold gold = new Gold( Random.Int( ((Hero)enemy).gold / 10,  ((Hero)enemy).gold / 2 ) );
+			Gold gold = new Gold( Random.Int( ((Hero) enemy).getGold() / 10,  ((Hero) enemy).getGold() / 2 ) );
 			if (gold.quantity() > 0) {
-				((Hero)enemy).gold -= gold.quantity();
+				((Hero) enemy).setGold(((Hero) enemy).getGold() - gold.quantity());
 				Dungeon.level.drop( gold, enemy.pos);
 			}
 		}

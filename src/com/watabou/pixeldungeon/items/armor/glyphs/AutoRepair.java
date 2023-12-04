@@ -31,8 +31,8 @@ public class AutoRepair extends Glyph {
 
 	@Override
 	public int proc( Armor armor, Char attacker, Char defender, int damage) {
-		if (defender instanceof Hero && ((Hero)defender).gold >= armor.tier) {
-			((Hero)defender).gold -= armor.tier;
+		if (defender instanceof Hero && ((Hero) defender).getGold() >= armor.tier) {
+			((Hero) defender).setGold(((Hero) defender).getGold() - armor.tier);
 			armor.polish();
 		}
 		return damage;

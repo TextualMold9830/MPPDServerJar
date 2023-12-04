@@ -58,8 +58,8 @@ public class Bones {
 			break;
 		}
 		if (item == null) {
-			if (hero.gold > 0) {
-				item = new Gold( Random.IntRange( 1, hero.gold ) );
+			if (hero.getGold() > 0) {
+				item = new Gold( Random.IntRange( 1, hero.getGold()) );
 			} else {
 				item = new Gold( 1 );
 			}

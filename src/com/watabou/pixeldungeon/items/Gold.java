@@ -61,7 +61,7 @@ public class Gold extends Item {
 	@Override
 	public boolean doPickUp( Hero hero ) {
 
-		hero.gold += getQuantity();
+		hero.setGold(hero.getGold() + getQuantity());
 		Statistics.goldCollected += getQuantity();
 		Badges.validateGoldCollected(hero);
 

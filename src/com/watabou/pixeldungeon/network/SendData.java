@@ -138,6 +138,27 @@ public class SendData {
         }
     }
 
+    public static void sendHeroGold(int ID, int gold) {
+        if ((ID != -1) && (clients[ID] != null)) {
+            synchronized (clients[ID].packet.dataRef) {
+                JSONObject data = clients[ID].packet.dataRef.get();
+                JSONObject heroObj = null;
+                try {
+                    if (data.has("hero")) {
+                        heroObj = data.getJSONObject("hero");
+                    } else {
+                        heroObj = new JSONObject();
+                        data.put("hero", heroObj);
+                    }
+                    heroObj.put("gold", gold);
+                } catch (JSONException ignored) {
+                }
+            }
+            clients[ID].flush();
+        }
+    }
+
+
     //---------------------------Badges
     //public static void sendBadge
     public static void sendBadgeLevelReached(int ID, int bLevel) {//bLevel=BadgeLevel

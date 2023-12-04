@@ -166,7 +166,7 @@ public class WndTradeItem extends WndOptions {
 		Item item = heap.pickUp();
 
 		int price = price( item );
-		getOwnerHero().gold -= price;
+		getOwnerHero().setGold(getOwnerHero().getGold() - price);
 
 		GLog.i( TXT_BOUGHT, item.name(), price );
 

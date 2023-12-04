@@ -97,6 +97,7 @@ server:
         "strength": 0
         "lvl": 0
         "exp": 0
+        "gold": 0
         "ready": false
    }
    "buffs"

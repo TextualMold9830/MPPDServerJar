@@ -77,7 +77,7 @@ public class Hero extends Char {
 
 	private static final String TXT_LEAVE = "One does not simply leave Pixel Dungeon.";
 	private static final String TXT_NO_RETURN_ALLOWED = "You'd swear there were up stairs  here.";
-	public int gold;
+	private int gold;
 
 	private static final String TXT_LEVEL_UP = "level up!";
 	private static final String TXT_NEW_LEVEL =
@@ -190,7 +190,7 @@ public class Hero extends Char {
 		bundle.put( LEVEL, lvl );
 		bundle.put( EXPERIENCE, exp );
 
-		bundle.put( GOLD, gold );
+		bundle.put( GOLD, getGold());
 
 		belongings.storeInBundle( bundle );
 	}
@@ -1413,7 +1413,7 @@ public class Hero extends Char {
 	public void resurrect( int resetLevel ) {
 
 		setHP(getHT());
-		gold = 0;
+		setGold(0);
 		exp = 0;
 
 		belongings.resurrect( resetLevel );
@@ -1454,6 +1454,15 @@ public class Hero extends Char {
 	public boolean hasWindow() {
 		HashMap<Integer, Window> windows = Window.windows.getOrDefault(this, null);
 		return (windows != null) && !windows.isEmpty();
+	}
+
+	public int getGold() {
+		return gold;
+	}
+
+	public void setGold(int gold) {
+		this.gold = gold;
+		sendHeroGold(networkID, gold);
 	}
 
 	public static interface Doom {
