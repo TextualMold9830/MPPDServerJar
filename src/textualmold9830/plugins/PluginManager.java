@@ -52,7 +52,10 @@ public class PluginManager {
         String name = plugin.getName();
         try {
             Files.createDirectories(Path.of("config/"+name));
-            Files.createFile(Path.of("config/"+name+"/config.txt"));
+            Path configPath = Path.of("config/" + name + "/config.txt");
+            if (!Files.exists(configPath)) {
+                Files.write(configPath, plugin.defaultConfig().getBytes());
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

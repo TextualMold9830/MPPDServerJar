@@ -29,6 +29,6 @@ public class PluginUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        return plugin.defaultConfig();
     }
 }

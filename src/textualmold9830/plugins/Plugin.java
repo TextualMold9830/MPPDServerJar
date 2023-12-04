@@ -22,4 +22,7 @@ public interface Plugin {
     }
     default void handleHeroDoActionEvent(HeroDoActionEvent event){}
     default void handleHeroUseWandEvent(HeroUseWandEvent event){}
+    default String defaultConfig(){
+        return "";
+    }
 }
