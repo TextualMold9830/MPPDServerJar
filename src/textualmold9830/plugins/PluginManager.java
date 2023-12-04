@@ -1,6 +1,8 @@
 package textualmold9830.plugins;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class PluginManager {
             e.printStackTrace();
         }
         for (Plugin plugin : plugins) {
+            createPluginFiles(plugin);
             plugin.initialize();
         }
     }
@@ -43,6 +46,15 @@ public class PluginManager {
                 plugin.shutdown();
 
             }
+        }
+    }
+    private static void createPluginFiles(Plugin plugin) {
+        String name = plugin.getName();
+        try {
+            Files.createDirectories(Path.of("config/"+name));
+            Files.createFile(Path.of("config/"+name+"/config.txt"));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
