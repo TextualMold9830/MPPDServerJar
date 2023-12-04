@@ -176,6 +176,7 @@ public class PrisonLevel extends RegularLevel {
 			try {
 				actionObj.put("action_type", "emitter_decor");
 				actionObj.put("type", "torch");
+				actionObj.put("pos", pos);
 				actionObj.put("color", color);
 			} catch (JSONException e) {
 				throw new RuntimeException(e);

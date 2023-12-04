@@ -172,6 +172,7 @@ public class SewerLevel extends RegularLevel {
 			try {
 				actionObj.put("action_type", "emitter_decor");
 				actionObj.put("type", "sink");
+				actionObj.put("pos", pos);
 			} catch (JSONException e) {
 				throw new RuntimeException(e);
 			}

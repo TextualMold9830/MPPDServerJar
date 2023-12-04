@@ -528,6 +528,7 @@ Emitter_decor
 {
     "action_type" : "emitter_decor"
     "type": "sink" / "smoke" / "torch"
+    "pos": 3
 
     "color": 0xFFFFCC //torch
 }
