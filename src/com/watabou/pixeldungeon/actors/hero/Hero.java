@@ -1468,4 +1468,30 @@ public class Hero extends Char {
 	public static interface Doom {
 		public void onDeath();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Hero hero = (Hero) o;
+
+		if (STR != hero.STR) return false;
+		if (lvl != hero.lvl) return false;
+		if (exp != hero.exp) return false;
+		if (networkID != hero.networkID) return false;
+		if (heroClass != hero.heroClass) return false;
+        return subClass == hero.subClass;
+    }
+
+	@Override
+	public int hashCode() {
+		int result = heroClass != null ? heroClass.hashCode() : 0;
+		result = 31 * result + (subClass != null ? subClass.hashCode() : 0);
+		result = 31 * result + STR;
+		result = 31 * result + lvl;
+		result = 31 * result + exp;
+		result = 31 * result + networkID;
+		return result;
+	}
 }
