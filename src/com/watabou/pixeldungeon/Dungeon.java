@@ -53,6 +53,7 @@ import com.watabou.pixeldungeon.levels.Room;
 import com.watabou.pixeldungeon.levels.SewerBossLevel;
 import com.watabou.pixeldungeon.levels.SewerLevel;
 import com.watabou.pixeldungeon.network.SendData;
+import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.StartScene;
 import com.watabou.pixeldungeon.utils.BArray;
 import com.watabou.pixeldungeon.utils.Utils;
@@ -91,6 +92,9 @@ public class Dungeon {
 	public static int challenges;
 
 	public static Hero[] heroes;
+	/**
+	 * Change here to use custom level
+	 */
 	public static Level level;
 
 	public static int depth;
@@ -145,7 +149,7 @@ public class Dungeon {
 
 	public static Level newLevel() {
 
-		Dungeon.level = null;
+		level = null;
 		Actor.clear();
 
 		depth++;
@@ -165,7 +169,6 @@ public class Dungeon {
 			}
 		}
 
-		Level level;
 		switch (depth) {
 		case 0:
 			level = new LobbyLevel();
@@ -225,9 +228,8 @@ public class Dungeon {
 			Statistics.deepestFloor--;
 		}
 		DungeonGenerateLevelEvent event = new DungeonGenerateLevelEvent(depth, level);
-		level = event.level;
+		Server.pluginManager.fireEvent(event);
 		level.create();
-
 		Statistics.qualifiedForNoKilling = !bossLevel(depth);
 
 		return level;

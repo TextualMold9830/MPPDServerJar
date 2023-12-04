@@ -1,5 +1,6 @@
 package textualmold9830.plugins;
 
+import textualmold9830.plugins.events.DungeonGenerateLevelEvent;
 import textualmold9830.plugins.events.HeroDoActionEvent;
 import textualmold9830.plugins.events.HeroUseWandEvent;
 
@@ -18,6 +19,7 @@ public interface Plugin {
         switch (event.getEventName()){
             case "hero_do_action" -> handleHeroDoActionEvent((HeroDoActionEvent) event);
             case "hero_use_wand" -> handleHeroUseWandEvent((HeroUseWandEvent) event);
+            case "dungeon_generate_level" -> handleDungeonGenerateLevelEvent((DungeonGenerateLevelEvent) event);
         }
     }
     default void handleHeroDoActionEvent(HeroDoActionEvent event){}
@@ -25,4 +27,5 @@ public interface Plugin {
     default String defaultConfig(){
         return "";
     }
+    default void handleDungeonGenerateLevelEvent(DungeonGenerateLevelEvent event){}
 }
