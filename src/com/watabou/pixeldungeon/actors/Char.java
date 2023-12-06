@@ -493,7 +493,8 @@ public abstract class Char extends Actor {
 		}
 
 		if (!(this instanceof Hero)) {
-			getSprite().visible = Dungeon.visibleforAnyHero(pos);
+			//getSprite().visible = Dungeon.visibleforAnyHero(pos);
+			getSprite().visible = true;
 		}
 	}
 
