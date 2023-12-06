@@ -149,7 +149,7 @@ public class Dungeon {
 
 	public static Level newLevel() {
 
-		level = null;
+		Dungeon.level = null;
 		Actor.clear();
 
 		depth++;
@@ -169,6 +169,7 @@ public class Dungeon {
 			}
 		}
 
+		Level level;
 		switch (depth) {
 		case 0:
 			level = new LobbyLevel();
@@ -228,8 +229,9 @@ public class Dungeon {
 			Statistics.deepestFloor--;
 		}
 		DungeonGenerateLevelEvent event = new DungeonGenerateLevelEvent(depth, level);
-		Server.pluginManager.fireEvent(event);
+		level = event.level;
 		level.create();
+
 		Statistics.qualifiedForNoKilling = !bossLevel(depth);
 
 		return level;
@@ -339,6 +341,7 @@ public class Dungeon {
 			if (hero.networkID == -1){
 				continue;
 			}
+
 			sendLevel(level, hero.networkID);
 			sendAllChars(hero.networkID);
 			sendHeroNewID(hero, hero.networkID);
