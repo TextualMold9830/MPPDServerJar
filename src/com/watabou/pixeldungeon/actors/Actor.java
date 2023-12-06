@@ -33,9 +33,7 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import static com.watabou.pixeldungeon.network.SendData.sendActorRemoving;
 
@@ -119,7 +117,7 @@ public abstract class Actor implements Bundlable {
 	// **********************
 	// *** Static members ***
 
-	private static final HashSet<Actor> all = new HashSet<Actor>();
+	private static final Collection<Actor> all = new LinkedList<>();
 	private volatile static Actor current;
 
 	private static float timeForAct = 2;
@@ -313,9 +311,12 @@ public abstract class Actor implements Bundlable {
 				com.watabou.pixeldungeon.actors.Char ch = (com.watabou.pixeldungeon.actors.Char) actor;
 				chars[ch.pos] = ch;
 				for (Buff buff : ch.buffs()) {
-					all.add(buff);
-					buff.onAdd();
-				}			}
+					if (!all.contains(buff)) {
+						all.add(buff);
+						buff.onAdd();
+					}
+				}
+			}
 		}
 
 		SendData.sendActor(actor);
@@ -346,7 +347,7 @@ public abstract class Actor implements Bundlable {
 		return ids.get( id );
 	}
 
-	public static HashSet<Actor> all() {
+	public static Collection<Actor> all() {
 		return all;
 	}
 }
