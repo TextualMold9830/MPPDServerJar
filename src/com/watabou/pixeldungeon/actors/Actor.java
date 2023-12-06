@@ -117,6 +117,8 @@ public abstract class Actor implements Bundlable {
 	// **********************
 	// *** Static members ***
 
+	//Do not use default java Set because collection because Actor is mutable:
+	//https://stackoverflow.com/questions/43553806/hashset-contains-returns-false-when-it-shouldnt
 	private static final Collection<Actor> all = new LinkedList<>();
 	private volatile static Actor current;
 
