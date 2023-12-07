@@ -97,7 +97,7 @@ public class HeroHelp {
     ;
 
     public static int getHeroID(Hero hero) {
-        return hero.networkID;//Arrays.asList(Dungeon.heroes).indexOf(hero);
+        return hero.networkID; //Arrays.asList(Dungeon.heroes).indexOf(hero);
     }
 
     public static boolean haveAliveHero() {

@@ -12,5 +12,8 @@ public class CharDieEvent extends Event {
         this.cause = cause;
     }
 
-
+    @Override
+    public String getEventName() {
+        return "char_die";
+    }
 }
