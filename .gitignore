@@ -2,7 +2,8 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-
+depth*.dat
+bonus.txt
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -28,3 +29,4 @@ bin/
 ### Mac OS ###
 .DS_Store
 /plugins/
+/config/
