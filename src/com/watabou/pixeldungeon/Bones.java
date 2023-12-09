@@ -32,7 +32,7 @@ import java.nio.file.Paths;
 
 public class Bones {
 
-	private static final String BONES_FILE	= "bones.dat";
+	private static final String BONES_FILE	= "save/bones.dat";
 
 	private static final String LEVEL	= "level";
 	private static final String ITEM	= "item";

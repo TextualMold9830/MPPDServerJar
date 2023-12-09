@@ -14,11 +14,13 @@ import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.levels.RegularLevel;
 import com.watabou.pixeldungeon.levels.features.Chasm;
 import com.watabou.pixeldungeon.network.SendData;
+import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.windows.WndStory;
 import com.watabou.utils.Random;
 
 import org.jetbrains.annotations.Nullable;
+import textualmold9830.plugins.events.DungeonPostGenerateLevelEvent;
 
 import java.io.IOException;
 
@@ -166,10 +168,15 @@ public class InterLevelSceneServer {
         }
         Game.switchScene( GameScene.class );
     }
-    private static Level getNextLevel()throws IOException {
+    private static Level getNextLevel() throws IOException {
 
         if (Dungeon.depth >= Statistics.deepestFloor) {
-            return  Dungeon.newLevel();
+
+            Level level = Dungeon.newLevel();
+            DungeonPostGenerateLevelEvent event = new DungeonPostGenerateLevelEvent(level);
+            Server.pluginManager.fireEvent(event);
+            level = event.level;
+            return level;
         } else {
             Dungeon.depth++;
             return Dungeon.loadLevel();

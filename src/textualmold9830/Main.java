@@ -23,6 +23,7 @@ public class Main {
         try {
             Files.createDirectory(Path.of("plugins"));
             Files.createDirectory(Path.of("config"));
+            Files.createDirectory(Path.of("save"));
         } catch (IOException e) {
         }
     }

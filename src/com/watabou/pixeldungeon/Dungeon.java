@@ -36,24 +36,8 @@ import com.watabou.pixeldungeon.items.potions.Potion;
 import com.watabou.pixeldungeon.items.rings.Ring;
 import com.watabou.pixeldungeon.items.scrolls.Scroll;
 import com.watabou.pixeldungeon.items.wands.Wand;
-import com.watabou.pixeldungeon.levels.CavesBossLevel;
-import com.watabou.pixeldungeon.levels.CavesLevel;
-import com.watabou.pixeldungeon.levels.CityBossLevel;
-import com.watabou.pixeldungeon.levels.CityLevel;
-import com.watabou.pixeldungeon.levels.DeadEndLevel;
-import com.watabou.pixeldungeon.levels.HallsBossLevel;
-import com.watabou.pixeldungeon.levels.HallsLevel;
-import com.watabou.pixeldungeon.levels.LastLevel;
-import com.watabou.pixeldungeon.levels.LastShopLevel;
-import com.watabou.pixeldungeon.levels.Level;
-import com.watabou.pixeldungeon.levels.LobbyLevel;
-import com.watabou.pixeldungeon.levels.PrisonBossLevel;
-import com.watabou.pixeldungeon.levels.PrisonLevel;
-import com.watabou.pixeldungeon.levels.Room;
-import com.watabou.pixeldungeon.levels.SewerBossLevel;
-import com.watabou.pixeldungeon.levels.SewerLevel;
+import com.watabou.pixeldungeon.levels.*;
 import com.watabou.pixeldungeon.network.SendData;
-import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.StartScene;
 import com.watabou.pixeldungeon.utils.BArray;
 import com.watabou.pixeldungeon.utils.Utils;
@@ -61,7 +45,6 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
-
 import org.jetbrains.annotations.NotNull;
 import textualmold9830.plugins.events.DungeonGenerateLevelEvent;
 
@@ -75,12 +58,7 @@ import java.util.*;
 
 import static com.watabou.pixeldungeon.BuildConfig.DEBUG;
 import static com.watabou.pixeldungeon.HeroHelp.getHeroID;
-import static com.watabou.pixeldungeon.network.SendData.addToSendHeroVisibleCells;
-import static com.watabou.pixeldungeon.network.SendData.addToSendLevelVisitedState;
-import static com.watabou.pixeldungeon.network.SendData.sendAllChars;
-import static com.watabou.pixeldungeon.network.SendData.sendDepth;
-import static com.watabou.pixeldungeon.network.SendData.sendHeroNewID;
-import static com.watabou.pixeldungeon.network.SendData.sendLevel;
+import static com.watabou.pixeldungeon.network.SendData.*;
 
 public class Dungeon {
 
@@ -231,7 +209,6 @@ public class Dungeon {
 		DungeonGenerateLevelEvent event = new DungeonGenerateLevelEvent(depth, level);
 		level = event.level;
 		level.create();
-
 		Statistics.qualifiedForNoKilling = !bossLevel(depth);
 
 		return level;
@@ -384,8 +361,8 @@ public class Dungeon {
 		return false;
 	}
 
-	private static final String GAME_FILE = "game.dat";
-	private static final String DEPTH_FILE = "depth%d.dat";
+	private static final String GAME_FILE = "save/game.dat";
+	private static final String DEPTH_FILE = "save/depth%d.dat";
 
 	/*
 	private static final String WR_GAME_FILE	= "warrior.dat";
