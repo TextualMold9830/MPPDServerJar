@@ -26,7 +26,7 @@ server:
             "custom_message": "no"
         }
     ]
-
+    "texturepack":"base64EncodedZipFile"
     "map":
     {
         "cells":
@@ -80,7 +80,11 @@ server:
             "max_hp": 1
             "name": "missingno"
             "position": 0
+
             "sprite_name": "rat_sprite"
+            OR
+            "sprite_asset": "rat.json"
+
             "animation_name": "idle"
             "description": "unknown creature" //if mob
             "states": ["burning"]

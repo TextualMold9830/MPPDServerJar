@@ -282,11 +282,6 @@ class ClientThread implements Callable<String> {
         Actor.add(newHero);
         Actor.occupyCell(newHero);
         newHero.getSprite().place(newHero.pos);
-        packet.packAndAddLevel(level, clientHero);
-        packet.packAndAddHero(newHero);
-        packet.packAndAddDepth(Dungeon.depth);
-        packet.packAndAddIronKeysCount(Dungeon.depth);
-        packet.addInventoryFull(newHero);
 
         synchronized (Dungeon.heroes) { //todo fix it. It is not work
             for (int i = 0; i < heroes.length; i++) {
@@ -304,19 +299,7 @@ class ClientThread implements Callable<String> {
         }
         GameScene.addHeroSprite(newHero);
 
-        addAllCharsToSend();
-
-        Dungeon.observe(newHero, false);
-        packet.packAndAddVisiblePositions(newHero.fieldOfView);
-
-        //TODO send all  information
-
-        flush();
-
-
-        packet.packAndAddInterlevelSceneState("fade_out", null);
-
-        flush();
+        sendInitData();
     }
 
     protected void addCharToSend(@NotNull Char ch) {
@@ -433,6 +416,12 @@ class ClientThread implements Callable<String> {
     }
 
     private void sendInitData() {
+        /*
+        //add here a code which sends texturepack
+        packet.packAndAddTextures("D:\\temp\\test_texture.zip");
+        flush();
+         */
+
         packet.packAndAddLevel(level, clientHero);
         packet.packAndAddHero(clientHero);
         packet.packAndAddDepth(Dungeon.depth);

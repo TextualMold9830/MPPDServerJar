@@ -10,6 +10,7 @@ import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.hero.Belongings;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
+import com.watabou.pixeldungeon.actors.mobs.Rat;
 import com.watabou.pixeldungeon.items.Heap;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.bags.Bag;
@@ -22,6 +23,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -157,6 +162,10 @@ public class NetworkPacket {
                     object.put("type", "hero");
                 } else {
                     object.put("type", "character");
+                    /*if (actor instanceof Rat)
+                    {
+                      object.put("sprite_asset","custom_rat.json");
+                    } else */
                     if (((Char) actor).getSprite() != null) {
                         object.put("sprite_name", ((Char) actor).getSprite().spriteName());
                     }
@@ -280,7 +289,7 @@ public class NetworkPacket {
             JSONObject data = dataRef.get();
             @NotNull
             JSONObject heroObj = data.optJSONObject("hero");
-            if (heroObj == null){
+            if (heroObj == null) {
                 heroObj = new JSONObject();
             }
             try {
@@ -298,7 +307,7 @@ public class NetworkPacket {
             JSONObject data = dataRef.get();
             @NotNull
             JSONObject heroObj = data.optJSONObject("hero");
-            if (heroObj == null){
+            if (heroObj == null) {
                 heroObj = new JSONObject();
             }
             try {
@@ -310,7 +319,7 @@ public class NetworkPacket {
         }
     }
 
-        public void packAndAddLevelEntrance(int pos) {
+    public void packAndAddLevelEntrance(int pos) {
         try {
             synchronized (dataRef) {
                 JSONObject data = dataRef.get();
@@ -687,7 +696,7 @@ public class NetworkPacket {
         if (heap.isEmpty()) {
             return;
         }
-        addHeap(packHeap(heap, observer ));
+        addHeap(packHeap(heap, observer));
     }
 
     public void packAndAddServerAction(String action_type) {
@@ -797,6 +806,23 @@ public class NetworkPacket {
             return;
         }
 
+    }
+
+    public void packAndAddTextures(String path) {
+
+        // Read all bytes from a file and convert to Base64 String
+        byte[] byteData = new byte[0];
+        try {
+            byteData = Files.readAllBytes(Paths.get(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        String base64String = Base64.getEncoder().encodeToString(byteData);
+
+        synchronized (dataRef)
+        {
+            dataRef.get().put("texturepack", base64String);
+        }
     }
 
 }
