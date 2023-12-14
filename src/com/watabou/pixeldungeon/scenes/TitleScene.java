@@ -28,7 +28,6 @@ import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.effects.BannerSprites;
 import com.watabou.pixeldungeon.ui.ExitButton;
 import com.watabou.pixeldungeon.ui.PrefsButton;
-import javafx.scene.Parent;
 
 import java.awt.*;
 
@@ -37,9 +36,6 @@ public class TitleScene extends PixelScene {
 	private static final String TXT_PLAY		= "Start";
 	private static final String TXT_ABOUT		= "About";
 
-	public TitleScene(Parent root) {
-		super(root);
-	}
 
 	@Override
 	public void create() {

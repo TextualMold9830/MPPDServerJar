@@ -22,7 +22,6 @@ import com.watabou.noosa.Image;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.ui.RedButton;
 import com.watabou.utils.Random;
-import javafx.scene.Parent;
 
 public class AmuletScene extends PixelScene {
 
@@ -43,10 +42,6 @@ public class AmuletScene extends PixelScene {
 	public static boolean noText = false;
 
 	private Image amulet;
-
-	public AmuletScene(Parent root) {
-		super(root);
-	}
 
 	@Override
 	public void create() {

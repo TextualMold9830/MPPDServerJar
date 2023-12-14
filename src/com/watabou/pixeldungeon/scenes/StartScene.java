@@ -31,7 +31,6 @@ import com.watabou.pixeldungeon.ui.ExitButton;
 import com.watabou.pixeldungeon.ui.RedButton;
 import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Callback;
-import javafx.scene.Parent;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -69,10 +68,6 @@ public class StartScene extends com.watabou.pixeldungeon.scenes.PixelScene {			/
 	private GameButton btnNewGame;
 
 	public static HeroClass curClass;
-
-	public StartScene(Parent root) {
-		super(root);
-	}
 
 	@Override
 	public void create() {

@@ -21,7 +21,6 @@ package com.watabou.pixeldungeon.scenes;
 import com.watabou.noosa.Image;
 import com.watabou.pixeldungeon.ui.ExitButton;
 import com.watabou.pixeldungeon.ui.Icons;
-import javafx.scene.Parent;
 
 public class AboutScene extends PixelScene {
 
@@ -34,9 +33,6 @@ public class AboutScene extends PixelScene {
 
 	private static final String LNK = "pixeldungeon.watabou.ru";
 
-	public AboutScene(Parent root) {
-		super(root);
-	}
 
 	@Override
 	public void create() {

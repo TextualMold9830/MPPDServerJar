@@ -25,7 +25,6 @@ import com.watabou.noosa.Visual;
 import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.effects.BadgeBanner;
-import javafx.scene.Parent;
 
 public class PixelScene extends Scene {
 
@@ -42,10 +41,6 @@ public class PixelScene extends Scene {
 	public static float maxZoom;
 
 	public static Camera uiCamera;
-
-	public PixelScene(Parent root) {
-		super();
-	}
 
 	public PixelScene() {
 		super();
