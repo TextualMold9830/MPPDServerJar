@@ -4,6 +4,7 @@ import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,11 +21,8 @@ public class Main {
 
     }
     private static void initFolders(){
-        try {
-            Files.createDirectory(Path.of("plugins"));
-            Files.createDirectory(Path.of("config"));
-            Files.createDirectory(Path.of("save"));
-        } catch (IOException e) {
-        }
+            (new File("plugins")).mkdirs();
+            (new File("config")).mkdirs();
+            (new File("save")).mkdirs();
     }
 }
