@@ -578,6 +578,7 @@ public abstract class Item implements Bundlable {
 
 	public void image(int image) {
 		this.image = image;
+		sendUpdateItemFull(this);
 	}
 	private ItemSpriteGlowing glowing = null;
 
