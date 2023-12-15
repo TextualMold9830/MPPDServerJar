@@ -173,10 +173,6 @@ public class PixelDungeon extends Game {
 	}
 
 
-	public static int lastClass() {
-		return 0;
-	}
-
 	public static void challenges( int value ) {
 		Preferences.challenges = value;
 	}
