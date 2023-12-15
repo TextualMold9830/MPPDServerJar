@@ -92,7 +92,7 @@ public abstract class Item implements Bundlable {
 
 	protected String name = "smth";
 	protected int image = 0;
-
+	private String spriteSheet = Assets.ITEMS;
 
 	public boolean stackable = false;
 	private int quantity = 1;
@@ -206,7 +206,12 @@ public abstract class Item implements Bundlable {
 	}
 
 	public String spriteSheet() {
-		return Assets.ITEMS;
+		return spriteSheet;
+	}
+
+	public void spriteSheet(String newSpriteSheet) {
+		spriteSheet = newSpriteSheet;
+		sendUpdateItemFull(this);
 	}
 
 	public boolean isKnown(){
