@@ -41,7 +41,7 @@ public class Gold extends Item {
 
 	{
 		name = "gold";
-		image = ItemSpriteSheet.GOLD;
+		image(ItemSpriteSheet.GOLD);
 		stackable = true;
 	}
 

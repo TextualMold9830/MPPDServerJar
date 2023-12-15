@@ -23,7 +23,7 @@ public class BattleAxe extends MeleeWeapon {
 
 	{
 		name = "battle axe";
-		image = ItemSpriteSheet.BATTLE_AXE;
+		image(ItemSpriteSheet.BATTLE_AXE);
 	}
 
 	public BattleAxe() {

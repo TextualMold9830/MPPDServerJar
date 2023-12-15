@@ -60,7 +60,7 @@ public class Sungrass extends com.watabou.pixeldungeon.plants.Plant {
 			plantName = "Sungrass";
 
 			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_SUNGRASS;
+			image(ItemSpriteSheet.SEED_SUNGRASS);
 
 			plantClass = Sungrass.class;
 			alchemyClass = PotionOfHealing.class;

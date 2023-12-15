@@ -23,7 +23,7 @@ public class GoldenKey extends Key {
 
 	{
 		name = "golden key";
-		image = ItemSpriteSheet.GOLDEN_KEY;
+		image(ItemSpriteSheet.GOLDEN_KEY);
 	}
 
 	@Override

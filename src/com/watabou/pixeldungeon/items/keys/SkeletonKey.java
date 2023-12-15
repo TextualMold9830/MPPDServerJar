@@ -23,7 +23,7 @@ public class SkeletonKey extends Key {
 
 	{
 		name = "skeleton key";
-		image = ItemSpriteSheet.SKELETON_KEY;
+		image(ItemSpriteSheet.SKELETON_KEY);
 	}
 
 	@Override

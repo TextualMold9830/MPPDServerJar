@@ -57,7 +57,7 @@ public class Firebloom extends com.watabou.pixeldungeon.plants.Plant {
 			plantName = "Firebloom";
 
 			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_FIREBLOOM;
+			image(ItemSpriteSheet.SEED_FIREBLOOM);
 
 			plantClass = Firebloom.class;
 			alchemyClass = PotionOfLiquidFlame.class;

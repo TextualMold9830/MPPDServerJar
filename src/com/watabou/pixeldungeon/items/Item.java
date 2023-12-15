@@ -91,7 +91,7 @@ public abstract class Item implements Bundlable {
 	public String defaultAction;
 
 	protected String name = "smth";
-	protected int image = 0;
+	private int image = 0;
 	private String spriteSheet = Assets.ITEMS;
 
 	public boolean stackable = false;
@@ -572,10 +572,13 @@ public abstract class Item implements Bundlable {
 		return name;
 	}
 
-	public int image() {
+	public final int image() {
 		return image;
 	}
 
+	public void image(int image) {
+		this.image = image;
+	}
 	private ItemSpriteGlowing glowing = null;
 
 	@Nullable

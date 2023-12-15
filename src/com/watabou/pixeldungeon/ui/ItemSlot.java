@@ -45,16 +45,24 @@ public class ItemSlot extends Button { //UI  only -> Client  Only
 
 	// Special "virtual items"
 	public static final Item CHEST = new Item() {
-		public int image() { return ItemSpriteSheet.CHEST; };
+		{
+			image( ItemSpriteSheet.CHEST);
+		}
 	};
 	public static final Item LOCKED_CHEST = new Item() {
-		public int image() { return ItemSpriteSheet.LOCKED_CHEST; };
+		{
+			image( ItemSpriteSheet.LOCKED_CHEST);
+		}
 	};
 	public static final Item TOMB = new Item() {
-		public int image() { return ItemSpriteSheet.TOMB; };
+		{
+			image( ItemSpriteSheet.TOMB);
+		}
 	};
 	public static final Item SKELETON = new Item() {
-		public int image() { return ItemSpriteSheet.BONES; };
+		{
+			image( ItemSpriteSheet.BONES);
+		}
 	};
 
 	public ItemSlot() {

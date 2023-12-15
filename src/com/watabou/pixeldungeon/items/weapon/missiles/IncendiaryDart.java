@@ -34,7 +34,7 @@ public class IncendiaryDart extends MissileWeapon {
 
 	{
 		name = "incendiary dart";
-		image = ItemSpriteSheet.INCENDIARY_DART;
+		image(ItemSpriteSheet.INCENDIARY_DART);
 
 		STR = 12;
 	}

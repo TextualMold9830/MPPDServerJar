@@ -49,7 +49,7 @@ public class DewVial extends Item {
 
 	{
 		name = "dew vial";
-		image = ItemSpriteSheet.VIAL;
+		image(ItemSpriteSheet.VIAL);
 
 		defaultAction = AC_DRINK;
 

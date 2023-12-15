@@ -70,7 +70,7 @@ public class Earthroot extends Plant {
 			plantName = "Earthroot";
 
 			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_EARTHROOT;
+			image(ItemSpriteSheet.SEED_EARTHROOT);
 
 			plantClass = Earthroot.class;
 			alchemyClass = PotionOfParalyticGas.class;

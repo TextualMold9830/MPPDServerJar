@@ -416,11 +416,9 @@ class ClientThread implements Callable<String> {
     }
 
     private void sendInitData() {
-        /*
         //add here a code which sends texturepack
         packet.packAndAddTextures("D:\\temp\\test_texture.zip");
         flush();
-         */
 
         packet.packAndAddLevel(level, clientHero);
         packet.packAndAddHero(clientHero);

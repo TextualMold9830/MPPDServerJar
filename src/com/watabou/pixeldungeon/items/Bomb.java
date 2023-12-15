@@ -40,7 +40,7 @@ public class Bomb extends Item {
 
 	{
 		name = "bomb";
-		image = ItemSpriteSheet.BOMB;
+		image(ItemSpriteSheet.BOMB);
 		defaultAction = AC_THROW;
 		stackable = true;
 	}

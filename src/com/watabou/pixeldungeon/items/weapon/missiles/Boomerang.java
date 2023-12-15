@@ -28,7 +28,7 @@ public class Boomerang extends MissileWeapon {
 
 	{
 		name = "boomerang";
-		image = ItemSpriteSheet.BOOMERANG;
+		image(ItemSpriteSheet.BOOMERANG);
 
 		STR = 10;
 

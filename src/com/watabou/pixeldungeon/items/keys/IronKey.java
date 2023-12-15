@@ -31,7 +31,7 @@ public class IronKey extends Key {
 
 	{
 		name = "iron key";
-		image = ItemSpriteSheet.IRON_KEY;
+		image(ItemSpriteSheet.IRON_KEY);
 	}
 
 	@Override

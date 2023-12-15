@@ -83,7 +83,7 @@ public class Fadeleaf extends com.watabou.pixeldungeon.plants.Plant {
 			plantName = "Fadeleaf";
 
 			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_FADELEAF;
+			image(ItemSpriteSheet.SEED_FADELEAF);
 
 			plantClass = Fadeleaf.class;
 			alchemyClass = PotionOfMindVision.class;

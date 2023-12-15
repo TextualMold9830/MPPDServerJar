@@ -29,7 +29,6 @@ import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.effects.SpellSprite;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.scrolls.ScrollOfRecharging;
-import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
 
 public class Food extends Item {
@@ -44,7 +43,13 @@ public class Food extends Item {
 	{
 		stackable = true;
 		name = "ration of food";
-		image = ItemSpriteSheet.RATION;
+		//image = ItemSpriteSheet.RATION;
+		image(1);
+	}
+
+	@Override
+	public String spriteSheet() {
+		return "test_item.png";
 	}
 
 	@Override

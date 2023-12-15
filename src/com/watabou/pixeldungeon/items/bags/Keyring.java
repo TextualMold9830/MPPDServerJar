@@ -25,7 +25,7 @@ public class Keyring extends Bag {
 
 	{
 		name = "key ring";
-		image = ItemSpriteSheet.KEYRING;
+		image(ItemSpriteSheet.KEYRING);
 
 		size = 12;
 	}

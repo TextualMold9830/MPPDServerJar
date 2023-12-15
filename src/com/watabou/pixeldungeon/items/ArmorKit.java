@@ -42,7 +42,7 @@ public class ArmorKit extends com.watabou.pixeldungeon.items.Item {
 
 	{
 		name = "armor kit";
-		image = ItemSpriteSheet.KIT;
+		image(ItemSpriteSheet.KIT);
 
 		unique = true;
 	}

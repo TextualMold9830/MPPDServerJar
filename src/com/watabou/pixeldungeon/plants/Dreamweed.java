@@ -53,7 +53,7 @@ public class Dreamweed extends Plant {
 			plantName = "Dreamweed";
 			
 			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_DREAMWEED;
+			image(ItemSpriteSheet.SEED_DREAMWEED);
 			
 			plantClass = Dreamweed.class;
 			alchemyClass = PotionOfInvisibility.class;

@@ -61,7 +61,7 @@ public class Icecap extends com.watabou.pixeldungeon.plants.Plant {
 			plantName = "Icecap";
 
 			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_ICECAP;
+			image(ItemSpriteSheet.SEED_ICECAP);
 
 			plantClass = Icecap.class;
 			alchemyClass = PotionOfFrost.class;

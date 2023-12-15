@@ -36,7 +36,7 @@ public class PhantomFish extends Item {
 
 	{
 		name = "phantom fish";
-		image = ItemSpriteSheet.PHANTOM;
+		image(ItemSpriteSheet.PHANTOM);
 
 		unique = true;
 	}

@@ -32,7 +32,7 @@ public class Dewdrop extends Item {
 
 	{
 		name = "dewdrop";
-		image = ItemSpriteSheet.DEWDROP;
+		image(ItemSpriteSheet.DEWDROP);
 
 		stackable = true;
 	}

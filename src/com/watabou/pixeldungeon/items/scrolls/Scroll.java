@@ -93,7 +93,7 @@ public abstract class Scroll extends Item {
 
 	public Scroll() {
 		super();
-		image = handler.image( this );
+		image(handler.image( this ));
 		rune = handler.label( this );
 	}
 

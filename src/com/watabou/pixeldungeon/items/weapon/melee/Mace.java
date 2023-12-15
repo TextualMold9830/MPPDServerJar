@@ -23,7 +23,7 @@ public class Mace extends MeleeWeapon {
 
 	{
 		name = "mace";
-		image = ItemSpriteSheet.MACE;
+		image(ItemSpriteSheet.MACE);
 	}
 
 	public Mace() {

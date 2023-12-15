@@ -49,7 +49,7 @@ public class WarriorArmor extends ClassArmor {
 
 	{
 		name = "warrior suit of armor";
-		image = ItemSpriteSheet.ARMOR_WARRIOR;
+		image(ItemSpriteSheet.ARMOR_WARRIOR);
 	}
 
 	@Override

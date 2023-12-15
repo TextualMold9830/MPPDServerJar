@@ -23,7 +23,7 @@ public class Quarterstaff extends MeleeWeapon {
 
 	{
 		name = "quarterstaff";
-		image = ItemSpriteSheet.QUARTERSTAFF;
+		image(ItemSpriteSheet.QUARTERSTAFF);
 	}
 
 	public Quarterstaff() {

@@ -39,7 +39,7 @@ public class HuntressArmor extends ClassArmor {
 
 	{
 		name = "huntress cloak";
-		image = ItemSpriteSheet.ARMOR_HUNTRESS;
+		image(ItemSpriteSheet.ARMOR_HUNTRESS);
 	}
 
 	private HashMap<Callback, Mob> targets = new HashMap<Callback, Mob>();

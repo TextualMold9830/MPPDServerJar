@@ -48,7 +48,7 @@ public class ScrollOfWipeOut extends Item {
 
 	{
 		name = "Scroll of Wipe Out";
-		image = ItemSpriteSheet.SCROLL_WIPE_OUT;
+		image(ItemSpriteSheet.SCROLL_WIPE_OUT);
 
 		stackable = true;
 		defaultAction = AC_READ;

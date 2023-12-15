@@ -23,7 +23,7 @@ public class Sword extends MeleeWeapon {
 
 	{
 		name = "sword";
-		image = ItemSpriteSheet.SWORD;
+		image(ItemSpriteSheet.SWORD);
 	}
 
 	public Sword() {

@@ -24,7 +24,7 @@ public class DriedRose extends Item {
 
 	{
 		name = "dried rose";
-		image = ItemSpriteSheet.ROSE;
+		image(ItemSpriteSheet.ROSE);
 
 		unique = true;
 	}

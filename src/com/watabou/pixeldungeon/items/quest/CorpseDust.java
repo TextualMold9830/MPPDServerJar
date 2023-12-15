@@ -24,7 +24,7 @@ public class CorpseDust extends Item {
 
 	{
 		name = "corpse dust";
-		image = ItemSpriteSheet.DUST;
+		image(ItemSpriteSheet.DUST);
 
 		cursed = true;
 		cursedKnown = true;

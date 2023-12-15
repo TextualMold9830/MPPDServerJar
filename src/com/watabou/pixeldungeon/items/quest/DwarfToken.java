@@ -24,7 +24,7 @@ public class DwarfToken extends Item {
 
 	{
 		name = "dwarf token";
-		image = ItemSpriteSheet.TOKEN;
+		image(ItemSpriteSheet.TOKEN);
 
 		stackable = true;
 		unique = true;

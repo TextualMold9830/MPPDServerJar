@@ -50,7 +50,7 @@ public class Rotberry extends com.watabou.pixeldungeon.plants.Plant {
 			plantName = "Rotberry";
 
 			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_ROTBERRY;
+			image(ItemSpriteSheet.SEED_ROTBERRY);
 
 			plantClass = Rotberry.class;
 			alchemyClass = PotionOfStrength.class;

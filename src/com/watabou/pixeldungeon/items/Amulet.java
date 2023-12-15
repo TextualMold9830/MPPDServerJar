@@ -35,7 +35,7 @@ public class Amulet extends Item {
 
 	{
 		name = "Amulet of Yendor";
-		image = ItemSpriteSheet.AMULET;
+		image(ItemSpriteSheet.AMULET);
 
 		unique = true;
 	}

@@ -39,7 +39,7 @@ public class MageArmor extends ClassArmor {
 
 	{
 		name = "mage robe";
-		image = ItemSpriteSheet.ARMOR_MAGE;
+		image(ItemSpriteSheet.ARMOR_MAGE);
 	}
 
 	@Override

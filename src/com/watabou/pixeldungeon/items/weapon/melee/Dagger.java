@@ -23,7 +23,7 @@ public class Dagger extends MeleeWeapon {
 
 	{
 		name = "dagger";
-		image = ItemSpriteSheet.DAGGER;
+		image(ItemSpriteSheet.DAGGER);
 	}
 
 	public Dagger() {

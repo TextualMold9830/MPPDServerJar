@@ -24,7 +24,7 @@ public class ScaleArmor extends Armor {
 
 	{
 		name = "scale armor";
-		image = ItemSpriteSheet.ARMOR_SCALE;
+		image(ItemSpriteSheet.ARMOR_SCALE);
 	}
 
 	public ScaleArmor() {

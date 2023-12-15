@@ -24,7 +24,7 @@ public class LeatherArmor extends Armor {
 
 	{
 		name = "leather armor";
-		image = ItemSpriteSheet.ARMOR_LEATHER;
+		image(ItemSpriteSheet.ARMOR_LEATHER);
 	}
 
 	public LeatherArmor() {

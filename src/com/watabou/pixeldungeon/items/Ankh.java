@@ -24,7 +24,7 @@ public class Ankh extends Item {
 	{
 		stackable = true;
 		name = "Ankh";
-		image = ItemSpriteSheet.ANKH;
+		image(ItemSpriteSheet.ANKH);
 	}
 
 	@Override

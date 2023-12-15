@@ -23,7 +23,7 @@ public class WarHammer extends MeleeWeapon {
 
 	{
 		name = "war hammer";
-		image = ItemSpriteSheet.WAR_HAMMER;
+		image(ItemSpriteSheet.WAR_HAMMER);
 	}
 
 	public WarHammer() {

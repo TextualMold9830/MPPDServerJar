@@ -24,7 +24,7 @@ public class DarkGold extends Item {
 
 	{
 		name = "dark gold ore";
-		image = ItemSpriteSheet.ORE;
+		image(ItemSpriteSheet.ORE);
 
 		stackable = true;
 		unique = true;

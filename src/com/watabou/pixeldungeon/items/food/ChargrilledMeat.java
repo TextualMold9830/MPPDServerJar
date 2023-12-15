@@ -24,7 +24,7 @@ public class ChargrilledMeat extends com.watabou.pixeldungeon.items.food.Food {
 
 	{
 		name = "chargrilled meat";
-		image = ItemSpriteSheet.STEAK;
+		image(ItemSpriteSheet.STEAK);
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 	}
 

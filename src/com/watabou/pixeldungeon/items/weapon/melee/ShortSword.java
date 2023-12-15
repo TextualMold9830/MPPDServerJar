@@ -48,7 +48,7 @@ public class ShortSword extends MeleeWeapon {
 
 	{
 		name = "short sword";
-		image = ItemSpriteSheet.SHORT_SWORD;
+		image(ItemSpriteSheet.SHORT_SWORD);
 	}
 
 	public ShortSword() {

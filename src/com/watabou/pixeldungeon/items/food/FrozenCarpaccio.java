@@ -35,7 +35,7 @@ public class FrozenCarpaccio extends com.watabou.pixeldungeon.items.food.Food {
 
 	{
 		name = "frozen carpaccio";
-		image = ItemSpriteSheet.CARPACCIO;
+		image(ItemSpriteSheet.CARPACCIO);
 		energy = Hunger.STARVING - Hunger.HUNGRY;
 	}
 

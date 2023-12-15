@@ -25,7 +25,7 @@ public class Dart extends MissileWeapon {
 
 	{
 		name = "dart";
-		image = ItemSpriteSheet.DART;
+		image(ItemSpriteSheet.DART);
 	}
 
 	public Dart() {

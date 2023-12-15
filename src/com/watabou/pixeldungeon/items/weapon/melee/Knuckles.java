@@ -23,7 +23,7 @@ public class Knuckles extends MeleeWeapon {
 
 	{
 		name = "knuckleduster";
-		image = ItemSpriteSheet.KNUCKLEDUSTER;
+		image(ItemSpriteSheet.KNUCKLEDUSTER);
 	}
 
 	public Knuckles() {

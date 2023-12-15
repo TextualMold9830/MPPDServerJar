@@ -50,7 +50,7 @@ public class TomeOfMastery extends Item {
 		//TODO fix me!
 		//name = Dungeon.hero != null && Dungeon.hero.subClass != HeroSubClass.NONE ? "Tome of Remastery" : "Tome of Mastery";
 		name = "Tome of Mastery";
-		image = ItemSpriteSheet.MASTERY;
+		image(ItemSpriteSheet.MASTERY);
 
 		unique = true;
 	}

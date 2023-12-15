@@ -42,7 +42,7 @@ public class Weightstone extends com.watabou.pixeldungeon.items.Item {
 
 	{
 		name = "weightstone";
-		image = ItemSpriteSheet.WEIGHT;
+		image(ItemSpriteSheet.WEIGHT);
 
 		stackable = true;
 	}

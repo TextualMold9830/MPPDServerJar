@@ -44,7 +44,7 @@ public class RogueArmor extends ClassArmor {
 
 	{
 		name = "rogue garb";
-		image = ItemSpriteSheet.ARMOR_ROGUE;
+		image(ItemSpriteSheet.ARMOR_ROGUE);
 	}
 
 	@Override

@@ -50,7 +50,7 @@ public class Pickaxe extends Weapon {
 
 	{
 		name = "pickaxe";
-		image = ItemSpriteSheet.PICKAXE;
+		image(ItemSpriteSheet.PICKAXE);
 
 		unique = true;
 

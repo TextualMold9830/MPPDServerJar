@@ -23,7 +23,7 @@ public class Longsword extends MeleeWeapon {
 
 	{
 		name = "longsword";
-		image = ItemSpriteSheet.LONG_SWORD;
+		image(ItemSpriteSheet.LONG_SWORD);
 	}
 
 	public Longsword() {

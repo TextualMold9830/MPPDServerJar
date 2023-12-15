@@ -24,7 +24,7 @@ public class MailArmor extends Armor {
 
 	{
 		name = "mail armor";
-		image = ItemSpriteSheet.ARMOR_MAIL;
+		image(ItemSpriteSheet.ARMOR_MAIL);
 	}
 
 	public MailArmor() {

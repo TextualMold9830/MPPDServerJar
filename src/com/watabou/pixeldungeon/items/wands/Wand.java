@@ -127,7 +127,7 @@ public abstract class Wand extends KindOfWeapon {
 		super();
 
 		try {
-			image = handler.image( this );
+			image(handler.image( this ));
 			wood = handler.label( this );
 		} catch (Exception e) {
 			// Wand of Magic Missile

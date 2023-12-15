@@ -34,7 +34,7 @@ public class Torch extends Item {
 
 	{
 		name = "torch";
-		image = ItemSpriteSheet.TORCH;
+		image(ItemSpriteSheet.TORCH);
 
 		stackable = true;
 

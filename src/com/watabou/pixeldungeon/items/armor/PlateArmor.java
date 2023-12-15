@@ -24,7 +24,7 @@ public class PlateArmor extends Armor {
 
 	{
 		name = "plate armor";
-		image = ItemSpriteSheet.ARMOR_PLATE;
+		image(ItemSpriteSheet.ARMOR_PLATE);
 	}
 
 	public PlateArmor() {

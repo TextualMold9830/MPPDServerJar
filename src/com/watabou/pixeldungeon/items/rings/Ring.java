@@ -107,7 +107,7 @@ public class Ring extends EquipableItem {
 	}
 	
 	public void syncGem() {
-		image	= handler.image( this );
+		image(handler.image( this ));
 		gem		= handler.label( this );
 	}
 	

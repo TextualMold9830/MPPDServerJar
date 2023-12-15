@@ -28,7 +28,7 @@ public class Tamahawk extends MissileWeapon {
 
 	{
 		name = "tomahawk";
-		image = ItemSpriteSheet.TOMAHAWK;
+		image(ItemSpriteSheet.TOMAHAWK);
 
 		STR = 17;
 	}

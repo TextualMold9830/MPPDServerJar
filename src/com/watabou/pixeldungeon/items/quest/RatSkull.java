@@ -24,7 +24,7 @@ public class RatSkull extends Item {
 
 	{
 		name = "giant rat skull";
-		image = ItemSpriteSheet.SKULL;
+		image(ItemSpriteSheet.SKULL);
 
 		unique = true;
 	}

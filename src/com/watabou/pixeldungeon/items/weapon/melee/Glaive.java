@@ -23,7 +23,7 @@ public class Glaive extends MeleeWeapon {
 
 	{
 		name = "glaive";
-		image = ItemSpriteSheet.GLAIVE;
+		image(ItemSpriteSheet.GLAIVE);
 	}
 
 	public Glaive() {

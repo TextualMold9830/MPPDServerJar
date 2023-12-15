@@ -24,7 +24,7 @@ public class ClothArmor extends Armor {
 
 	{
 		name = "cloth armor";
-		image = ItemSpriteSheet.ARMOR_CLOTH;
+		image(ItemSpriteSheet.ARMOR_CLOTH);
 	}
 
 	public ClothArmor() {

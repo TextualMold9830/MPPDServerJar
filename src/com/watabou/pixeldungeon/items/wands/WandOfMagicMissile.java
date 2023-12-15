@@ -51,7 +51,7 @@ public class WandOfMagicMissile extends Wand {
 
 	{
 		name = "Wand of Magic Missile";
-		image = ItemSpriteSheet.WAND_MAGIC_MISSILE;
+		image(ItemSpriteSheet.WAND_MAGIC_MISSILE);
 	}
 
 	@Override

@@ -25,7 +25,7 @@ public class WandHolster extends com.watabou.pixeldungeon.items.bags.Bag {
 
 	{
 		name = "wand holster";
-		image = ItemSpriteSheet.HOLSTER;
+		image(ItemSpriteSheet.HOLSTER);
 
 		size = 12;
 	}

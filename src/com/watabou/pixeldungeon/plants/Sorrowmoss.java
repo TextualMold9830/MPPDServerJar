@@ -59,7 +59,7 @@ public class Sorrowmoss extends com.watabou.pixeldungeon.plants.Plant {
 			plantName = "Sorrowmoss";
 
 			name = "seed of " + plantName;
-			image = ItemSpriteSheet.SEED_SORROWMOSS;
+			image(ItemSpriteSheet.SEED_SORROWMOSS);
 
 			plantClass = Sorrowmoss.class;
 			alchemyClass = PotionOfToxicGas.class;

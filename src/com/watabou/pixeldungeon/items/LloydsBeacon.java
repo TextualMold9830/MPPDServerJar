@@ -60,7 +60,7 @@ public class LloydsBeacon extends Item {
 
 	{
 		name = "lloyd's beacon";
-		image = ItemSpriteSheet.BEACON;
+		image(ItemSpriteSheet.BEACON);
 
 		unique = true;
 	}
