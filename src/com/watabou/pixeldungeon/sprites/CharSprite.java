@@ -38,6 +38,7 @@ import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 import java.util.Set;
@@ -69,6 +70,11 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 			return new JSONObject();
 		}
 		return emo.toJsonObject();
+	}
+
+	@Nullable
+	public String getSpriteAsset() {
+		return null;
 	}
 
 	public enum State {

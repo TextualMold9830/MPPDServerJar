@@ -17,6 +17,7 @@ import com.watabou.pixeldungeon.items.bags.Bag;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.plants.Plant;
 
+import com.watabou.pixeldungeon.sprites.CharSprite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -153,6 +154,7 @@ public class NetworkPacket {
         JSONObject object = new JSONObject();
         try {
             if (actor instanceof Char) {
+                Char character = (Char) actor;
                 int id = actor.id();
                 if (id <= 0) {
                     return new JSONObject();
@@ -162,15 +164,16 @@ public class NetworkPacket {
                     object.put("type", "hero");
                 } else {
                     object.put("type", "character");
-                    /*if (actor instanceof Rat)
-                    {
-                      object.put("sprite_asset","custom_rat.json");
-                    } else */
-                    if (((Char) actor).getSprite() != null) {
-                        object.put("sprite_name", ((Char) actor).getSprite().spriteName());
+                    if (character.getSprite() != null) {
+                        String spriteAsset = character.getSprite().getSpriteAsset();
+                        if (spriteAsset != null) {
+                            object.put("sprite_name", ((Char) actor).getSprite().spriteName());
+                        } else
+                        {
+                            object.put("sprite_asset",spriteAsset);
+                        }
                     }
                 }
-                Char character = (Char) actor;
                 String name = character.name;
                 int hp = character.getHP();
                 int ht = character.getHT();
@@ -181,7 +184,8 @@ public class NetworkPacket {
                 object.put("name", name);
 
                 object.put("emo", character.getEmoJsonObject());
-                if (((Char) actor).getSprite() != null) {
+                CharSprite sprite = character.getSprite();
+                if (sprite != null) {
                     JSONArray states = putToJSONArray(((Char) actor).getSprite().states().toArray());
                     object.put("states", states);
                 }
