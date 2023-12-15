@@ -29,6 +29,7 @@ import com.watabou.pixeldungeon.network.SpecialSlot;
 import com.watabou.pixeldungeon.plants.Plant.Seed;
 import com.watabou.pixeldungeon.utils.Utils;
 
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -137,9 +138,15 @@ public class WndBag extends WndTabbed {
 	}
 
 	@Override
-	public void onSelect(int button, JSONObject args) {
+	public void onSelect(int button, @Nullable JSONObject args) {
 		try {
-			selectItem(getOwnerHero().belongings.getItemInSlot(Utils.JsonArrayToListInteger(args.getJSONArray("item_path"))));
+			if (args.getInt("button") == -1)
+			{
+				selectItem(null);
+			}
+			else {
+				selectItem(getOwnerHero().belongings.getItemInSlot(Utils.JsonArrayToListInteger(args.getJSONArray("item_path"))));
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 			assert false;
@@ -147,7 +154,7 @@ public class WndBag extends WndTabbed {
 		hide();
 	}
 
-	public void selectItem(Item item){
+	public void selectItem(@Nullable Item item){
 		if (listener!=null){
 			listener.onSelect(item);
 		}
