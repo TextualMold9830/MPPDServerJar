@@ -139,7 +139,11 @@ public abstract class Char extends Actor {
 
 			effectiveDamage = attackProc( enemy, effectiveDamage );
 			effectiveDamage = enemy.defenseProc( this, effectiveDamage );
-			enemy.damage( effectiveDamage, this );
+
+			enemy.getSprite().bloodBurstA( getSprite().center(), effectiveDamage );
+			enemy.getSprite().flash();
+
+			enemy.damage( effectiveDamage, this ); //sprite can be removed due to death
 
 
 			for (int i = 0; i < visibleFight.length; i++) {
@@ -154,9 +158,6 @@ public abstract class Char extends Actor {
 					Camera.shake( GameMath.gate( 1, effectiveDamage / (enemy.getHT() / 4), 5), 0.3f );
 				}
 			}
-
-			enemy.getSprite().bloodBurstA( getSprite().center(), effectiveDamage );
-			enemy.getSprite().flash();
 
 			if (false) {//(!enemy.isAlive() && visibleFight) {
 				if (enemy instanceof Hero) {
