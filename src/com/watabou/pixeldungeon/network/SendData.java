@@ -221,7 +221,8 @@ public class SendData {
     }
 
     public static void sendWindowStory(int storyID) {
-        ClientThread.sendAll(Codes.SHOW_WINDOW, WndStory.ID());
+        //ClientThread.sendAll(Codes.SHOW_WINDOW, WndStory.ID());
+        //todo
     }
 
     //----------
