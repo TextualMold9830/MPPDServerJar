@@ -167,10 +167,10 @@ public class NetworkPacket {
                     if (character.getSprite() != null) {
                         String spriteAsset = character.getSprite().getSpriteAsset();
                         if (spriteAsset != null) {
-                            object.put("sprite_name", ((Char) actor).getSprite().spriteName());
+                            object.put("sprite_asset",spriteAsset);
                         } else
                         {
-                            object.put("sprite_asset",spriteAsset);
+                            object.put("sprite_name", ((Char) actor).getSprite().spriteName());
                         }
                     }
                 }
