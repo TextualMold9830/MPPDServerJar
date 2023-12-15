@@ -18,6 +18,7 @@
  */
 package com.nikita22007.multiplayer.server.sprites;
 
+import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.DungeonTilemap;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.network.SendData;
@@ -46,14 +47,14 @@ public class MissileSprite {
 
 	public static void reset(int from, int to, Item item, Callback listener) {
 		if (item == null) {
-			reset(from, to, ItemSpriteSheet.SMTH, null, listener);
+			reset(from, to, Assets.ITEMS, ItemSpriteSheet.SMTH, null, listener);
 			GLog.n("Missile sprite of NULL item");
 		} else {
-			reset(from, to, item.image(), item.glowing(), listener);
+			reset(from, to, item.spriteSheet(), item.image(), item.glowing(), listener);
 		}
 	}
 
-	public static void reset(int from, int to, int image, ItemSpriteGlowing glowing, Callback listener) {
+	public static void reset(int from, int to, String spriteSheet, int image, ItemSpriteGlowing glowing, Callback listener) {
 		float angularSpeed, angle; //degrees
 
 		PointF start = DungeonTilemap.tileToWorld(from);
@@ -81,6 +82,7 @@ public class MissileSprite {
 			action.put("angular_speed", angularSpeed);
 			action.put("angle", angle);
 
+			action.put("item_sprite_sheet", spriteSheet);
 			action.put("item_image", image);
 			if (glowing != null){
 				action.put("item_glowing", glowing.toJsonObject());

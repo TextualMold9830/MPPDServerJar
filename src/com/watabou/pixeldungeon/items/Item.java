@@ -127,7 +127,7 @@ public abstract class Item implements Bundlable {
 				itemObj.put("info", item.info(hero));
 				itemObj.put("ui", item.itemUI(hero));
 			}
-			//itemObj.put("sprite_sheet")
+			itemObj.put("sprite_sheet", item.spriteSheet());
 			itemObj.put("image", item.image());
 			itemObj.put("name", item.name());
 			itemObj.put("stackable", item.stackable);
@@ -203,6 +203,10 @@ public abstract class Item implements Bundlable {
 		ui.put("top_right", topRight);
 		ui.put("bottom_right", bottomRight);
 		return ui;
+	}
+
+	public String spriteSheet() {
+		return Assets.ITEMS;
 	}
 
 	public boolean isKnown(){

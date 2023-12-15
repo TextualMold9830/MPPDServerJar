@@ -416,6 +416,7 @@ action missile_sprite_visual
     "angular_speed": 720f //degrees
     "angle": 0f //degrees
     //item:
+    item_sprite_sheet: "items.png" //index in spritesheet
     item_image: 3 //index in spritesheet
     item_glowing: glowing //see item
 }
