@@ -18,16 +18,12 @@
 package com.watabou.pixeldungeon.scenes;
 
 
-
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Music;
-import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.effects.BannerSprites;
-import com.watabou.pixeldungeon.ui.ExitButton;
-import com.watabou.pixeldungeon.ui.PrefsButton;
 
 import java.awt.*;
 

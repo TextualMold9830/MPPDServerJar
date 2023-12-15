@@ -131,10 +131,6 @@ public class PixelDungeon extends Game {
 
 	// *****************************
 
-	public static void scaleUp( boolean value ) {
-		switchScene( TitleScene.class );
-	}
-
 	public static boolean scaleUp() {
 		return true;
 	}
@@ -174,17 +170,6 @@ public class PixelDungeon extends Game {
 	}
 	public static void customRelayPort(int value) {
 		textualmold9830.Preferences.customRelayPort = value;
-	}
-
-
-
-	public static void music( boolean value ) {
-		Music.INSTANCE.enable( value );
-		textualmold9830.Preferences.music = value;
-	}
-
-	public static boolean music() {
-		return textualmold9830.Preferences.music;
 	}
 
 

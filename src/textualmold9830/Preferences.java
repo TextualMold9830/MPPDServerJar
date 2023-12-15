@@ -16,12 +16,11 @@ public class Preferences {
     public static boolean useCustomRelay = false;
     public static String customRelayAddress = "";
     public static int customRelayPort = 0;
-    public static boolean music = true;
     public static float timeToSkipTurn = 10;
 
     public static void save() {
         try {
-            Files.write(Path.of("config.json"), gson.toJson(new PreferncesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, music, timeToSkipTurn)).getBytes());
+            Files.write(Path.of("config.json"), gson.toJson(new PreferncesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, timeToSkipTurn)).getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,7 +37,6 @@ public class Preferences {
                 useCustomRelay = prefs.useCustomRelay;
                 customRelayAddress = prefs.customRelayAddress;
                 customRelayPort = prefs.customRelayPort;
-                music = prefs.music;
                 timeToSkipTurn = prefs.timeToSkipTurn;
             } catch (IOException e) {
                 e.printStackTrace();

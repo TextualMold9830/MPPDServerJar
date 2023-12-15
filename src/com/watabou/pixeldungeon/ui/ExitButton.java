@@ -17,10 +17,7 @@
  */
 package com.watabou.pixeldungeon.ui;
 
-import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.nikita22007.multiplayer.noosa.audio.Sample;
-import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.scenes.TitleScene;
 
