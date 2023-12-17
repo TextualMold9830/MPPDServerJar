@@ -14,11 +14,13 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import static com.watabou.pixeldungeon.Dungeon.heroes;
 
 
 public class Server extends Thread {
+    public static ArrayList<String> textures = new ArrayList<>();
     public static PluginManager pluginManager = new PluginManager();
 
     //primitive vars

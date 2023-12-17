@@ -34,7 +34,6 @@ public class LobbyLevel extends DeadEndLevel {
                 Painter.set(this, pos,PARALYTIC_TRAP);
                 pos+=1;
                 Painter.set(this, pos,POISON_TRAP);
-                pos+=1;
 
                 pos = center - 2-this.WIDTH-this.WIDTH;
 

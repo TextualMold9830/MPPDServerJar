@@ -435,5 +435,10 @@ class ClientThread implements Callable<String> {
 
         packet.packAndAddInterlevelSceneState("fade_out", null);
         flush();
+        Server.textures.forEach(this::sendTexture);
+    }
+    private void sendTexture(String texturePath){
+        packet.packAndAddTextures(texturePath);
+        flush();
     }
 }
