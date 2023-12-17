@@ -416,8 +416,7 @@ class ClientThread implements Callable<String> {
     }
 
     private void sendInitData() {
-        //add here a code which sends texturepack
-        //packet.packAndAddTextures("D:\\temp\\test_texture.zip");
+        Server.textures.forEach(this::sendTexture);
         flush();
 
         packet.packAndAddLevel(level, clientHero);
@@ -435,7 +434,6 @@ class ClientThread implements Callable<String> {
 
         packet.packAndAddInterlevelSceneState("fade_out", null);
         flush();
-        Server.textures.forEach(this::sendTexture);
     }
     private void sendTexture(String texturePath){
         packet.packAndAddTextures(texturePath);
