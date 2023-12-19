@@ -5,9 +5,6 @@ import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,11 +15,22 @@ public class Main {
         Dungeon.init();
         InterLevelSceneServer.descend(null);
         Server.pluginManager.loadPlugins();
+        initTextures();
 
     }
     private static void initFolders(){
-            (new File("plugins")).mkdirs();
-            (new File("config")).mkdirs();
-            (new File("save")).mkdirs();
+            new File("plugins").mkdirs();
+            new File("config").mkdirs();
+            new File("save").mkdirs();
+            new File("textures").mkdirs();
+    }
+    private static void initTextures(){
+        File textureDir = new File("textures");
+        for (File texture : textureDir.listFiles()) {
+            if (texture.getName().endsWith(".zip")) {
+                Server.textures.add(texture.getAbsolutePath());
+                System.out.println("Added texture: "+ texture.getName().replace(".zip",""));
+            }
+        }
     }
 }

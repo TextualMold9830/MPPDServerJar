@@ -37,15 +37,15 @@ public class PluginLoader {
                             Class<?> clazz = classLoader.loadClass(className);
                             if (Plugin.class.isAssignableFrom(clazz) && !clazz.isInterface()) {
                                 // Create an instance of the plugin class
-                                Plugin plugin = null;
+                                Plugin plugin;
                                 try {
                                     plugin = (Plugin) clazz.getDeclaredConstructor().newInstance();
+                                    plugins.add(plugin);
+                                    System.out.println("found plugin: " + plugin.getName());
                                 } catch (InstantiationException | NoSuchMethodException | InvocationTargetException |
                                          IllegalAccessException e) {
                                     e.printStackTrace();
                                 }
-                                plugins.add(plugin);
-                                System.out.println("found plugin: " + plugin.getName());
                             }
                         }
                     }

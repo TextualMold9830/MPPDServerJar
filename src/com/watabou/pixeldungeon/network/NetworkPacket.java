@@ -1,7 +1,6 @@
 package com.watabou.pixeldungeon.network;
 
-import  com.nikita22007.multiplayer.utils.Log;
-
+import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
@@ -10,13 +9,11 @@ import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.hero.Belongings;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
-import com.watabou.pixeldungeon.actors.mobs.Rat;
 import com.watabou.pixeldungeon.items.Heap;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.bags.Bag;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.plants.Plant;
-
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
