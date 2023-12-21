@@ -66,7 +66,7 @@ public class Food extends Item {
 			if (!Preferences.sharedHunger) {
 				hero.buff(Hunger.class).satisfy(energy);
 			}else {
-				Arrays.stream(Dungeon.heroes).forEach(hero1 -> hero.buff(Hunger.class).satisfy(energy));
+				Arrays.stream(Dungeon.heroes).forEach(hero1 -> hero1.buff(Hunger.class).satisfy(energy));
 			}
 			GLog.i( message );
 
