@@ -49,12 +49,12 @@ public class ScrollOfEnchantment extends InventoryScroll {
 			((Armor)item).inscribe();
 
 		}
-
 		item.fix();
 
 		curUser.getSprite().emitter().start( Speck.factory( Speck.LIGHT ), 0.1f, 5 );
 		Enchanting.show( curUser, item );
 		GLog.w( TXT_GLOWS, item.name() );
+		item.SendSelfUpdate();
 	}
 
 	@Override

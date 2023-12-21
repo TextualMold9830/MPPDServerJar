@@ -32,8 +32,6 @@ import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
-import org.jetbrains.annotations.Nullable;
-
 import static com.watabou.pixeldungeon.network.SendData.sendUpdateItemFull;
 
 abstract public class Weapon extends KindOfWeapon {
@@ -221,7 +219,6 @@ abstract public class Weapon extends KindOfWeapon {
 		while (ench.getClass() == oldEnchantment) {
 			ench = Enchantment.random();
 		}
-
 		return enchant( ench );
 	}
 

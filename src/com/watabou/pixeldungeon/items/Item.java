@@ -419,8 +419,8 @@ public abstract class Item implements Bundlable {
 
 		level++;
 		fix();
-
 		sendUpdateItemFull(this);
+		SendSelfUpdate();
 		return this;
 	}
 
@@ -765,10 +765,10 @@ public abstract class Item implements Bundlable {
 			sendUpdateItemFull(this);
 		}
 	}
-	protected void SendSelfUpdate(){
+	public void SendSelfUpdate(){
 		SendSelfUpdate(null);
 	}
-	protected void SendSelfUpdate(Hero heroToFlush){
+	public void SendSelfUpdate(Hero heroToFlush){
 		sendUpdateItemFull(this);
 		if (heroToFlush != null){
 			SendData.flush(heroToFlush);
