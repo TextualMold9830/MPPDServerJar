@@ -16,6 +16,7 @@ public class Main {
         InterLevelSceneServer.descend(null);
         Server.pluginManager.loadPlugins();
         initTextures();
+        System.out.println("Server started");
 
     }
     private static void initFolders(){

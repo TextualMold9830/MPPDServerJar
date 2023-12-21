@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 
-public enum Sample{
+public enum Sample {
 
 	INSTANCE;
 

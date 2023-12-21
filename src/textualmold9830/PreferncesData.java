@@ -9,6 +9,7 @@ public class PreferncesData {
     public  String customRelayAddress = "";
     public  int customRelayPort = 0;
     public float timeToSkipTurn = 10;
+    public boolean sharedHunger = false;
 
     public PreferncesData() {
     }

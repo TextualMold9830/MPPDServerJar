@@ -17,11 +17,10 @@
  */
 package com.watabou.pixeldungeon.items.food;
 
-import java.util.ArrayList;
-
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Badges;
+import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.Statistics;
 import com.watabou.pixeldungeon.actors.buffs.Hunger;
 import com.watabou.pixeldungeon.actors.hero.Hero;
@@ -31,6 +30,10 @@ import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
+import textualmold9830.Preferences;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Food extends Item {
 
@@ -60,7 +63,11 @@ public class Food extends Item {
 
 			detach( hero.belongings.backpack );
 
-			hero.buff( Hunger.class ).satisfy( energy );
+			if (!Preferences.sharedHunger) {
+				hero.buff(Hunger.class).satisfy(energy);
+			}else {
+				Arrays.stream(Dungeon.heroes).forEach(hero1 -> hero.buff(Hunger.class).satisfy(energy));
+			}
 			GLog.i( message );
 
 			switch (hero.heroClass) {
@@ -105,7 +112,7 @@ public class Food extends Item {
 	}
 
 	@Override
-	public boolean isUpgradable() {
+	public boolean isUpgradable()  {
 		return false;
 	}
 

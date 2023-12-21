@@ -17,6 +17,7 @@ public class Preferences {
     public static String customRelayAddress = "";
     public static int customRelayPort = 0;
     public static float timeToSkipTurn = 10;
+    public static boolean sharedHunger = true;
 
     public static void save() {
         try {
@@ -38,6 +39,7 @@ public class Preferences {
                 customRelayAddress = prefs.customRelayAddress;
                 customRelayPort = prefs.customRelayPort;
                 timeToSkipTurn = prefs.timeToSkipTurn;
+                sharedHunger = prefs.sharedHunger;
             } catch (IOException e) {
                 e.printStackTrace();
             }
