@@ -825,5 +825,8 @@ public class NetworkPacket {
             dataRef.get().put("texturepack", base64String);
         }
     }
+    public void packAndAddRawTextures(String data) {
+        dataRef.get().put("texturepack",data);
+    }
 
 }

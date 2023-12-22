@@ -5,6 +5,9 @@ import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,7 +32,11 @@ public class Main {
         File textureDir = new File("textures");
         for (File texture : textureDir.listFiles()) {
             if (texture.getName().endsWith(".zip")) {
-                Server.textures.add(texture.getAbsolutePath());
+                try {
+                    Server.textures.add(Base64.getEncoder().encodeToString(Files.readAllBytes(texture.toPath())));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 System.out.println("Added texture: "+ texture.getName().replace(".zip",""));
             }
         }

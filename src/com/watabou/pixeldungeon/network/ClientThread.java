@@ -435,8 +435,8 @@ class ClientThread implements Callable<String> {
         flush();
         Server.textures.forEach(this::sendTexture);
     }
-    private void sendTexture(String texturePath){
-        packet.packAndAddTextures(texturePath);
+    private void sendTexture(String textureData){
+        packet.packAndAddRawTextures(textureData);
         flush();
     }
 }
