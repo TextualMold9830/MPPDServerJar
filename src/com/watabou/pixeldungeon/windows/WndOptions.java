@@ -33,10 +33,6 @@ import java.util.ArrayList;
 
 public abstract class WndOptions extends Window {
 
-	private static final int WIDTH			= 120;
-	private static final int MARGIN 		= 2;
-	private static final int BUTTON_HEIGHT	= 20;
-
 	public WndOptions(Hero owner, String title, String message, String... options) {
 		super(owner);
 		sendWnd(null, null, title, null, message, options);
@@ -68,24 +64,6 @@ public abstract class WndOptions extends Window {
 	}
 	protected void sendWnd(WndOptionsParams params) {
 		SendData.sendWindow(getOwnerHero().networkID, "wnd_option", getId(), params.toJSONObject());
-	}
-
-	public WndOptions(String title, String message, String... options) {
-		init(title, message, options);
-	}
-	protected void init(String title, String message, String... options ) {
-
-		for (int i=0; i < options.length; i++) {
-			final int index = i;
-			RedButton btn = new RedButton( options[i] ) {
-				@Override
-				protected void onClick() {
-					hide();
-					onSelect( index );
-				}
-			};
-		}
-
 	}
 
 	protected WndOptions(Hero hero){
