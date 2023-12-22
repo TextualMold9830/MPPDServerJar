@@ -85,4 +85,9 @@ public class HeroAction {
 			this.target = target;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }
