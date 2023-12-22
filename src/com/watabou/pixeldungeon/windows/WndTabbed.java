@@ -19,6 +19,7 @@ package com.watabou.pixeldungeon.windows;
 
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
+import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.ui.Window;
 
 import java.awt.*;
@@ -29,7 +30,8 @@ public class WndTabbed extends Window {
 	protected ArrayList<Tab> tabs = new ArrayList<Tab>();
 	protected Tab selected;
 
-	public WndTabbed() {
+	public WndTabbed(Hero hero) {
+		super(hero);
 	}
 
 	protected Tab add( Tab tab ) {

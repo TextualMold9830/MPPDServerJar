@@ -68,7 +68,6 @@ import textualmold9830.plugins.events.HeroDoActionEvent;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import static com.watabou.pixeldungeon.network.SendData.*;
@@ -1452,8 +1451,7 @@ public class Hero extends Char {
 	}
 
 	public boolean hasWindow() {
-		HashMap<Integer, Window> windows = Window.windows.getOrDefault(this, null);
-		return (windows != null) && !windows.isEmpty();
+		return Window.hasWindow(this);
 	}
 
 	public int getGold() {

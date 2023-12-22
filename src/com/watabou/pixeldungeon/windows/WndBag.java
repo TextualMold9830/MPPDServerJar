@@ -118,9 +118,7 @@ public class WndBag extends WndTabbed {
 	}
 
 	public WndBag( Hero owner, Listener listener, Mode mode, String title ) {
-
-		super();
-		attachToHero(owner);
+		super(owner);
 
 		this.listener = listener;
 		this.mode = mode;  // internal

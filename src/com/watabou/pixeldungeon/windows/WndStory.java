@@ -17,6 +17,7 @@
  */
 package com.watabou.pixeldungeon.windows;
 
+import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.ui.Window;
 
 import java.util.HashMap;
@@ -74,7 +75,9 @@ public class WndStory extends Window {
 
 
 
-	public WndStory( String text ) {
+	public WndStory(Hero hero, String text ) {
+		super(hero);
+		throw new RuntimeException("Not implemented");
 	}
 
 	@Override

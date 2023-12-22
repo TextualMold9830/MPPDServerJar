@@ -20,25 +20,19 @@ package com.watabou.pixeldungeon.ui;
 
 import  com.nikita22007.multiplayer.utils.Log;
 import com.watabou.noosa.Group;
+import com.watabou.pixeldungeon.HeroHelp;
 import com.watabou.pixeldungeon.Settings;
 import com.watabou.pixeldungeon.actors.hero.Hero;
-import com.watabou.pixeldungeon.scenes.PixelScene;
 
-import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Window extends Group{
-
-	protected int width;
-	protected int height;
-
-
 	//todo: memory leak. Remove entries when hero removes
-	//todo: use Hero.NetworkID instead of Hero?
-	public static HashMap<Hero, HashMap<Integer, Window>> windows = new HashMap<>(Settings.maxPlayers);
-	public static HashMap<Hero, Integer> idCounter = new HashMap<>(Settings.maxPlayers); // contains last used Window.id for each hero
+	private static final Map<Integer, Map<Integer, Window>> windows = new HashMap<>(Settings.maxPlayers);
+	private static final Map<Integer, Integer> idCounter = new HashMap<>(Settings.maxPlayers); // contains last used Window.id for each hero
 
 	private Hero ownerHero;
 	//Each window CURRENTLY open for ownerHero has a unique id. Two windows can have the same id only with different ownerHero.
@@ -47,38 +41,36 @@ public class Window extends Group{
 	public static final int TITLE_COLOR = 0xFFFF44;
 
 	public Window() {
-		this(0, 0);
+		throw new AssertionError("Window without hero");
 	}
 
 	public Window(Hero hero) {
-		this();
 		attachToHero(hero);
 	}
 
-	protected synchronized void attachToHero(Hero hero) {
+	protected synchronized final void attachToHero(Hero hero) {
 		if (getId() > 0) {
 			if (hero != getOwnerHero()) {
-				assert false;
+				throw new AssertionError("Attaching window to different heroes");
 			}
 			return;
 		}
+		int heroId = HeroHelp.getHeroID(hero);
+
 		setOwnerHero(hero);
-		if (!idCounter.containsKey(hero)) {
-			idCounter.put(hero, 0);
+		if (!idCounter.containsKey(heroId)) {
+			idCounter.put(heroId, 0);
 		}
-		if (!windows.containsKey(hero)) {
-			windows.put(hero, new HashMap<>(3));
+		if (!windows.containsKey(heroId)) {
+			windows.put(heroId, new HashMap<>(3));
 		}
-		setId(idCounter.get(hero) + 1);
-		idCounter.put(hero, getId());
-		windows.get(hero).put(getId(), this);
+		setId(idCounter.get(heroId) + 1);
+		idCounter.put(heroId, getId());
+		windows.get(heroId).put(getId(), this);
 	}
 
 	public Window( int width, int height ){
 		super();
-		this.width = width;
-		this.height = height;
-
 	}
 
 	public static void OnButtonPressed(Hero hero, int ID, int button,  JSONObject res) {
@@ -95,12 +87,6 @@ public class Window extends Group{
 
 	}
 
-	public void resize( int w, int h ) {
-		this.width = w;
-		this.height = h;
-
-
-	}
 
 	public void hide() {
 		if (parent != null) {
@@ -113,9 +99,8 @@ public class Window extends Group{
 	public void destroy() {
 		super.destroy();
 
-
 		if (getOwnerHero() != null) {
-			Window removed = windows.get(ownerHero).remove(getId());
+			Window removed = windows.get(HeroHelp.getHeroID(getOwnerHero())).remove(getId());
 			if ((removed != null) && (removed != this)) {
 				throw new AssertionError("Removed window is not current Window");
 			}
@@ -152,5 +137,10 @@ public class Window extends Group{
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public static boolean hasWindow(Hero hero) {
+		Map<Integer, Window> heroWindows = windows.getOrDefault(HeroHelp.getHeroID(hero), null);
+		return (heroWindows != null) && !heroWindows.isEmpty();
 	}
 }
