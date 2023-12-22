@@ -9,12 +9,12 @@ import java.io.File;
 public class Main {
     public static void main(String[] args) {
         initFolders();
+        Server.pluginManager.loadPlugins();
         Preferences.load();
         Runtime.getRuntime().addShutdownHook(new Thread(Preferences::save));
         Server.startServer();
         Dungeon.init();
         InterLevelSceneServer.descend(null);
-        Server.pluginManager.loadPlugins();
         initTextures();
         System.out.println("Server started");
 

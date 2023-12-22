@@ -11,7 +11,7 @@ public class HeroEatFoodEvent extends Event implements Cancellable {
     public float energy;
     private boolean canceled = false;
 
-    public HeroEatFoodEvent(Hero hero, Food food) {
+    public HeroEatFoodEvent(Hero hero, Food food, float energy) {
         this.hero = hero;
         this.food = food;
     }

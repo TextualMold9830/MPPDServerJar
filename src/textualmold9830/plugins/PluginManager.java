@@ -1,6 +1,9 @@
 package textualmold9830.plugins;
 
+import com.watabou.pixeldungeon.BuildConfig;
+
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -36,8 +39,18 @@ public class PluginManager {
     public List<Plugin> getPlugins() {
         return plugins;
     }
-    public void fireEvent(Event event){
+    public void fireEvent(Event event) {
+        System.out.println(event.getEventName());
         plugins.forEach((plugin)->plugin.handleEvent(event));
+        if (BuildConfig.EVENT_LOGGING) {
+            try {
+                for (Field field : event.getClass().getFields()) {
+                    System.out.println(field.getName() + ": " + field.get(event));
+                }
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
     public void removePlugin(String pluginName){
         for (Plugin plugin: plugins) {

@@ -62,7 +62,7 @@ public class Food extends Item {
 	@Override
 	public void execute( Hero hero, String action ) {
 		if (action.equals( AC_EAT )) {
-			HeroEatFoodEvent event = new HeroEatFoodEvent(hero, this);
+			HeroEatFoodEvent event = new HeroEatFoodEvent(hero, this, energy);
 			Server.pluginManager.fireEvent(event);
 			detach( hero.belongings.backpack );
 			if (!event.isCancelled()) {
