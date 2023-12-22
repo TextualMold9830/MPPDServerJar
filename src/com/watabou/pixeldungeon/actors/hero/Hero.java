@@ -458,7 +458,7 @@ public class Hero extends Char {
 
 	private void setReady(boolean ready){
 		this.ready = ready;
-		SendData.sendHeroReady(HeroHelp.getHeroID(this),ready);
+		SendData.sendHeroReady(this.networkID,ready);
 	}
 
 	public void resendReady(){
@@ -473,7 +473,7 @@ public class Hero extends Char {
 	public void interrupt() {
 		if (isAlive() && curAction != null && curAction.dst != pos) {
 			lastAction = curAction;
-			sendResumeButtonVisible(HeroHelp.getHeroID(this), true);
+			sendResumeButtonVisible(this.networkID, true);
 		}
 		curAction = null;
 	}
@@ -484,7 +484,7 @@ public class Hero extends Char {
 			lastAction = null;
 			act();
 		}
-		sendResumeButtonVisible(HeroHelp.getHeroID(this), false);
+		sendResumeButtonVisible(this.networkID, false);
 	}
 
 	private boolean actMove( HeroAction.Move action ) {

@@ -299,7 +299,7 @@ public class Badges {
 
 		displayBadge( badge );*/
 		if (hero.lvl>=6){
-			SendData.sendBadgeLevelReached(HeroHelp.getHeroID(hero), Math.min(hero.lvl/6,4));
+			SendData.sendBadgeLevelReached(hero.networkID, Math.min(hero.lvl/6,4));
 		}
 	}
 
@@ -699,7 +699,7 @@ public class Badges {
 			saveNeeded = true;
 		}
 		*/
-		SendData.sendBadgeMastery(HeroHelp.getHeroID(hero));
+		SendData.sendBadgeMastery(hero.networkID);
 	}
 
 	public static void validateMasteryCombo( int n ) {

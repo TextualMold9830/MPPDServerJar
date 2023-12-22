@@ -176,7 +176,7 @@ public class Belongings implements Iterable<Item> {
 		}
 		if (keyscount != IronKeyCount_visual) {
 			IronKeyCount_visual = keyscount;
-			sendIronKeysCount(HeroHelp.getHeroID(owner), keyscount);
+			sendIronKeysCount(owner.networkID, keyscount);
 		}
 	}
 

@@ -97,7 +97,13 @@ public class HeroHelp {
     ;
 
     public static int getHeroID(Hero hero) {
-        return hero.networkID; //Arrays.asList(Dungeon.heroes).indexOf(hero);
+        for (int i = 0; i < heroes.length; i++)
+        {
+            if (heroes[i] == hero){
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static boolean haveAliveHero() {
