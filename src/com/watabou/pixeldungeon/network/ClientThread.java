@@ -15,6 +15,7 @@ import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Random;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,7 +52,7 @@ class ClientThread implements Callable<String> {
     @NotNull
     private FutureTask<String> jsonCall;
 
-    public ClientThread(int ThreadID, Socket clientSocket, Hero hero) {
+    public ClientThread(int ThreadID, Socket clientSocket, @Nullable Hero hero) {
         clientHero = hero;
         if (hero != null){
             hero.networkID = threadID;
@@ -74,10 +75,10 @@ class ClientThread implements Callable<String> {
             disconnect();
             return;
         }
-        updateTask();
         if (clientHero != null){
             sendInitData();
         }
+        updateTask();
     }
 
     protected void updateTask() {
