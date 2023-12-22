@@ -29,7 +29,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Window extends Group{
+public abstract class Window {
 	//todo: memory leak. Remove entries when hero removes
 	private static final Map<Integer, Map<Integer, Window>> windows = new HashMap<>(Settings.maxPlayers);
 	private static final Map<Integer, Integer> idCounter = new HashMap<>(Settings.maxPlayers); // contains last used Window.id for each hero
@@ -69,10 +69,6 @@ public class Window extends Group{
 		windows.get(heroId).put(getId(), this);
 	}
 
-	public Window( int width, int height ){
-		super();
-	}
-
 	public static void OnButtonPressed(Hero hero, int ID, int button,  JSONObject res) {
 		try {
 
@@ -89,16 +85,10 @@ public class Window extends Group{
 
 
 	public void hide() {
-		if (parent != null) {
-			parent.erase(this);
-		}
 		destroy();
 	}
 
-	@Override
 	public void destroy() {
-		super.destroy();
-
 		if (getOwnerHero() != null) {
 			Window removed = windows.get(HeroHelp.getHeroID(getOwnerHero())).remove(getId());
 			if ((removed != null) && (removed != this)) {
@@ -113,33 +103,32 @@ public class Window extends Group{
 		hide();
 	}
 
-
-
 	public void onSelect(int button, JSONObject args){
 		onSelect(button);
 	}
 
-	protected void onSelect(int button){
+	protected void onSelect(int button){}
 
-	}
 
-	public Hero getOwnerHero() {
+	// network synchronization
+
+	public final Hero getOwnerHero() {
 		return ownerHero;
 	}
 
-	private void setOwnerHero(Hero ownerHero) {
+	private final void setOwnerHero(Hero ownerHero) {
 		this.ownerHero = ownerHero;
 	}
 
-	public int getId() {
+	public final int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	private final void setId(int id) {
 		this.id = id;
 	}
 
-	public static boolean hasWindow(Hero hero) {
+	public  static boolean hasWindow(Hero hero) {
 		Map<Integer, Window> heroWindows = windows.getOrDefault(HeroHelp.getHeroID(hero), null);
 		return (heroWindows != null) && !heroWindows.isEmpty();
 	}

@@ -27,6 +27,7 @@ import com.watabou.pixeldungeon.items.weapon.missiles.Boomerang;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.network.SpecialSlot;
 import com.watabou.pixeldungeon.plants.Plant.Seed;
+import com.watabou.pixeldungeon.ui.Window;
 import com.watabou.pixeldungeon.utils.Utils;
 
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +38,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WndBag extends WndTabbed {
+public class WndBag extends Window {
 
 	public static enum Mode {
 		ALL,

@@ -80,9 +80,4 @@ public class WndStory extends Window {
 		throw new RuntimeException("Not implemented");
 	}
 
-	@Override
-	public void update() {
-		super.update();
-	}
-
 }
