@@ -28,9 +28,11 @@ import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.effects.SpellSprite;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.scrolls.ScrollOfRecharging;
+import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
 import textualmold9830.Preferences;
+import textualmold9830.plugins.events.HeroEatFoodEvent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,12 +64,12 @@ public class Food extends Item {
 		if (action.equals( AC_EAT )) {
 
 			detach( hero.belongings.backpack );
-
 			if (!Preferences.sharedHunger) {
 				hero.buff(Hunger.class).satisfy(energy);
 			}else {
 				Arrays.stream(Dungeon.heroes).forEach(hero1 -> hero1.buff(Hunger.class).satisfy(energy));
 			}
+			Server.pluginManager.fireEvent(new HeroEatFoodEvent(hero, this));
 			GLog.i( message );
 
 			switch (hero.heroClass) {
