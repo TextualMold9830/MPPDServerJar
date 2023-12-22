@@ -62,43 +62,46 @@ public class Food extends Item {
 	@Override
 	public void execute( Hero hero, String action ) {
 		if (action.equals( AC_EAT )) {
-
+			HeroEatFoodEvent event = new HeroEatFoodEvent(hero, this);
+			Server.pluginManager.fireEvent(event);
 			detach( hero.belongings.backpack );
-			if (!Preferences.sharedHunger) {
-				hero.buff(Hunger.class).satisfy(energy);
-			}else {
-				Arrays.stream(Dungeon.heroes).forEach(hero1 -> hero1.buff(Hunger.class).satisfy(energy));
-			}
-			Server.pluginManager.fireEvent(new HeroEatFoodEvent(hero, this));
-			GLog.i( message );
-
-			switch (hero.heroClass) {
-			case WARRIOR:
-				if (hero.getHP() < hero.getHT()) {
-					hero.setHP(Math.min( hero.getHP() + 5, hero.getHT()));
-					hero.getSprite().emitter().burst( Speck.factory( Speck.HEALING ), 1 );
+			if (!event.isCancelled()) {
+				energy = event.energy;
+				if (!Preferences.sharedHunger) {
+					hero.buff(Hunger.class).satisfy(energy);
+				} else {
+					Arrays.stream(Dungeon.heroes).forEach(hero1 -> hero1.buff(Hunger.class).satisfy(energy));
 				}
-				break;
-			case MAGE:
-				hero.belongings.charge( false );
-				ScrollOfRecharging.charge( hero );
-				break;
-			case ROGUE:
-			case HUNTRESS:
-				break;
+				GLog.i(message);
+
+				switch (hero.heroClass) {
+					case WARRIOR:
+						if (hero.getHP() < hero.getHT()) {
+							hero.setHP(Math.min(hero.getHP() + 5, hero.getHT()));
+							hero.getSprite().emitter().burst(Speck.factory(Speck.HEALING), 1);
+						}
+						break;
+					case MAGE:
+						hero.belongings.charge(false);
+						ScrollOfRecharging.charge(hero);
+						break;
+					case ROGUE:
+					case HUNTRESS:
+						break;
+				}
+
+				hero.getSprite().operate(hero.pos);
+				hero.busy();
+				SpellSprite.show(hero, SpellSprite.FOOD);
+				Sample.INSTANCE.play(Assets.SND_EAT);
+
+				hero.spend(TIME_TO_EAT);
+
+				Statistics.foodEaten++;
+				Badges.validateFoodEaten();
+
+				SendSelfUpdate(hero);
 			}
-
-			hero.getSprite().operate( hero.pos );
-			hero.busy();
-			SpellSprite.show( hero, SpellSprite.FOOD );
-			Sample.INSTANCE.play( Assets.SND_EAT );
-
-			hero.spend( TIME_TO_EAT );
-
-			Statistics.foodEaten++;
-			Badges.validateFoodEaten();
-
-			SendSelfUpdate(hero);
 		} else {
 
 			super.execute( hero, action );
