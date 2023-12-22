@@ -6,6 +6,11 @@ import textualmold9830.plugins.Cancellable;
 import textualmold9830.plugins.Event;
 
 public class HeroEatFoodEvent extends Event implements Cancellable {
+    @Override
+    public String getEventName() {
+        return "hero_eat_food";
+    }
+
     public Hero hero;
     public Food food;
     public float energy;
