@@ -1,6 +1,6 @@
 /*
- * Pixel Dungeon
- * Copyright (C) 2012-2015 Oleg Dolya
+ * Pixel Dungeon Multiplayer
+ * * Copyright (C) 2021-2023 Nikita Shaposhnikov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,34 +21,36 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.npcs.NPC;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.sprites.CharSprite;
-import com.watabou.pixeldungeon.ui.Window;
 import com.watabou.pixeldungeon.utils.Utils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
-public class WndQuest extends Window {
+import java.util.List;
 
-	public WndQuest(Hero owner, NPC questgiver, String text, String... options ) {
-		super(owner);
+public class WndQuest extends WndOptions {
 
-		CharSprite questgiverSprite = questgiver.sprite();
-		String title = Utils.capitalize( questgiver.name );
+    public WndQuest(Hero owner, NPC questgiver, String text, String... options) {
+        super(owner);
+        CharSprite questgiverSprite = questgiver.sprite();
+        String title = Utils.capitalize(questgiver.name);
 
-		JSONObject params = new JSONObject();
-		try {
-			params.put("title", title);
-			params.put("text", text);
-			params.put("sprite", questgiverSprite.spriteName());
-			JSONArray optionsArr = new JSONArray();
-			for (String option : options) {
-				optionsArr.put(option);
-			}
-			params.put("options", optionsArr);
-		} catch (JSONException ignored) {}
-		SendData.sendWindow(owner.networkID, "wnd_quest", getId(), params);
-	}
+        WndOptionsParams params = createCommon(title, text, options);
 
-	protected void onSelect( int index ) {};
+        params.charSprite = questgiverSprite;
+        sendWnd(params);
+    }
+
+    protected WndOptionsParams createCommon(@NotNull String title, @NotNull String text, @NotNull String... options) {
+        WndOptionsParams params = new WndOptionsParams();
+        params.title = title;
+        params.message = text;
+        params.titleColor = null;
+        params.options = List.of(options);
+        return params;
+    }
+
+    @Override
+    protected void onSelect(int index) {
+    }
 }

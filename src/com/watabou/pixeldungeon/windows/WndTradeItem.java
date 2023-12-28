@@ -104,8 +104,7 @@ public class WndTradeItem extends WndOptions {
 	private WndOptionsParams createDescription(Item item, boolean forSale ) {
 
 		WndOptionsParams params = new WndOptionsParams();
-		params.icon =  item.image();
-		params.iconGlowing = item.glowing();
+		params.item = item;
 		params.title = forSale ?
 				Utils.format( TXT_SALE, item.toString(), price( item ) ) :
 				Utils.capitalize( item.toString() );

@@ -52,8 +52,7 @@ public class WndImp extends WndOptions {
 		this.tokens = tokens;
 
 		sendWnd(
-				tokens.image(),
-				null,
+				tokens,
 				Utils.capitalize(tokens.name()),
 				null, TXT_MESSAGE,
 				TXT_REWARD

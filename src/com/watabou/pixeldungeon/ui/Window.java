@@ -18,118 +18,124 @@
 package com.watabou.pixeldungeon.ui;
 
 
-import  com.nikita22007.multiplayer.utils.Log;
+import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.noosa.Group;
 import com.watabou.pixeldungeon.HeroHelp;
 import com.watabou.pixeldungeon.Settings;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class Window {
-	//todo: memory leak. Remove entries when hero removes
-	private static final Map<Integer, Map<Integer, Window>> windows = new HashMap<>(Settings.maxPlayers);
-	private static final Map<Integer, Integer> idCounter = new HashMap<>(Settings.maxPlayers); // contains last used Window.id for each hero
+    //todo: memory leak. Remove entries when hero removes
+    private static final Map<Integer, Map<Integer, Window>> windows = new HashMap<>(Settings.maxPlayers);
+    private static final Map<Integer, Integer> idCounter = new HashMap<>(Settings.maxPlayers); // contains last used Window.id for each hero
 
-	private Hero ownerHero;
-	//Each window CURRENTLY open for ownerHero has a unique id. Two windows can have the same id only with different ownerHero.
-	private int id;
+    private Hero ownerHero;
+    //Each window CURRENTLY open for ownerHero has a unique id. Two windows can have the same id only with different ownerHero.
+    private int id;
 
-	public static final int TITLE_COLOR = 0xFFFF44;
+    public static final int TITLE_COLOR = 0xFFFF44;
 
-	public Window() {
-		throw new AssertionError("Window without hero");
-	}
+    public Window() {
+        throw new AssertionError("Window without hero");
+    }
 
-	public Window(Hero hero) {
-		attachToHero(hero);
-	}
+    public Window(Hero hero) {
+        attachToHero(hero);
+    }
 
-	protected synchronized final void attachToHero(Hero hero) {
-		if (getId() > 0) {
-			if (hero != getOwnerHero()) {
-				throw new AssertionError("Attaching window to different heroes");
-			}
-			return;
-		}
-		int heroId = HeroHelp.getHeroID(hero);
+    protected synchronized final void attachToHero(Hero hero) {
+        if (getId() > 0) {
+            if (hero != getOwnerHero()) {
+                throw new AssertionError("Attaching window to different heroes");
+            }
+            return;
+        }
+        int heroId = HeroHelp.getHeroID(hero);
 
-		setOwnerHero(hero);
-		if (!idCounter.containsKey(heroId)) {
-			idCounter.put(heroId, 0);
-		}
-		if (!windows.containsKey(heroId)) {
-			windows.put(heroId, new HashMap<>(3));
-		}
-		setId(idCounter.get(heroId) + 1);
-		idCounter.put(heroId, getId());
-		windows.get(heroId).put(getId(), this);
-	}
+        setOwnerHero(hero);
+        if (!idCounter.containsKey(heroId)) {
+            idCounter.put(heroId, 0);
+        }
+        if (!windows.containsKey(heroId)) {
+            windows.put(heroId, new HashMap<>(3));
+        }
+        setId(idCounter.get(heroId) + 1);
+        idCounter.put(heroId, getId());
+        windows.get(heroId).put(getId(), this);
+    }
 
-	public static void OnButtonPressed(Hero hero, int ID, int button,  JSONObject res) {
-		try {
-
-		if (button == -1){
-			windows.get(hero).get(ID).onBackPressed();
-		} else  {
-			windows.get(hero).get(ID).onSelect(button, res);
-		}
-		} catch (NullPointerException e){
-			Log.i("Window", "No such window.");
-		}
-
-	}
-
-
-	public void hide() {
-		destroy();
-	}
-
-	public void destroy() {
-		if (getOwnerHero() != null) {
-			Window removed = windows.get(HeroHelp.getHeroID(getOwnerHero())).remove(getId());
-			if ((removed != null) && (removed != this)) {
-				throw new AssertionError("Removed window is not current Window");
-			}
-		}
-	}
+    public static void OnButtonPressed(@NotNull Hero hero, int ID, int button, @Nullable JSONObject res) {
+       final int heroId = HeroHelp.getHeroID(hero);
+        Window window;
+        try {
+            window = windows.get(heroId).get(ID);
+            Objects.requireNonNull(window);
+        } catch (NullPointerException e) {
+            Log.i("Window", "No such window.");
+            return;
+        }
+        if (button == -1) {
+            window.onBackPressed();
+        } else {
+            window.onSelect(button, res);
+        }
+    }
 
 
+    public void hide() {
+        destroy();
+    }
 
-	public void onBackPressed() {
-		hide();
-	}
+    public void destroy() {
+        if (getOwnerHero() != null) {
+            Window removed = windows.get(HeroHelp.getHeroID(getOwnerHero())).remove(getId());
+            if ((removed != null) && (removed != this)) {
+                throw new AssertionError("Removed window is not current Window");
+            }
+        }
+    }
 
-	public void onSelect(int button, JSONObject args){
-		onSelect(button);
-	}
 
-	protected void onSelect(int button){}
+    public void onBackPressed() {
+        hide();
+    }
+
+    public void onSelect(int button, JSONObject args) {
+        onSelect(button);
+    }
+
+    protected void onSelect(int button) {
+    }
 
 
-	// network synchronization
+    // network synchronization
 
-	public final Hero getOwnerHero() {
-		return ownerHero;
-	}
+    public final Hero getOwnerHero() {
+        return ownerHero;
+    }
 
-	private final void setOwnerHero(Hero ownerHero) {
-		this.ownerHero = ownerHero;
-	}
+    private final void setOwnerHero(Hero ownerHero) {
+        this.ownerHero = ownerHero;
+    }
 
-	public final int getId() {
-		return id;
-	}
+    public final int getId() {
+        return id;
+    }
 
-	private final void setId(int id) {
-		this.id = id;
-	}
+    private final void setId(int id) {
+        this.id = id;
+    }
 
-	public  static boolean hasWindow(Hero hero) {
-		Map<Integer, Window> heroWindows = windows.getOrDefault(HeroHelp.getHeroID(hero), null);
-		return (heroWindows != null) && !heroWindows.isEmpty();
-	}
+    public static boolean hasWindow(Hero hero) {
+        Map<Integer, Window> heroWindows = windows.getOrDefault(HeroHelp.getHeroID(hero), null);
+        return (heroWindows != null) && !heroWindows.isEmpty();
+    }
 }

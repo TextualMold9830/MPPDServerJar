@@ -139,7 +139,7 @@ public class WndBag extends Window {
 	@Override
 	public void onSelect(int button, @Nullable JSONObject args) {
 		try {
-			if (args.getInt("button") == -1)
+			if (button == -1)
 			{
 				selectItem(null);
 			}

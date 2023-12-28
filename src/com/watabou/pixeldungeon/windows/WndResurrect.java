@@ -41,8 +41,7 @@ public class WndResurrect extends WndOptions {
 		WndResurrect.causeOfDeath = causeOfDeath;
 
 		sendWnd(
-				ankh.image(),
-				null,
+				ankh,
 				ankh.name(),
 				null, TXT_MESSAGE,
 				TXT_YES,
