@@ -10,16 +10,20 @@ public class PreferncesData {
     public  int customRelayPort = 0;
     public float timeToSkipTurn = 10;
     public boolean sharedHunger = false;
+    public int levelSize;
 
     public PreferncesData() {
     }
 
-    public PreferncesData(int challenges, boolean onlineMode, String serverName, boolean useCustomRelay, String customRelayAddress, int customRelayPort, float timeToSkipTurn) {
+    public PreferncesData(int challenges, boolean onlineMode, String serverName, boolean useCustomRelay, String customRelayAddress, int customRelayPort, float timeToSkipTurn, boolean sharedHunger, int levelSize) {
         this.challenges = challenges;
         this.onlineMode = onlineMode;
         this.serverName = serverName;
         this.useCustomRelay = useCustomRelay;
         this.customRelayAddress = customRelayAddress;
         this.customRelayPort = customRelayPort;
+        this.timeToSkipTurn = timeToSkipTurn;
+        this.sharedHunger = sharedHunger;
+        this.levelSize = levelSize;
     }
 }

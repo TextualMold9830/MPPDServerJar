@@ -3,6 +3,7 @@ package com.watabou.pixeldungeon.levels;
 import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.items.scrolls.ScrollOfEnchantment;
+import com.watabou.pixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.watabou.pixeldungeon.levels.painters.Painter;
 
 import static com.watabou.pixeldungeon.levels.Terrain.*;
@@ -47,6 +48,9 @@ public class LobbyLevel extends DeadEndLevel {
             }
             ScrollOfEnchantment n = new ScrollOfEnchantment();
             drop(n,center+1);
+            ScrollOfMagicMapping somm = new ScrollOfMagicMapping();
+                    somm.quantity(15);
+            drop(somm, center +2);
         }
 
         return true;

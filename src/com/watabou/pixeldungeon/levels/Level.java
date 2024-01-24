@@ -73,6 +73,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import com.watabou.noosa.Scene;
+import textualmold9830.Preferences;
 
 public abstract class Level implements Bundlable {
 
@@ -83,8 +84,8 @@ public abstract class Level implements Bundlable {
 		GRASS
 	};
 
-	public static final int WIDTH = 32;
-	public static final int HEIGHT = 32;
+	public static final int WIDTH = Preferences.levelSize;
+	public static final int HEIGHT = Preferences.levelSize;
 	public static final int LENGTH = WIDTH * HEIGHT;
 
 	public static final int[] NEIGHBOURS4 = {-WIDTH, +1, +WIDTH, -1};

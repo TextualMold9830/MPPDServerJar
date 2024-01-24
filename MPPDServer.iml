@@ -11,6 +11,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="json" level="project" />
     <orderEntry type="library" exported="" name="google.code.gson" level="project" />
-    <orderEntry type="library" exported="" name="jetbrains.annotations" level="project" />
+    <orderEntry type="library" name="jetbrains.annotations" level="project" />
   </component>
 </module>

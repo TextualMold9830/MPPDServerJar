@@ -18,10 +18,11 @@ public class Preferences {
     public static int customRelayPort = 0;
     public static float timeToSkipTurn = 10;
     public static boolean sharedHunger = true;
+    public static int levelSize = 32;
 
     public static void save() {
         try {
-            Files.write(Path.of("config.json"), gson.toJson(new PreferncesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, timeToSkipTurn)).getBytes());
+            Files.write(Path.of("config.json"), gson.toJson(new PreferncesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, timeToSkipTurn,sharedHunger, levelSize)).getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,6 +41,7 @@ public class Preferences {
                 customRelayPort = prefs.customRelayPort;
                 timeToSkipTurn = prefs.timeToSkipTurn;
                 sharedHunger = prefs.sharedHunger;
+                levelSize = prefs.levelSize;
             } catch (IOException e) {
                 e.printStackTrace();
             }
