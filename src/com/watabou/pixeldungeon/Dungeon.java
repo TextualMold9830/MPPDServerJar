@@ -38,6 +38,7 @@ import com.watabou.pixeldungeon.items.scrolls.Scroll;
 import com.watabou.pixeldungeon.items.wands.Wand;
 import com.watabou.pixeldungeon.levels.*;
 import com.watabou.pixeldungeon.network.SendData;
+import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
 import com.watabou.pixeldungeon.scenes.StartScene;
 import com.watabou.pixeldungeon.utils.BArray;
 import com.watabou.pixeldungeon.utils.Utils;

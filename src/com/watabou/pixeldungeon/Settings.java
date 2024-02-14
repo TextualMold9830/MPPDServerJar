@@ -9,7 +9,7 @@ public class Settings {
     public static int defaultRelayServerPort = 25555;
     public static boolean returnDisabled = true;
 
-    public static int maxPlayers = 8; // todo setup while loading
+    public static int maxPlayers = 32; // todo setup while loading
     public static boolean killOnDisconnect = false;
     public static float timeForAct = Preferences.timeToSkipTurn; //seconds
 

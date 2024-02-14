@@ -70,7 +70,9 @@ public class Food extends Item {
 				if (!Preferences.sharedHunger) {
 					hero.buff(Hunger.class).satisfy(energy);
 				} else {
-					Arrays.stream(Dungeon.heroes).forEach(hero1 -> hero1.buff(Hunger.class).satisfy(energy));
+					for (Hero heroToSatisfy : Dungeon.heroes) {
+						applyFood(heroToSatisfy);
+					}
 				}
 				GLog.i(message);
 
@@ -101,6 +103,8 @@ public class Food extends Item {
 				Badges.validateFoodEaten();
 
 				SendSelfUpdate(hero);
+			} else {
+				System.out.println("ate: "+ event.isCancelled());
 			}
 		} else {
 
@@ -129,5 +133,10 @@ public class Food extends Item {
 	@Override
 	public int price() {
 		return 10 * getQuantity();
+	}
+	private void applyFood(Hero hero){
+		if (hero != null){
+			hero.buff(Hunger.class).satisfy(energy);
+		};
 	}
 }
