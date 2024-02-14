@@ -12,14 +12,6 @@ public class PluginUtils {
     public static Path getConfigDirectory(Plugin plugin){
         return Path.of("config/"+plugin.getName());
     }
-    public static int getHeroIndex(Hero hero){
-        for (int i = 0; i < Dungeon.heroes.length; i++) {
-            if (Dungeon.heroes[i].equals(hero)){
-                return i;
-            }
-        }
-        return 0;
-    }
     public static File getDefaultConfigFile(Plugin plugin){
         return Path.of("config/"+plugin.getName()+"/config.txt").toFile();
     }

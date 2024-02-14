@@ -102,6 +102,7 @@ public class CursePersonification extends com.watabou.pixeldungeon.actors.mobs.M
 
 	@Override
 	public void die( Object cause ) {
+		super.die(cause);
 		Ghost ghost = new Ghost();
 		ghost.state = ghost.PASSIVE;
 		Ghost.replace( this, ghost );

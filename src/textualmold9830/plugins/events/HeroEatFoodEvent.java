@@ -19,6 +19,7 @@ public class HeroEatFoodEvent extends Event implements Cancellable {
     public HeroEatFoodEvent(Hero hero, Food food, float energy) {
         this.hero = hero;
         this.food = food;
+        this.energy = energy;
     }
 
     @Override
