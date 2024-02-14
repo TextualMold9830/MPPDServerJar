@@ -1,12 +1,16 @@
 package textualmold9830.plugins;
 
 import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ClassInfoList;
+import io.github.classgraph.ScanResult;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -18,27 +22,29 @@ public class PluginLoader {
     private static final String PLUGINS_DIRECTORY = "plugins";
 
 
-        public static List<Plugin> loadPlugins() throws IOException, ClassNotFoundException {
-            List<Plugin> plugins = new ArrayList<>();
-
-            try (final var scanResults = new ClassGraph()
-                    .acceptPaths(PLUGINS_DIRECTORY)
+    public static List<Plugin> loadPlugins() throws IOException, ClassNotFoundException {
+        List<Plugin> plugins = new ArrayList<>();
+        File[] pluginFiles = new File("plugins").listFiles();
+        for (File file : pluginFiles) {
+            URLClassLoader loader = new URLClassLoader(new URL[]{file.toURI().toURL()});
+            ScanResult result = new ClassGraph()
+                    .addClassLoader(loader)
                     .enableClassInfo()
-                    .scan()
-            ) {
-                // Find which classes extend Plugin, then use loadClass() on it (ClassInfo)
-                scanResults.getClassesImplementing(Plugin.class).forEach((ci)->
-                        {
-                            try {
-                                plugins.add((Plugin) ci.loadClass().getDeclaredConstructor().newInstance());
-                            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                                     NoSuchMethodException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                );
-            }
-
-            return plugins;
+                    .enableFieldInfo()
+                    .scan();
+            ClassInfoList classInfo = result.getClassesImplementing(Plugin.class);
+            classInfo.forEach(info -> plugins.add(loadFromClassInfo(info)));
         }
+        return plugins;
+    }
+    public static Plugin loadFromClassInfo(ClassInfo info) {
+        try {
+            Plugin plugin = (Plugin) info.loadClass().getDeclaredConstructor().newInstance();
+            System.out.println("loaded: " + plugin.getName());
+            return plugin;
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

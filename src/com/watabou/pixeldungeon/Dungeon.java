@@ -38,6 +38,7 @@ import com.watabou.pixeldungeon.items.scrolls.Scroll;
 import com.watabou.pixeldungeon.items.wands.Wand;
 import com.watabou.pixeldungeon.levels.*;
 import com.watabou.pixeldungeon.network.SendData;
+import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
 import com.watabou.pixeldungeon.scenes.StartScene;
 import com.watabou.pixeldungeon.utils.BArray;
@@ -47,6 +48,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import org.jetbrains.annotations.NotNull;
+import textualmold9830.plugins.PluginManager;
 import textualmold9830.plugins.events.DungeonGenerateLevelEvent;
 
 import java.io.IOException;
@@ -208,6 +210,7 @@ public class Dungeon {
 			Statistics.deepestFloor--;
 		}
 		DungeonGenerateLevelEvent event = new DungeonGenerateLevelEvent(depth, level);
+		Server.pluginManager.fireEvent(event);
 		level = event.level;
 		level.create();
 		Statistics.qualifiedForNoKilling = !bossLevel(depth);

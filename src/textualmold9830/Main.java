@@ -12,13 +12,13 @@ import java.util.Base64;
 public class Main {
     public static void main(String[] args) {
         initFolders();
-        Server.pluginManager.loadPlugins();
         Preferences.load();
         Runtime.getRuntime().addShutdownHook(new Thread(Preferences::save));
         Server.startServer();
         Dungeon.init();
         InterLevelSceneServer.descend(null);
         initTextures();
+        Server.pluginManager.loadPlugins();
         System.out.println("Server started");
 
     }

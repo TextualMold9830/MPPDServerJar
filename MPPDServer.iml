@@ -12,6 +12,6 @@
     <orderEntry type="library" exported="" name="json" level="project" />
     <orderEntry type="library" exported="" name="google.code.gson" level="project" />
     <orderEntry type="library" name="jetbrains.annotations" level="project" />
-    <orderEntry type="library" name="io.github.classgraph" level="project" />
+    <orderEntry type="library" exported="" name="io.github.classgraph" level="project" />
   </component>
 </module>
