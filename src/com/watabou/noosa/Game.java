@@ -133,7 +133,7 @@ public class Game {
 		Game.elapsed = Game.timeScale * step * 0.001f;
 		Game.timeTotal += Game.elapsed;
 		if (scene instanceof GameScene) {
-			((GameScene) scene).update();
+			scene.update();
 		}
 	}
 
