@@ -141,7 +141,10 @@ public class Ghost extends NPC {
 				parent.erase( this );
 			};
 		} );*///a.getSprite().killAndErase();
-		a.die(null);
+		if (!(a instanceof CursePersonification))
+		{
+			a.die(null);
+		}
 
 		b.pos = a.pos;
 		GameScene.add( b );
