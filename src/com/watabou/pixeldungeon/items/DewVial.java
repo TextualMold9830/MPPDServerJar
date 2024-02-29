@@ -21,9 +21,11 @@ import java.util.ArrayList;
 
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
+import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.effects.particles.ShaftParticle;
+import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import com.watabou.pixeldungeon.sprites.ItemSpriteGlowing;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
@@ -182,4 +184,19 @@ public class DewVial extends Item {
 	public String toString() {
 		return super.toString() + " (" + status() +  ")" ;
 	}
+	public boolean doPickUp( Hero collector ) {
+
+
+			GameScene.pickUp( this );
+			Sample.INSTANCE.play( Assets.SND_ITEM );
+			collector.spendAndNext( TIME_TO_PICK_UP );
+			for (Hero hero: Dungeon.heroes) {
+				if (hero != null) {
+					collect(hero);
+				}
+			}
+			return true;
+
+		}
+
 }

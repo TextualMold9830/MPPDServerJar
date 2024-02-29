@@ -395,7 +395,9 @@ class ClientThread implements Callable<String> {
     @Deprecated
     public static void sendAll(int code, int data) {
         for (int i = 0; i < Server.clients.length; i++) {
-            Server.clients[i].send(code, data);
+            if (Server.clients[i] != null) {
+                Server.clients[i].send(code, data);
+            }
         }
     }
 
