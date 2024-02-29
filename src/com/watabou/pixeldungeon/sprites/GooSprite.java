@@ -23,6 +23,8 @@ import com.watabou.pixeldungeon.Assets;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
+import static com.watabou.pixeldungeon.network.SendData.sendCharSpriteAction;
+
 public class GooSprite extends MobSprite {
 
 	private Animation pump;
@@ -43,6 +45,7 @@ public class GooSprite extends MobSprite {
 	}
 
 	public void pumpUp() {
+		sendCharSpriteAction(ch.id(), "pump", null, null);
 		play( pump );
 	}
 
