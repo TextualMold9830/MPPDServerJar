@@ -105,9 +105,10 @@ public class Hunger extends com.watabou.pixeldungeon.actors.buffs.Buff implement
 
 			}
 
-			float step = ((Hero)target).heroClass == HeroClass.ROGUE ? STEP * 1.2f : STEP;
-			spend( target.buff( Shadows.class ) == null ? step : step * 1.5f );
-
+			if(hero != null) {
+				float step = ((Hero) target).heroClass == HeroClass.ROGUE ? STEP * 1.2f : STEP;
+				spend(target.buff(Shadows.class) == null ? step : step * 1.5f);
+			}
 		} else {
 
 			diactivate();
