@@ -71,7 +71,9 @@ public class Food extends Item {
 					hero.buff(Hunger.class).satisfy(energy);
 				} else {
 					for (Hero heroToSatisfy : Dungeon.heroes) {
-						applyFood(heroToSatisfy);
+						if (heroToSatisfy != null) {
+							applyFood(heroToSatisfy);
+						}
 					}
 				}
 				GLog.i(message);
@@ -103,8 +105,6 @@ public class Food extends Item {
 				Badges.validateFoodEaten();
 
 				SendSelfUpdate(hero);
-			} else {
-				System.out.println("ate: "+ event.isCancelled());
 			}
 		} else {
 
