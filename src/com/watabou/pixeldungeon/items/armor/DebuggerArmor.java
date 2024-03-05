@@ -76,7 +76,6 @@ public class DebuggerArmor extends Armor {
         JSONObject ui = new JSONObject();
         ui.put("top_right", new JSONObject());
         ui.put("top_left", new JSONObject());
-        ui.put("show_bar",false);
 
         return ui;
     }
@@ -91,4 +90,8 @@ public class DebuggerArmor extends Armor {
         return 1;
     }
 
+    @Override
+    public boolean showDurabilityBar() {
+        return false;
+    }
 }

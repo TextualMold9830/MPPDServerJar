@@ -138,7 +138,7 @@ public abstract class Item implements Bundlable {
 			itemObj.put("cursed", item.visiblyCursed());
 			itemObj.put("identified", item.isIdentified());
 			itemObj.put("level_known", item.levelKnown);
-			itemObj.put("show_bar", item.isUpgradable() && item.levelKnown);
+			itemObj.put("show_bar", item.showDurabilityBar());
 			itemObj.put("level", item.visiblyUpgraded());
 			ItemSpriteGlowing glowing = item.glowing();
 			if (glowing != null) {
@@ -531,6 +531,9 @@ public abstract class Item implements Bundlable {
 
 	public boolean isEquipped( Hero hero ) {
 		return false;
+	}
+	public boolean showDurabilityBar(){
+		return isUpgradable() && levelKnown;
 	}
 
 	public Item identify() {
