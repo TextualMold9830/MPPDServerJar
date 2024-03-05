@@ -118,37 +118,36 @@ public abstract class Item implements Bundlable {
 	}
 
 	public final JSONObject toJsonObject(@Nullable Hero hero) {
-		@NotNull Item item = this;
 		JSONObject itemObj = new JSONObject();
 		try {
 			if (hero != null) {
-				itemObj.put("actions", NetworkPacket.packActions(item, hero));
-				itemObj.put("default_action", item.defaultAction == null ? "null" : item.defaultAction);
-				itemObj.put("info", item.info(hero));
-				itemObj.put("ui", item.itemUI(hero));
+				itemObj.put("actions", NetworkPacket.packActions(this, hero));
+				itemObj.put("default_action", defaultAction == null ? "null" : defaultAction);
+				itemObj.put("info", info(hero));
+				itemObj.put("ui", itemUI(hero));
 			}
-			itemObj.put("sprite_sheet", item.spriteSheet());
-			itemObj.put("image", item.image());
-			itemObj.put("name", item.name());
-			itemObj.put("stackable", item.stackable);
-			itemObj.put("quantity", item.quantity());
-			itemObj.put("durability", item.durability());
-			itemObj.put("max_durability", item.maxDurability());
-			itemObj.put("known", item.isKnown());
-			itemObj.put("cursed", item.visiblyCursed());
-			itemObj.put("identified", item.isIdentified());
-			itemObj.put("level_known", item.levelKnown);
-			itemObj.put("show_bar", item.showDurabilityBar());
-			itemObj.put("level", item.visiblyUpgraded());
-			ItemSpriteGlowing glowing = item.glowing();
+			itemObj.put("sprite_sheet", spriteSheet());
+			itemObj.put("image", image());
+			itemObj.put("name", name());
+			itemObj.put("stackable", stackable);
+			itemObj.put("quantity", quantity());
+			itemObj.put("durability", durability());
+			itemObj.put("max_durability", maxDurability());
+			itemObj.put("known", isKnown());
+			itemObj.put("cursed", visiblyCursed());
+			itemObj.put("identified", isIdentified());
+			itemObj.put("level_known", levelKnown);
+			itemObj.put("show_bar", showDurabilityBar());
+			itemObj.put("level", visiblyUpgraded());
+			ItemSpriteGlowing glowing = glowing();
 			if (glowing != null) {
 				itemObj.put("glowing", glowing.toJsonObject());
 			}
 			else{
 				itemObj.put("glowing", JSONObject.NULL);
 			}
-			if (item instanceof Bag) {
-				itemObj = NetworkPacket.packBag((Bag) item, hero, itemObj);
+			if (this instanceof Bag) {
+				itemObj = NetworkPacket.packBag((Bag) this, hero, itemObj);
 			}
 		} catch (JSONException e) {
 			Log.e("Packet", "JSONException inside packItem. " + e.toString());
