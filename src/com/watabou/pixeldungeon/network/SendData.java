@@ -48,6 +48,18 @@ public class SendData {
         }
     }
 
+    public static void addToSendLevelMappedState(Level level, int ID) {
+        if ((ID != -1) && (clients[ID] != null)) {
+            clients[ID].packet.packAndAddLevelCells(level);
+        }
+    }
+
+    public static void addToSendLevelMappedState(Level level) {
+        for (int ID =0; ID < clients.length; ID++){
+            addToSendLevelMappedState(level, ID);
+        }
+    }
+
     public static void sendLevel(Level level, int ID) {
         if ((ID != -1) && (clients[ID] != null)) {
             clients[ID].packet.packAndAddLevel(level, clients[ID].clientHero);

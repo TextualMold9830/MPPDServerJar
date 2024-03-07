@@ -29,6 +29,8 @@ import com.watabou.pixeldungeon.levels.Terrain;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.utils.GLog;
 
+import static com.watabou.pixeldungeon.network.SendData.addToSendLevelMappedState;
+
 public class ScrollOfMagicMapping extends Scroll {
 
 	private static final String TXT_LAYOUT = "You are now aware of the level layout.";
@@ -40,10 +42,11 @@ public class ScrollOfMagicMapping extends Scroll {
 	@Override
 	protected void doRead() {
 
-		int length = Level.LENGTH;
-		int[] map = Dungeon.level.map;
-		boolean[] mapped = Dungeon.level.mapped;
-		boolean[] discoverable = Level.discoverable;
+		Level level = Dungeon.level;
+		int length = level.LENGTH;
+		int[] map = level.map;
+		boolean[] mapped = level.mapped;
+		boolean[] discoverable = level.discoverable;
 
 		boolean[] noticed = new boolean[Dungeon.heroes.length];
 
@@ -72,6 +75,8 @@ public class ScrollOfMagicMapping extends Scroll {
 				}
 			}
 		}
+
+		addToSendLevelMappedState(level);
 		Dungeon.observeAll();
 
 		GLog.i( TXT_LAYOUT );
