@@ -17,10 +17,7 @@
  */
 package com.watabou.pixeldungeon.items.bags;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.actors.Char;
@@ -71,23 +68,30 @@ public class Bag extends Item implements Iterable<Item> {
 	public List<Integer> collect(Bag container, List<Integer> path) {
 		List<Integer> path_copy = new ArrayList<>(path);
 		path = super.collect(container, path);
-		if (path != null) {
-			owner = container.owner;
-			for (Item item : container.items) {
-				if (grab( item )) {
-					item.detachAll( container );
-					List<Integer> loc_path = new ArrayList<>(path_copy);
-					loc_path.add(container.indexOf(this));
-					item.collect( this, loc_path );
-				}
-			}
-
-			Badges.validateAllBagsBought( this );
-
-			return path;
-		} else {
+		if (path == null) {
 			return null;
 		}
+		owner = container.owner;
+		//for (Item item : (List<Item>)container.items.clone()) {
+		//for (Item item : items) {
+		int i = 0;
+
+		while (i < container.items.size()) {
+			Item item = container.items.get(i);
+			if (grab(item)) {
+				item.detachAll(container);
+				List<Integer> loc_path = new ArrayList<>(path_copy);
+				loc_path.add(container.indexOf(this));
+				item.collect(this, loc_path);
+			}
+			else {
+				i += 1;
+			}
+		}
+
+		Badges.validateAllBagsBought(this);
+
+		return path;
 	}
 
 	private Integer indexOf(Item item) {

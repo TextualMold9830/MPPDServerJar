@@ -336,10 +336,6 @@ public abstract class Item implements Bundlable {
 		return collect( hero.belongings.backpack );
 	}
 
-	/*public boolean collect() {
-		return collect( Dungeon.hero.belongings.backpack );
-	}*/
-
 	public final Item detach( Bag container ) {
 
 		if (getQuantity() <= 0) {
