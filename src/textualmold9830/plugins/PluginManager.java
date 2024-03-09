@@ -2,7 +2,9 @@ package textualmold9830.plugins;
 
 import com.watabou.pixeldungeon.BuildConfig;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -64,10 +66,12 @@ public class PluginManager {
     private static void createPluginFiles(Plugin plugin) {
         String name = plugin.getName();
         try {
-            Files.createDirectories(Path.of("config/"+name));
+            Path.of("config/"+name).toFile().mkdir();
             Path configPath = Path.of("config/" + name + "/config.txt");
             if (!Files.exists(configPath)) {
-                Files.write(configPath, plugin.defaultConfig().getBytes());
+                PrintWriter writer = new PrintWriter(configPath.toFile());
+                writer.write(plugin.defaultConfig());
+                writer.close();
             }
         } catch (IOException e) {
             e.printStackTrace();
