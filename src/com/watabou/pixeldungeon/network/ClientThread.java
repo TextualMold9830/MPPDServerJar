@@ -326,20 +326,20 @@ class ClientThread implements Callable<String> {
     @Deprecated
     public void sendCode(int code) {
         assert false : "removed_code";
-        throw new RuntimeException("removed code");
+        GLog.n("removed code");
     }
 
     @Deprecated
     public void send(int code, boolean Data) {
 
         assert false : "removed_code";
-        throw new RuntimeException("removed code");
+        GLog.n("removed code");
     }
 
     @Deprecated
     public void send(int code, byte Data) {
         assert false : "removed_code";
-        throw new RuntimeException("removed code");
+        GLog.n("removed code");
     }
 
     @Deprecated
@@ -350,38 +350,38 @@ class ClientThread implements Callable<String> {
     @Deprecated
     public void send(int code, boolean[] DataArray) {
         assert false : "removed_code";
-        throw new RuntimeException("removed code");
+        GLog.n("removed code");
     }
 
     @Deprecated
     public void send(int code, byte[] DataArray) {
         assert false : "removed_code";
-        throw new RuntimeException("removed code");
+        GLog.n("removed code");
     }
 
     @Deprecated
     public void send(int code, int[] DataArray) {
         assert false : "removed_code";
-        throw new RuntimeException("removed code");
+        GLog.n("removed code");
     }
 
     @Deprecated
     public void send(int code, int var1, String message) {
         assert false : "removed_code";
-        throw new RuntimeException("removed code");
+        GLog.n("removed code");
     }
 
     @Deprecated
     public void send(int code, String message) {
         assert false : "removed_code";
-        throw new RuntimeException("removed code");
+        GLog.n("removed code");
     }
 
     //send_serelliased_data
     @Deprecated
     public void sendData(int code, byte[] data) {
         assert false : "removed_code";
-        throw new RuntimeException("removed code");
+        GLog.n("removed code");
     }
 
     //send to all
