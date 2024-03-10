@@ -1,5 +1,6 @@
 package com.watabou.pixeldungeon.items.armor;
 
+import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import org.jetbrains.annotations.NotNull;
@@ -89,5 +90,11 @@ public class DebuggerArmor extends Armor {
     @Override
     public boolean showDurabilityBar() {
         return false;
+    }
+
+    @Override
+    public int proc(Char attacker, Char defender, int damage) {
+        super.proc(attacker, defender, 0);
+        return 0;
     }
 }
