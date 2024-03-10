@@ -48,6 +48,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import textualmold9830.plugins.PluginManager;
 import textualmold9830.plugins.events.DungeonGenerateLevelEvent;
 
@@ -71,8 +72,7 @@ public class Dungeon {
 	public static boolean dewVial;		// true if the dew vial can be spawned
 
 	public static int challenges;
-
-	public static Hero[] heroes;
+	@Nullable public static Hero[] heroes;
 	/**
 	 * Change here to use custom level
 	 */
