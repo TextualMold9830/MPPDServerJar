@@ -56,6 +56,7 @@ public abstract class WndOptions extends Window {
         params.titleColor = titleColor;
         params.message = message;
         params.item = item;
+        params.options = List.of(options);
         sendWnd(params);
     }
 

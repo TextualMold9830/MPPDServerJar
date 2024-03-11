@@ -47,9 +47,7 @@ public class TomeOfMastery extends Item {
 
 	{
 		stackable = false;
-		//TODO fix me!
-		//name = Dungeon.hero != null && Dungeon.hero.subClass != HeroSubClass.NONE ? "Tome of Remastery" : "Tome of Mastery";
-		name = "Tome of Mastery";
+		name = "Tome of Mastery"; //ignored, overloaded by name(owner)
 		image(ItemSpriteSheet.MASTERY);
 
 		unique = true;
