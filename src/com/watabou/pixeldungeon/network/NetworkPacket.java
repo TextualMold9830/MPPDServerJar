@@ -320,6 +320,18 @@ public class NetworkPacket {
         }
     }
 
+    public void packAndAddLevelParams(Level level)
+    {
+        JSONObject params = new JSONObject();
+        params.put("width", level.WIDTH);
+        params.put("height", level.WIDTH);
+        params.put("tiles_texture", level.tilesTex());
+        params.put("water_texture", level.waterTex());
+        synchronized (dataRef) {
+            dataRef.get().put("level_params", params);
+        }
+    }
+
     public void packAndAddLevelEntrance(int pos) {
         try {
             synchronized (dataRef) {
@@ -340,7 +352,7 @@ public class NetworkPacket {
                 if (!data.has(MAP)) {
                     data.put(MAP, new JSONObject());
                 }
-                data.getJSONObject("map").put("exit", pos);
+                data.getJSONObject(MAP).put("exit", pos);
             }
         } catch (JSONException ignored) {
         }
@@ -403,6 +415,7 @@ public class NetworkPacket {
     }
 
     public void packAndAddLevel(Level level, Hero observer) {
+        packAndAddLevelParams(level);
         packAndAddLevelEntrance(level.entrance);
         packAndAddLevelExit(level.exit);
         packAndAddLevelCells(level);
