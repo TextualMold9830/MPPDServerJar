@@ -12,8 +12,6 @@ import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.plants.Plant;
 import com.watabou.pixeldungeon.sprites.CharSprite;
-import com.watabou.pixeldungeon.windows.WndStory;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
@@ -353,6 +351,29 @@ public class SendData {
         client.flush();
     }
 
+    public static void sendMessageExcept(Integer exceptId, String message, int color) {
+        if (exceptId == null)
+        {
+            sendMessageToAll(message, color);
+            return;
+        }
+        JSONObject messageObj;
+        try {
+            messageObj = new JSONObject().put("text", message).put("color", color);
+        } catch (JSONException e) {
+            return;
+        }
+        for (int i = 0; i < clients.length; i++) {
+            if (i == exceptId) continue;
+            ClientThread client = clients[i];
+            if (client == null) {
+                continue;
+            }
+            client.packet.addChatMessage(messageObj);
+            client.flush();
+        }
+    }
+
     public static void addToSendShowStatus(Float x, Float y, Integer key, String text, int color, boolean ignorePosition) {
         JSONObject data = new JSONObject();
         try {
@@ -605,4 +626,6 @@ public class SendData {
             e.printStackTrace();
         }
     }
+
+
 }

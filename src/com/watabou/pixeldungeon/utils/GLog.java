@@ -19,9 +19,8 @@ package com.watabou.pixeldungeon.utils;
 
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.sprites.CharSprite;
+import org.jetbrains.annotations.NotNull;
 
-
-import java.io.Console;
 import java.util.regex.Pattern;
 
 public class GLog {
@@ -51,6 +50,10 @@ public class GLog {
 		i( POSITIVE + text, args );
 	}
 
+	public static void pWithTarget(Integer ID, String text, Object... args ) {
+		iWithTarget(ID, POSITIVE + text, args );
+	}
+
 	public static void n( String text, Object... args ) {
 		i( NEGATIVE + text, args );
 	}
@@ -58,7 +61,9 @@ public class GLog {
 	public static void nWithTarget(Integer ID, String text, Object... args ) {
 		iWithTarget(ID, NEGATIVE + text, args );
 	}
-
+	public static void nExceptTarget(Integer exceptID, String text, Object... args ) {
+		iExceptTarget(exceptID, NEGATIVE + text, args );
+	}
 	public static void w( String text, Object... args ) {
 		i( WARNING + text, args );
 	}
@@ -71,25 +76,45 @@ public class GLog {
 		i( HIGHLIGHT + text, args );
 	}
 
-	protected static void sendMessage(Integer ID, String text) {
-		System.out.printf("%d: %s%n",(ID==null?-1:ID), text);
+	protected static int colorFromMessage(String text)
+	{
 		int color = CharSprite.DEFAULT;
 		if (text.startsWith(GLog.POSITIVE)) {
-			text = text.substring(GLog.POSITIVE.length());
 			color = CharSprite.POSITIVE;
 		} else if (text.startsWith(GLog.NEGATIVE)) {
-			text = text.substring(GLog.NEGATIVE.length());
 			color = CharSprite.NEGATIVE;
 		} else if (text.startsWith(GLog.WARNING)) {
-			text = text.substring(GLog.WARNING.length());
 			color = CharSprite.WARNING;
 		} else if (text.startsWith(GLog.HIGHLIGHT)) {
-			text = text.substring(GLog.HIGHLIGHT.length());
 			color = CharSprite.NEUTRAL;
 		}
+		return color;
+	}
 
-		text = Utils.capitalize(text) +
+	protected static String removeColorFromMessage(String text) {
+		if (text.startsWith(GLog.POSITIVE)) {
+			text = text.substring(GLog.POSITIVE.length());
+		} else if (text.startsWith(GLog.NEGATIVE)) {
+			text = text.substring(GLog.NEGATIVE.length());
+		} else if (text.startsWith(GLog.WARNING)) {
+			text = text.substring(GLog.WARNING.length());
+		} else if (text.startsWith(GLog.HIGHLIGHT)) {
+			text = text.substring(GLog.HIGHLIGHT.length());
+		}
+		return text;
+	}
+
+	protected static String makePretty(String text)
+	{
+		return Utils.capitalize(text) +
 				(PUNCTUATION.matcher(text).matches() ? "" : ".");
+	}
+	protected static void sendMessage(Integer ID, String text) {
+		System.out.printf("%d: %s%n",(ID==null?-1:ID), text);
+
+		int color = colorFromMessage(text);
+		text = removeColorFromMessage(text);
+		text = makePretty(text);
 
 		if (ID == null) {
 			SendData.sendMessageToAll(text, color);
@@ -97,6 +122,16 @@ public class GLog {
 			SendData.sendMessage(ID, text, color);
 		}
 
+	}
+
+	protected static void sendMessageExcept(@NotNull Integer ID, String text) {
+		System.out.printf("except %d: %s%n",(ID==null?-1:ID), text);
+
+		int color = colorFromMessage(text);
+		text = removeColorFromMessage(text);
+		text = makePretty(text);
+
+		SendData.sendMessageExcept(ID, text, color);
 	}
 
 	public static void wipe() {
