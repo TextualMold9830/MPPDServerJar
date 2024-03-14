@@ -35,6 +35,7 @@ import com.watabou.pixeldungeon.effects.BlobEmitter;
 import com.watabou.pixeldungeon.items.Heap;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.potions.Potion;
+import com.watabou.pixeldungeon.levels.LobbyLevel;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.plants.Plant;
@@ -45,6 +46,7 @@ import com.watabou.pixeldungeon.windows.WndBag;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
+import textualmold9830.Preferences;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -149,10 +151,36 @@ public class GameScene extends PixelScene {     //only client, exclude static
 
 	public synchronized void update() {
 
-
-
 		Server.parseActions();
 
+		boolean hasConnectedHero = false;
+		for (Hero hero : Dungeon.heroes) {
+			if (hero != null) {
+				if (hero.networkID >= 0) {
+					hasConnectedHero = true;
+					break;
+				}
+			}
+		}
+
+		if (!hasConnectedHero) {
+			switch (Preferences.noConnectedHeroBehaviour) {
+
+				case STOP_SERVER: {
+					if (!(Dungeon.level instanceof LobbyLevel)) {
+						Server.stopServer();
+						return;
+					}
+					break;
+				}
+				case PAUSE_ACTORS: {
+					return;
+				}
+				case PROCESS_ACTORS: {
+					//continue
+				}
+			}
+		}
 
 		Actor.process();
 

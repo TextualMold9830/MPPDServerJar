@@ -20,6 +20,8 @@ public class Preferences {
     public static boolean sharedHunger = true;
     public static int levelSize = 32;
 
+    public static NO_CONNECTED_HERO_BEHAVIOUR noConnectedHeroBehaviour = NO_CONNECTED_HERO_BEHAVIOUR.PAUSE_ACTORS;
+
     public static void save() {
         try {
             Files.write(Path.of("config.json"), gson.toJson(new PreferncesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, timeToSkipTurn,sharedHunger, levelSize)).getBytes());
@@ -46,5 +48,12 @@ public class Preferences {
                 e.printStackTrace();
             }
         }
+    }
+
+    public enum NO_CONNECTED_HERO_BEHAVIOUR
+    {
+        STOP_SERVER,
+        PAUSE_ACTORS,
+        PROCESS_ACTORS
     }
 }
