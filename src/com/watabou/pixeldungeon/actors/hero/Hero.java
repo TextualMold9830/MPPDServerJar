@@ -585,7 +585,7 @@ public class Hero extends Char {
 							((item instanceof PotionOfStrength || item instanceof PotionOfMight) && ((Potion)item).isKnown());
 						if (important) {
 							GLog.pWithTarget(networkID, TXT_YOU_NOW_HAVE, item.name() );
-							for (int i = 0; i < Dungeon.heroes; i++)
+							for (int i = 0; i < Dungeon.heroes.length; i++)
 							{
 
 							}

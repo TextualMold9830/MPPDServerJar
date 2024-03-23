@@ -62,7 +62,7 @@ public class GLog {
 		iWithTarget(ID, NEGATIVE + text, args );
 	}
 	public static void nExceptTarget(Integer exceptID, String text, Object... args ) {
-		iExceptTarget(exceptID, NEGATIVE + text, args );
+		sendMessageExcept(exceptID, NEGATIVE + text );
 	}
 	public static void w( String text, Object... args ) {
 		i( WARNING + text, args );
