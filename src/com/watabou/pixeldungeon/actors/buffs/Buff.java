@@ -29,17 +29,19 @@ public class Buff extends Actor {
 	public Char target;
 
 	public boolean attachTo( Char target ) {
+		if (target != null) {
 
-		if (target.immunities().contains( getClass() )) {
-			return false;
+			if (target.immunities().contains(getClass())) {
+				return false;
+			}
+
+			this.target = target;
+			target.add(this);
+			sendBuff(this);
+			return true;
 		}
-
-		this.target = target;
-		target.add( this );
-		sendBuff(this);
-		return true;
+		return false;
 	}
-
 	public void detach() {
 		if (target == null){
 			GLog.n("Can't detach buff: no target");
