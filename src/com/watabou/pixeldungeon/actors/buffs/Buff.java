@@ -17,6 +17,7 @@
  */
 package com.watabou.pixeldungeon.actors.buffs;
 
+import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.ui.BuffIndicator;
@@ -40,6 +41,7 @@ public class Buff extends Actor {
 			sendBuff(this);
 			return true;
 		}
+		Log.e("Trying to attach buff (%s) to a null target. Stacktrace: %s", this.getClass().toString(), (new NullPointerException()).toString());
 		return false;
 	}
 	public void detach() {
