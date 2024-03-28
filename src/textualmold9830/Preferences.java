@@ -19,6 +19,7 @@ public class Preferences {
     public static float timeToSkipTurn = 10;
     public static boolean sharedHunger = true;
     public static int levelSize = 32;
+    public static ITEM_COLLECTED_MESSAGE_MODE itemCollectedMessageMode;
 
     public static NO_CONNECTED_HERO_BEHAVIOUR noConnectedHeroBehaviour = NO_CONNECTED_HERO_BEHAVIOUR.PAUSE_ACTORS;
 
@@ -55,5 +56,12 @@ public class Preferences {
         STOP_SERVER,
         PAUSE_ACTORS,
         PROCESS_ACTORS
+    }
+
+    public enum ITEM_COLLECTED_MESSAGE_MODE
+    {
+        SHOW_FOR_ALL,
+        SHOW_FOR_ALL_NOT_IMPORTANT,
+        DONT_SHOW_FOR_ALL
     }
 }

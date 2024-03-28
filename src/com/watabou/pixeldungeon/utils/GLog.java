@@ -53,7 +53,9 @@ public class GLog {
 	public static void pWithTarget(Integer ID, String text, Object... args ) {
 		iWithTarget(ID, POSITIVE + text, args );
 	}
-
+	public static void pExceptTarget(Integer ID, String text, Object... args ) {
+		iExceptTarget(ID, POSITIVE + text, args );
+	}
 	public static void n( String text, Object... args ) {
 		i( NEGATIVE + text, args );
 	}
@@ -62,7 +64,7 @@ public class GLog {
 		iWithTarget(ID, NEGATIVE + text, args );
 	}
 	public static void nExceptTarget(Integer exceptID, String text, Object... args ) {
-		sendMessageExcept(exceptID, NEGATIVE + text );
+		nExceptTarget(exceptID, NEGATIVE + text );
 	}
 	public static void w( String text, Object... args ) {
 		i( WARNING + text, args );
@@ -122,6 +124,17 @@ public class GLog {
 			SendData.sendMessage(ID, text, color);
 		}
 
+	}
+
+	public static void iExceptTarget(Integer exceptID, String text, Object... args ) {
+		if ((args != null) && (args.length > 0)) {
+			text = Utils.format(text, args);
+		}
+		if (exceptID != null) {
+			sendMessageExcept(exceptID, text);
+		} else {
+			sendMessage(null, text);
+		}
 	}
 
 	protected static void sendMessageExcept(@NotNull Integer ID, String text) {

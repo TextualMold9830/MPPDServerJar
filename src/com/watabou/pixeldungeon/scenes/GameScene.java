@@ -178,6 +178,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 				}
 				case PROCESS_ACTORS: {
 					//continue
+					break;
 				}
 			}
 		}

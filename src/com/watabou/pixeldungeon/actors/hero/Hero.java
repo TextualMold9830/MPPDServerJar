@@ -64,6 +64,7 @@ import com.watabou.pixeldungeon.windows.WndResurrect;
 import com.watabou.pixeldungeon.windows.WndTradeItem;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
+import textualmold9830.Preferences;
 import textualmold9830.plugins.events.HeroDoActionEvent;
 
 import java.util.ArrayList;
@@ -84,6 +85,7 @@ public class Hero extends Char {
 		"It's easier for you to hit enemies and dodge their attacks.";
 
 	public static final String TXT_YOU_NOW_HAVE	= "You now have %s";
+	public static final String TXT_SB_NOW_HAVE	= "%s now have %s";
 
 	private static final String TXT_SOMETHING_ELSE	= "There is something else here";
 	private static final String TXT_LOCKED_CHEST	= "This chest is locked and you don't have matching key";
@@ -586,11 +588,21 @@ public class Hero extends Char {
 						if (important) {
 							GLog.pWithTarget(networkID, TXT_YOU_NOW_HAVE, item.name() );
 							for (int i = 0; i < Dungeon.heroes.length; i++)
+							if (Preferences.itemCollectedMessageMode == Preferences.ITEM_COLLECTED_MESSAGE_MODE.SHOW_FOR_ALL_NOT_IMPORTANT)
 							{
-
+								important = false;
 							}
 						} else {
 							GLog.iWithTarget(networkID, TXT_YOU_NOW_HAVE, item.name() );
+						}
+						if (Preferences.itemCollectedMessageMode != Preferences.ITEM_COLLECTED_MESSAGE_MODE.DONT_SHOW_FOR_ALL)
+						{
+							if (important)
+							{
+								GLog.pExceptTarget(networkID, TXT_SB_NOW_HAVE, this.name, item.name());
+							} else {
+								GLog.iExceptTarget(networkID, TXT_SB_NOW_HAVE, this.name, item.name());
+							}
 						}
 					}
 
