@@ -1194,7 +1194,7 @@ public class Hero extends Char {
 
 		} else {
 
-			Dungeon.deleteGame( this.heroClass, false );
+			//Dungeon.deleteGame( this.heroClass, false );
 			GameScene.show( new WndResurrect( ankh, this, cause ) );
 
 		}
@@ -1255,7 +1255,7 @@ public class Hero extends Char {
 			((Doom)cause).onDeath();
 		}
 
-		Dungeon.deleteGame( this.heroClass, true );
+		//Dungeon.deleteGame( this.heroClass, true );
 	}
 
 	@Override
