@@ -90,6 +90,7 @@ public class Swarm extends Mob {
 			if (candidates.size() > 0) {
 
 				Swarm clone = split();
+
 				clone.setHP((getHP() - damage) / 2);
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
@@ -99,8 +100,14 @@ public class Swarm extends Mob {
 				}
 
 				GameScene.add( clone, SPLIT_DELAY );
+				clone.generation = generation + 1;
+				if (buff( Burning.class ) != null) {
+					Buff.affect( clone, Burning.class ).reignite( clone );
+				}
+				if (buff( Poison.class ) != null) {
+					Buff.affect( clone, Poison.class ).set( 2 );
+				}
 				sendPushing( clone, pos, clone.pos );
-
 				setHP(getHP() - clone.getHP());
 			}
 		}
@@ -120,13 +127,6 @@ public class Swarm extends Mob {
 
 	private Swarm split() {
 		Swarm clone = new Swarm();
-		clone.generation = generation + 1;
-		if (buff( Burning.class ) != null) {
-			Buff.affect( clone, Burning.class ).reignite( clone );
-		}
-		if (buff( Poison.class ) != null) {
-			Buff.affect( clone, Poison.class ).set( 2 );
-		}
 		return clone;
 	}
 
