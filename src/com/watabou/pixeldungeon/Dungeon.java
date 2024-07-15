@@ -484,17 +484,12 @@ public class Dungeon {
 	public static void saveLevel() throws IOException {
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
-
 		OutputStream output = Files.newOutputStream(Path.of(Utils.format(depthFile(StartScene.curClass), depth)));
 		Bundle.write( bundle, output );
 		output.close();
 	}
 
 	public static void saveAll() throws IOException { //fixme
-		//if (heroes[0].isAlive()) {
-			if (!DEBUG){
-				return;
-			}
 			Actor.fixTime();
 			saveGame( gameFile( null) );
 			saveLevel();
