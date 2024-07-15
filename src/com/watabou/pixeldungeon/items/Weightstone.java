@@ -31,6 +31,8 @@ import com.watabou.pixeldungeon.windows.WndBag;
 import java.util.ArrayList;
 
 public class Weightstone extends com.watabou.pixeldungeon.items.Item {
+	//small fucking hack
+	private Hero owner;
 
 	private static final String TXT_SELECT_WEAPON = "Select a weapon to balance";
 	private static final String TXT_FAST = "you balanced your %s to make it faster";
@@ -57,7 +59,7 @@ public class Weightstone extends com.watabou.pixeldungeon.items.Item {
 	@Override
 	public void execute(Hero hero, String action) {
 		if (action == AC_APPLY) {
-
+			owner = hero;
 			curUser = hero;
 			GameScene.selectItem(hero, itemSelector, WndBag.Mode.WEAPON, TXT_SELECT_WEAPON);
 
@@ -113,7 +115,7 @@ public class Weightstone extends com.watabou.pixeldungeon.items.Item {
 		@Override
 		public void onSelect(Item item) {
 			if (item != null) {
-				GameScene.show(new WndBalance((Weapon) item));
+				GameScene.show(new WndBalance((Weapon) item, owner));
 			}
 		}
 	};
@@ -131,8 +133,8 @@ public class Weightstone extends com.watabou.pixeldungeon.items.Item {
 		private static final int BUTTON_WIDTH = WIDTH - MARGIN * 2;
 		private static final int BUTTON_HEIGHT = 20;
 
-		public WndBalance(final Weapon weapon) {
-			super();
+		public WndBalance(final Weapon weapon, Hero hero) {
+			super(hero);
 
 			IconTitle titlebar = new IconTitle(weapon);
 
