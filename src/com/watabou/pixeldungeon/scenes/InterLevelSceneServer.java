@@ -108,11 +108,6 @@ public class InterLevelSceneServer {
 
     public static void descend(@Nullable Hero hero)  {// спуск
         try {
-            Dungeon.saveLevel();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
             Generator.reset();
             for (int i = 0; i < heroes.length; i++) {
                 SendData.sendInterLevelScene(i,"DESCEND");
