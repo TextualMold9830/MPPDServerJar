@@ -21,6 +21,7 @@ import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.DungeonTilemap;
+import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.npcs.Ghost;
 import com.watabou.pixeldungeon.items.DewVial;
 import com.watabou.pixeldungeon.network.SendData;
@@ -166,8 +167,7 @@ public class SewerLevel extends RegularLevel {
 				return "sink";
 			}
 		};
-
-		public static void addSink(int pos) {
+		private static JSONObject sinkObject(int pos){
 			JSONObject actionObj = new JSONObject();
 			try {
 				actionObj.put("action_type", "emitter_decor");
@@ -176,17 +176,24 @@ public class SewerLevel extends RegularLevel {
 			} catch (JSONException e) {
 				throw new RuntimeException(e);
 			}
-			SendData.sendCustomActionForAll(actionObj);
+			return actionObj;
+		}
+
+		public static void addSink(int pos) {
+			SendData.sendCustomActionForAll(sinkObject(pos));
+		}
+		public static void addSink(int pos, Hero hero) {
+			SendData.sendCustomAction(sinkObject(pos), hero);
 		}
 
 		public Sink( int pos ) {
 			super();
 			addSink(pos);
 			this.pos = pos;
-			
+
 			PointF p = DungeonTilemap.tileCenterToWorld( pos );
 			pos( p.x - 2, p.y + 1, 4, 0 );
-			
+
 			pour( factory, 0.05f );
 		}
 	}
