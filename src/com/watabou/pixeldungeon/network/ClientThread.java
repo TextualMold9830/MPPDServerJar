@@ -177,7 +177,8 @@ class ClientThread implements Callable<String> {
                     case "toolbar_action": {
                         JSONObject actionObj = data.getJSONObject(token);
                         switch (actionObj.getString("action_name").toUpperCase(Locale.ENGLISH)) {
-                            case "SLEEP": {
+                            case "SLEEP":
+                            case "REST": {
                                 clientHero.rest(true);
                                 break;
                             }
@@ -189,6 +190,9 @@ class ClientThread implements Callable<String> {
                                 clientHero.search(true);
                                 break;
                             }
+                            default:
+                                Log.e("Bat toolbar action: %s. Client: %d", token, threadID);
+                                break;
                         }
                         break;
                     }
