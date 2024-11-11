@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         initFolders();
         Preferences.load();
-        Runtime.getRuntime().addShutdownHook(new Thread(Preferences::save));
+        Runtime.getRuntime().addShutdownHook(new Thread(Main::shutdown));
         Server.startServer();
         Dungeon.init();
         InterLevelSceneServer.descend(null);
@@ -40,5 +40,10 @@ public class Main {
                 System.out.println("Added texture: "+ texture.getName().replace(".zip",""));
             }
         }
+    }
+    private static void shutdown(){
+        Preferences.save();
+        Server.pluginManager.shutdownPlugins();
+        Server.stopServer();
     }
 }
