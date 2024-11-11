@@ -45,7 +45,7 @@ public class CursePersonification extends com.watabou.pixeldungeon.actors.mobs.M
 		EXP = 3;
 		maxLvl = 5;
 
-		state = HUNTING;
+		setState(HUNTING);
 		baseSpeed = 0.5f;
 		flying = true;
 	}
@@ -104,7 +104,7 @@ public class CursePersonification extends com.watabou.pixeldungeon.actors.mobs.M
 	public void die( Object cause ) {
 		super.die(cause);
 		Ghost ghost = new Ghost();
-		ghost.state = ghost.PASSIVE;
+		ghost.setState(ghost.PASSIVE);
 		Ghost.replace( this, ghost );
 	}
 

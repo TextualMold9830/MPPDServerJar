@@ -248,7 +248,7 @@ public class King extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 			EXP = 0;
 
-			state = WANDERING;
+			setState(WANDERING);
 		}
 
 		@Override

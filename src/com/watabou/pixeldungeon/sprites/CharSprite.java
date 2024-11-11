@@ -82,6 +82,19 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 		return null;
 	}
 
+	protected boolean isSleeping() {
+		return sleeping;
+	}
+
+	protected void setSleeping(boolean sleeping) {
+		this.sleeping = sleeping;
+		if (sleeping) {
+			showSleep();
+		} else {
+			hideSleep();
+		}
+	}
+
 	public enum State {
 		BURNING, LEVITATING, INVISIBLE, PARALYSED, FROZEN, ILLUMINATED
 	}
@@ -106,7 +119,7 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 
 	private Callback jumpCallback;
 	
-	protected boolean sleeping = false;
+	private boolean sleeping = false;
 
 	public Char ch;
 
@@ -131,6 +144,8 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 
 		place( ch.pos );
 		turnTo( ch.pos, Random.Int( Level.LENGTH ) );
+
+		update();
 
 		ch.updateSpriteState();
 	}
@@ -266,7 +281,7 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 		if (ch != null) {
 			sendCharSpriteAction(ch.id(), "die", null, null);
 		}
-		sleeping = false;
+		setSleeping(false);
 		play( die );
 	}
 
@@ -396,12 +411,8 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 		if (paused && listener != null) {
 			listener.onComplete( curAnim );
 		}
+		setSleeping(isSleeping());
 
-		if (sleeping) {
-			showSleep();
-		} else {
-			hideSleep();
-		}
 	}
 
 	public void showSleep() {

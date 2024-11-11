@@ -43,7 +43,7 @@ public class Bee extends NPC {
 		this.owner=owner;
 
 		flying = true;
-		state = WANDERING;
+		setState(WANDERING);
 	}
 
 	private int level;
@@ -158,7 +158,7 @@ public class Bee extends NPC {
 				enemySeen = true;
 
 				notice();
-				state = HUNTING;
+				setState(HUNTING);
 				target = enemy.pos;
 
 			} else {

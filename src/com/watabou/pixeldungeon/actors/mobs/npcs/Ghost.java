@@ -62,7 +62,7 @@ public class Ghost extends NPC {
 
 		flying = true;
 
-		state = WANDERING;
+		setState(WANDERING);
 	}
 
 	public Ghost() {

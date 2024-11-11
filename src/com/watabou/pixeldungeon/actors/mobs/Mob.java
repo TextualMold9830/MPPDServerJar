@@ -59,7 +59,7 @@ class Mob extends Char {
 	public AiState WANDERING = new Wandering();
 	public AiState FLEEING = new Fleeing();
 	public AiState PASSIVE = new Passive();
-	public AiState state = SLEEPEING;
+	private AiState state = SLEEPEING;
 
 	public Class<? extends CharSprite> spriteClass;
 
@@ -86,15 +86,15 @@ class Mob extends Char {
 
 		super.storeInBundle(bundle);
 
-		if (state == SLEEPEING) {
+		if (getState() == SLEEPEING) {
 			bundle.put(STATE, Sleeping.TAG);
-		} else if (state == WANDERING) {
+		} else if (getState() == WANDERING) {
 			bundle.put(STATE, Wandering.TAG);
-		} else if (state == HUNTING) {
+		} else if (getState() == HUNTING) {
 			bundle.put(STATE, Hunting.TAG);
-		} else if (state == FLEEING) {
+		} else if (getState() == FLEEING) {
 			bundle.put(STATE, Fleeing.TAG);
-		} else if (state == PASSIVE) {
+		} else if (getState() == PASSIVE) {
 			bundle.put(STATE, Passive.TAG);
 		}
 		bundle.put(TARGET, target);
@@ -107,15 +107,15 @@ class Mob extends Char {
 
 		String state = bundle.getString(STATE);
 		if (state.equals(Sleeping.TAG)) {
-			this.state = SLEEPEING;
+			this.setState(SLEEPEING);
 		} else if (state.equals(Wandering.TAG)) {
-			this.state = WANDERING;
+			this.setState(WANDERING);
 		} else if (state.equals(Hunting.TAG)) {
-			this.state = HUNTING;
+			this.setState(HUNTING);
 		} else if (state.equals(Fleeing.TAG)) {
-			this.state = FLEEING;
+			this.setState(FLEEING);
 		} else if (state.equals(Passive.TAG)) {
-			this.state = PASSIVE;
+			this.setState(PASSIVE);
 		}
 
 		target = bundle.getInt(TARGET);
@@ -153,7 +153,7 @@ class Mob extends Char {
 				enemy != null && enemy.isAlive() &&
 						this.fieldOfView[enemy.pos] && enemy.invisible <= 0;
 
-		return state.act(enemyInFOV, justAlerted);
+		return getState().act(enemyInFOV, justAlerted);
 	}
 
 	protected Char chooseEnemy() {
@@ -197,14 +197,14 @@ class Mob extends Char {
 			if (getSprite() != null) {
 				getSprite().showStatus(CharSprite.NEGATIVE, TXT_RAGE);
 			}
-			state = HUNTING;
+			setState(HUNTING);
 		} else if (buff instanceof Terror) {
-			state = FLEEING;
+			setState(FLEEING);
 		} else if (buff instanceof Sleep) {
 			if (getSprite() != null) {
 				new Flare(4, 32).color(0x44ffff, true).show(pos, 2f);
 			}
-			state = SLEEPEING;
+			setState(SLEEPEING);
 			postpone(Sleep.SWS);
 		}
 	}
@@ -214,7 +214,7 @@ class Mob extends Char {
 		super.remove(buff);
 		if (buff instanceof Terror) {
 			getSprite().showStatus(CharSprite.NEGATIVE, TXT_RAGE);
-			state = HUNTING;
+			setState(HUNTING);
 		}
 	}
 
@@ -308,8 +308,8 @@ class Mob extends Char {
 
 		Terror.recover(this);
 
-		if (state == SLEEPEING) {
-			state = WANDERING;
+		if (getState() == SLEEPEING) {
+			setState(WANDERING);
 		}
 		alerted = true;
 
@@ -419,8 +419,8 @@ class Mob extends Char {
 
 		notice();
 
-		if (state != HUNTING) {
-			state = WANDERING;
+		if (getState() != HUNTING) {
+			setState(WANDERING);
 		}
 		target = cell;
 	}
@@ -441,6 +441,18 @@ class Mob extends Char {
 		GLog.nWithTarget(hero.id(), "%s: \"%s\" ", name, str );
 	}
 
+	public AiState getState() {
+		return state;
+	}
+
+	public void setState(AiState state) {
+		this.state = state;
+		CharSprite sprite = getSprite();
+		if (sprite != null) {
+			sprite.update();
+		}
+	}
+
 	public interface AiState {
 		public boolean act( boolean enemyInFOV, boolean justAlerted );
 		public String status();
@@ -457,7 +469,7 @@ class Mob extends Char {
 				enemySeen = true;
 
 				notice();
-				state = HUNTING;
+				setState(HUNTING);
 				target = enemy.pos;
 
 				if (Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
@@ -497,7 +509,7 @@ class Mob extends Char {
 				enemySeen = true;
 
 				notice();
-				state = HUNTING;
+				setState(HUNTING);
 				target = enemy.pos;
 
 			} else {
@@ -549,7 +561,7 @@ class Mob extends Char {
 				} else {
 
 					spend( TICK );
-					state = WANDERING;
+					setState(WANDERING);
 					target = Dungeon.level.randomDestination();
 					return true;
 				}

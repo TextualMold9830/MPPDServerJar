@@ -29,7 +29,7 @@ public class RatKing extends NPC {
 		name = "rat king";
 		spriteClass = RatKingSprite.class;
 
-		state = SLEEPEING;
+		setState(SLEEPEING);
 	}
 
 	@Override
@@ -63,10 +63,10 @@ public class RatKing extends NPC {
 	@Override
 	public void interact(Hero hero) {
 		getSprite().turnTo( pos, hero.pos );
-		if (state == SLEEPEING) {
+		if (getState() == SLEEPEING) {
 			notice();
 			yell( "I'm not sleeping!" );
-			state = WANDERING;
+			setState(WANDERING);
 		} else {
 			yell( "What is it? I have no time for this nonsense. My kingdom won't rule itself!" );
 		}

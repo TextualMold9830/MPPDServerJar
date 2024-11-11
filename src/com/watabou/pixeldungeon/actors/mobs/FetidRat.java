@@ -41,7 +41,7 @@ public class FetidRat extends Mob {
 		EXP = 3;
 		maxLvl = 5;
 
-		state = WANDERING;
+		setState(WANDERING);
 	}
 
 	@Override

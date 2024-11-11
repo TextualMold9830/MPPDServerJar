@@ -18,7 +18,6 @@
 package com.watabou.pixeldungeon.sprites;
 
 
-import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.utils.Callback;
 
@@ -92,7 +91,7 @@ public class HeroSprite extends CharSprite {
 
 	@Override
 	public void update() {
-		sleeping = ((Hero)ch).restoreHealth;
+		setSleeping(((Hero)ch).restoreHealth);
 
 		super.update();
 	}

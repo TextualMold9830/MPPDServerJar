@@ -31,7 +31,7 @@ public abstract class NPC extends Mob {
 		EXP = 0;
 
 		hostile = false;
-		state = PASSIVE;
+		setState(PASSIVE);
 	}
 
 	protected void throwItem() {

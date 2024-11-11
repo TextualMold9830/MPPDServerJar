@@ -36,7 +36,7 @@ public class MirrorImage extends NPC {
 		name = "mirror image";
 		spriteClass = MirrorSprite.class;
 
-		state = HUNTING;
+		setState(HUNTING);
 	}
 
 	public int tier;

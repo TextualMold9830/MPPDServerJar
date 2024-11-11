@@ -116,7 +116,7 @@ public class Mimic extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 	@Override
 	public boolean reset() {
-		state = WANDERING;
+		setState(WANDERING);
 		return true;
 	}
 
@@ -158,7 +158,7 @@ public class Mimic extends com.watabou.pixeldungeon.actors.mobs.Mob {
 		m.adjustStats( Dungeon.depth );
 		m.setHP(m.getHT());
 		m.pos = pos;
-		m.state = m.HUNTING;
+		m.setState(m.HUNTING);
 		GameScene.add( m, 1 );
 		if (!(enemy==null)) {
 			m.getSprite().turnTo(pos, enemy.pos);

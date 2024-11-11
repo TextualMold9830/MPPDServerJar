@@ -66,7 +66,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 		EXP = 50;
 
-		state = PASSIVE;
+		setState(PASSIVE);
 	}
 
 	private static final String TXT_DESC =
@@ -197,7 +197,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 			EXP = 0;
 
-			state = WANDERING;
+			setState(WANDERING);
 		}
 
 		public RottingFist() {
@@ -291,7 +291,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 			EXP = 0;
 
-			state = WANDERING;
+			setState(WANDERING);
 		}
 
 		public BurningFist() {
@@ -407,7 +407,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 			EXP = 0;
 
-			state = HUNTING;
+			setState(HUNTING);
 		}
 
 		@Override

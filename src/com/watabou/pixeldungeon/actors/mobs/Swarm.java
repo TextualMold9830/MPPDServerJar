@@ -93,7 +93,7 @@ public class Swarm extends Mob {
 
 				clone.setHP((getHP() - damage) / 2);
 				clone.pos = Random.element( candidates );
-				clone.state = clone.HUNTING;
+				clone.setState(clone.HUNTING);
 
 				if (Dungeon.level.map[clone.pos] == Terrain.DOOR) {
 					Door.enter( clone.pos );
