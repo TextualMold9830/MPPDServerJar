@@ -3,6 +3,7 @@ package textualmold9830;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
+import com.watabou.pixeldungeon.texturepack.TexturePackManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,12 +33,8 @@ public class Main {
         File textureDir = new File("textures");
         for (File texture : textureDir.listFiles()) {
             if (texture.getName().endsWith(".zip")) {
-                try {
-                    Server.textures.add(Base64.getEncoder().encodeToString(Files.readAllBytes(texture.toPath())));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                System.out.println("Added texture: "+ texture.getName().replace(".zip",""));
+                    TexturePackManager.addTexturePack(texture.toPath().toString());
+                    System.out.println("Added texture: "+ texture.getName().replace(".zip",""));
             }
         }
     }

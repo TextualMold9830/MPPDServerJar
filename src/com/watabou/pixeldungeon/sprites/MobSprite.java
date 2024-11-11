@@ -18,6 +18,8 @@
 package com.watabou.pixeldungeon.sprites;
 
 import com.watabou.pixeldungeon.actors.mobs.Mob;
+import com.watabou.pixeldungeon.texturepack.TexturePackManager;
+import org.jetbrains.annotations.Nullable;
 
 public class MobSprite extends CharSprite {
 
@@ -39,5 +41,10 @@ public class MobSprite extends CharSprite {
 
 	public void fall() {
 		this.killAndErase();
+	}
+
+	@Override
+	public @Nullable String getSpriteAsset() {
+		return TexturePackManager.getMobAnimation(getClass());
 	}
 }
