@@ -65,6 +65,8 @@ public class Server extends Thread {
                         }
                     } catch (InterruptedException ignored) {
 
+                    } catch (Exception e) {
+                        System.exit(2);
                     }
                 }
             };
