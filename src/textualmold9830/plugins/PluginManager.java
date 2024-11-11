@@ -42,10 +42,10 @@ public class PluginManager {
         return plugins;
     }
     public void fireEvent(Event event) {
-        System.out.println(event.getEventName());
         plugins.forEach((plugin)->plugin.handleEvent(event));
         if (BuildConfig.EVENT_LOGGING) {
             try {
+                System.out.println(event.getEventName());
                 for (Field field : event.getClass().getFields()) {
                     System.out.println(field.getName() + ": " + field.get(event));
                 }
