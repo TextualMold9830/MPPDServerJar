@@ -10,13 +10,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class PluginLoader {
     private static final String PLUGINS_DIRECTORY = "plugins";
@@ -26,14 +21,16 @@ public class PluginLoader {
         List<Plugin> plugins = new ArrayList<>();
         File[] pluginFiles = new File("plugins").listFiles();
         for (File file : pluginFiles) {
-            URLClassLoader loader = new URLClassLoader(new URL[]{file.toURI().toURL()});
-            ScanResult result = new ClassGraph()
-                    .addClassLoader(loader)
-                    .enableClassInfo()
-                    .enableFieldInfo()
-                    .scan();
-            ClassInfoList classInfo = result.getClassesImplementing(Plugin.class);
-            classInfo.forEach(info -> plugins.add(loadFromClassInfo(info)));
+            if (file.getName().endsWith(".jar")) {
+                URLClassLoader loader = new URLClassLoader(new URL[]{file.toURI().toURL()});
+                ScanResult result = new ClassGraph()
+                        .addClassLoader(loader)
+                        .enableClassInfo()
+                        .enableFieldInfo()
+                        .scan();
+                ClassInfoList classInfo = result.getClassesImplementing(Plugin.class);
+                classInfo.forEach(info -> plugins.add(loadFromClassInfo(info)));
+            }
         }
         return plugins;
     }
