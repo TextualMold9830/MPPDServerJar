@@ -18,6 +18,7 @@
  */
 package com.nikita22007.multiplayer.server.effects;
 
+import com.watabou.noosa.Visual;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.utils.PointF;
 
@@ -26,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public final class Flare {
+public final class Flare extends Visual {
 
 	private float duration = 0;
 
@@ -38,14 +39,16 @@ public final class Flare {
 	private final float angle;
 
 	private float angularSpeed;
+	private float lifespan;
 
 	@Nullable
 	private PointF position = null;
 	private int pos = -1;
 
 	public Flare( int nRays, float radius ) {
+		super( 0, 0, 0, 0 );
 
-		color = 0;
+        color = 0;
 
 		this.nRays = nRays;
 		this.radius = radius;
@@ -55,10 +58,13 @@ public final class Flare {
 
 	}
 
-	public Flare hardlight(int color ) {
-		this.color = color;
-		return this;
-	}
+//	public Flare hardlight(int color ) {
+//		super();
+//		hardlight(color);
+//		this.color = color;
+//		return this;
+//
+//	}
 
 	public Flare color( int color, boolean lightMode ) {
 		this.lightMode = lightMode;
@@ -67,8 +73,9 @@ public final class Flare {
 		return this;
 	}
 
-	public void point(PointF pos){
+	public PointF point(PointF pos){
 		this.position = pos;
+		return position;
 	}
 
 	public void show(int pos, float duration ) {
@@ -102,6 +109,14 @@ public final class Flare {
 	@Contract ("_ -> this")
 	public Flare setAngularSpeed(float angularSpeed) {
 		this.angularSpeed = angularSpeed;
+		return this;
+	}
+	public Flare show(Visual visual, float duration ) {
+		point( visual.center() );
+		visual.parent.addToBack( this );
+
+		lifespan = this.duration = duration;
+
 		return this;
 	}
 }
