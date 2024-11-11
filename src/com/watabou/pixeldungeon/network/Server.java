@@ -66,6 +66,7 @@ public class Server extends Thread {
                     } catch (InterruptedException ignored) {
 
                     } catch (Exception e) {
+                        e.printStackTrace();
                         System.exit(2);
                     }
                 }
