@@ -38,7 +38,7 @@ public enum Rankings {
 
 	public static final int TABLE_SIZE	= 6;
 
-	public static final String RANKINGS_FILE = "rankings.dat";
+	public static final String RANKINGS_FILE = "save/rankings.dat";
 	public static final String DETAILS_FILE = "game_%d.dat";
 
 	public ArrayList<Record> records;
