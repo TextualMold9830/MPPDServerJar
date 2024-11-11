@@ -56,7 +56,6 @@ public class AmuletScene extends PixelScene {
 
 		RedButton btnStay = new RedButton(TXT_STAY);
 
-		fadeIn();
 	}
 
 

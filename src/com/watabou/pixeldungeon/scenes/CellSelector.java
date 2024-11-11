@@ -28,11 +28,8 @@ public class CellSelector{
 
 	public boolean enabled;
 	public Hero owner;
-	private float dragThreshold;
-
 	public CellSelector(Hero owner ) {
 		this.owner=owner;
-		dragThreshold = PixelScene.defaultZoom * DungeonTilemap.SIZE / 2;
 	}
 
 	public void select( int cell ) {

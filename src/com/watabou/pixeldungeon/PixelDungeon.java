@@ -32,7 +32,6 @@ public class PixelDungeon extends Game {
 	}
 
 	protected void onCreate( Bundle savedInstanceState ) {
-		updateImmersiveMode();
 		Sample.INSTANCE.load(
 			com.watabou.pixeldungeon.Assets.SND_CLICK,
 			com.watabou.pixeldungeon.Assets.SND_BADGE,
@@ -105,38 +104,9 @@ public class PixelDungeon extends Game {
 		}
 		return PixelDungeon.instance.requestedReset;
 	}
-	public static void landscape( boolean value ) {
-	}
 
-	public static boolean landscape() {
-		return width > height;
-	}
-
-	// *** IMMERSIVE MODE ****
-
-	private static boolean immersiveModeChanged = false;
-
-    //@SuppressLint("NewApi")  //now is not new
-	public static void immerse( boolean value ) {
-
-	}
-
-
-
-	//@SuppressLint("NewApi")  //now is not new
-	public static void updateImmersiveMode() {
-
-	}
-
-	public static boolean immersed() {
-		return false;
-	}
 
 	// *****************************
-
-	public static boolean scaleUp() {
-		return true;
-	}
 
 	public static void onlineMode( boolean value ) {
 		textualmold9830.Preferences.onlineMode = value;
