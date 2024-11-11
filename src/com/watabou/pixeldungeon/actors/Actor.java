@@ -93,11 +93,13 @@ public abstract class Actor implements Bundlable {
 
 	public int id() {
 		if (id > 0) {
+			ids.put(id, this);
 			return id;
 		} else {
 			int max = 0;
 			synchronized (all) {
 				if (id > 0) {
+					ids.put(id, this);
 					return id;
 				}
 				if (!all.contains(this)){
@@ -109,6 +111,7 @@ public abstract class Actor implements Bundlable {
 					}
 				}
 				 Log.i("ACTOR", String.format("ACTOR %s GOTTEN ID %d", this, max+1));
+				ids.put(id, this);
 				return (id = max + 1);
 			}
 		}
