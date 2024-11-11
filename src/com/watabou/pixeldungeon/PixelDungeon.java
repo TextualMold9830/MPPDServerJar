@@ -19,20 +19,17 @@ package com.watabou.pixeldungeon;
 
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.audio.Music;
+import com.watabou.noosa.Scene;
 import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.scenes.PixelScene;
-import com.watabou.pixeldungeon.scenes.TitleScene;
 import com.watabou.utils.Bundle;
 import textualmold9830.Preferences;
 
 public class PixelDungeon extends Game {
 
-	public PixelDungeon() {
-		super( TitleScene.class );
+	public PixelDungeon( Class<? extends Scene> scene) {
+		super(scene);
 	}
-
-
 
 	protected void onCreate( Bundle savedInstanceState ) {
 		updateImmersiveMode();
@@ -102,6 +99,12 @@ public class PixelDungeon extends Game {
 	 * ---> Prefernces
 	 */
 
+	public static boolean requestedReset() {
+		if (PixelDungeon.instance == null){
+			return false;
+		}
+		return PixelDungeon.instance.requestedReset;
+	}
 	public static void landscape( boolean value ) {
 	}
 

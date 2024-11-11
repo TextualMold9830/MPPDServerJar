@@ -38,9 +38,11 @@ import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONObject;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -122,7 +124,8 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 	}
 
 
-	public void link( Char ch ) {
+	public void link( @NotNull Char ch ) {
+		Objects.requireNonNull(ch);
 		this.ch = ch;
 		ch.setSprite(this);
 

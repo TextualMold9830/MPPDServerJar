@@ -22,6 +22,7 @@ import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.noosa.Game;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.HeroHelp;
+import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.Settings;
 import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
@@ -29,6 +30,7 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.network.SendData;
+import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import org.jetbrains.annotations.NotNull;
@@ -211,6 +213,9 @@ public abstract class Actor implements Bundlable {
 	}
 
 	public static void process() {
+		if (PixelDungeon.requestedReset()){
+			return;
+		}
 		boolean busy_hero = false;
 		if (current instanceof Hero) {
 			Hero hero = (Hero) current;
@@ -279,6 +284,9 @@ public abstract class Actor implements Bundlable {
 			if (doNext)
 			{
 				timeForAct = Settings.timeForAct;
+			}
+			if (PixelDungeon.requestedReset()) {
+				doNext = false;
 			}
 		} while (doNext);
 	}

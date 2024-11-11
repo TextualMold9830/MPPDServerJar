@@ -23,6 +23,7 @@ import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.effects.Halo;
 import com.watabou.pixeldungeon.effects.particles.ElmoParticle;
+import org.jetbrains.annotations.NotNull;
 
 public class WandmakerSprite extends MobSprite {
 	
@@ -39,7 +40,7 @@ public class WandmakerSprite extends MobSprite {
 	}
 	
 	@Override
-	public void link( Char ch ) {
+	public void link(@NotNull Char ch ) {
 		super.link( ch );
 		/*
 		if (shield == null) {

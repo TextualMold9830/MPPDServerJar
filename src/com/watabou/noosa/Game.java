@@ -23,7 +23,7 @@ public class Game {
 	// New scene we are going to switch to
 	protected Scene requestedScene;
 	// true if scene switch is requested
-	protected boolean requestedReset = true;
+	public boolean requestedReset = true;
 	// callback to perform logic during scene change
 	protected SceneChangeCallback onChange;
 	// New scene class

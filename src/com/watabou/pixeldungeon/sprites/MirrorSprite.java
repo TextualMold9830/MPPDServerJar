@@ -21,6 +21,7 @@ import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.npcs.MirrorImage;
+import org.jetbrains.annotations.NotNull;
 
 public class MirrorSprite extends MobSprite {//all sprites client only
 	private static final int FRAME_WIDTH	= 12;
@@ -35,7 +36,7 @@ public class MirrorSprite extends MobSprite {//all sprites client only
 	}
 
 	@Override
-	public void link( Char ch ) {
+	public void link(@NotNull Char ch ) {
 		super.link( ch );
         updateArmor(((MirrorImage) ch).tier, ((MirrorImage) ch).owner);
 	}

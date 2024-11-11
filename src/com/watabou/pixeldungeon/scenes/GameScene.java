@@ -22,10 +22,7 @@ import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.server.ui.Banner;
 import com.nikita22007.multiplayer.utils.Log;
 import com.watabou.noosa.audio.Music;
-import com.watabou.pixeldungeon.Assets;
-import com.watabou.pixeldungeon.Badges;
-import com.watabou.pixeldungeon.Dungeon;
-import com.watabou.pixeldungeon.Statistics;
+import com.watabou.pixeldungeon.*;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.hero.Hero;
@@ -183,7 +180,9 @@ public class GameScene extends PixelScene {     //only client, exclude static
 			}
 		}
 
-		Actor.process();
+		if (!PixelDungeon.requestedReset()){
+			Actor.process();
+		}
 
 		if (timeTotal - lastPingTime >= PING_TIME) {
 			for (Hero hero : Dungeon.heroes) {

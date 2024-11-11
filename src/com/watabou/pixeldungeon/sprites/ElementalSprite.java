@@ -19,6 +19,7 @@ package com.watabou.pixeldungeon.sprites;
 
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.actors.Char;
+import org.jetbrains.annotations.NotNull;
 
 public class ElementalSprite extends MobSprite {
 
@@ -30,7 +31,7 @@ public class ElementalSprite extends MobSprite {
 	}
 
 	@Override
-	public void link( Char ch ) {
+	public void link(@NotNull Char ch ) {
 		super.link( ch );
 		add( State.BURNING );
 	}
