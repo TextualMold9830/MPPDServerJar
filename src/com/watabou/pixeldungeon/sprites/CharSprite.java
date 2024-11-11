@@ -73,6 +73,9 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 	}
 
 	@Nullable
+	// needs to return spritename.json
+	// any non-null return needs a texture to be loaded for that sprite
+	// null means default sprite is used
 	public String getSpriteAsset() {
 		return null;
 	}
