@@ -43,7 +43,6 @@ public class TexturePackManager {
     }
     @Nullable
     public static String getMobAnimation(@NotNull Class<? extends CharSprite> mobClass){
-        System.out.println("Caller: " + mobClass.getSimpleName());
         return animationMap.get(mobClass.getSimpleName().replace("Sprite","").toLowerCase(Locale.ROOT));
     }
 }
