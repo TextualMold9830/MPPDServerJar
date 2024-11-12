@@ -98,7 +98,7 @@ public class WndTradeItem extends WndOptions {
 
 		super.hide();
 
-		Shopkeeper.sell(getOwnerHero());
+		//Shopkeeper.sell(getOwnerHero());
 	}
 
 	private WndOptionsParams createDescription(Item item, boolean forSale ) {
@@ -197,7 +197,9 @@ public class WndTradeItem extends WndOptions {
 		} else {
 			if (canBuy) {
 				if (index == 0) {
-					buy(heap);
+					if (price(item) <= getOwnerHero().getGold()) {
+						buy(heap);
+					}
 				}
 				hide();
 				return;
