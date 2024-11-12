@@ -333,7 +333,7 @@ public abstract class Level implements Bundlable {
 				if (mobs.size() < nMobs()) {
 
 					Mob mob = Bestiary.mutable( Dungeon.depth );
-					mob.state = mob.WANDERING;
+					mob.setState(mob.WANDERING);
 					mob.pos = randomRespawnCell();
 					if (HeroHelp.haveAliveHero() && mob.pos != -1) {
 						GameScene.add( mob );
