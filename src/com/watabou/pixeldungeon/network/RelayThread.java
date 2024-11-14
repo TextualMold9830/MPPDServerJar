@@ -82,6 +82,9 @@ public class RelayThread extends Thread {
             writer.write(name.toString());
             writer.write('\n');
             writer.flush();
+            //We wait for reader to be ready so we don't prematurely stop RelayThread
+            long deathTime = System.currentTimeMillis() + 2000; // We wait at most 2000 milliseconds
+            while (!reader.ready()){if (System.currentTimeMillis() >= deathTime){break;}}
             while (true) {
                 String json = reader.readLine();
                 if (json == null){
