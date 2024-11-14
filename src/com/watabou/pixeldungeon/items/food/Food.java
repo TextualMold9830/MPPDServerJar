@@ -135,7 +135,7 @@ public class Food extends Item {
 		return 10 * getQuantity();
 	}
 	private void applyFood(Hero hero){
-		if (hero != null){
+		if (hero != null && hero.isAlive()){
 			hero.buff(Hunger.class).satisfy(energy);
 		};
 	}
