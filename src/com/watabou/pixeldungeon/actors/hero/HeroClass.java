@@ -33,7 +33,9 @@ import com.watabou.pixeldungeon.items.weapon.melee.Knuckles;
 import com.watabou.pixeldungeon.items.weapon.melee.ShortSword;
 import com.watabou.pixeldungeon.items.weapon.missiles.Dart;
 import com.watabou.pixeldungeon.items.weapon.missiles.Boomerang;
+import com.watabou.pixeldungeon.network.Server;
 import com.watabou.utils.Bundle;
+import textualmold9830.plugins.events.HeroInitEvent;
 
 public enum HeroClass {
 
@@ -79,11 +81,16 @@ public enum HeroClass {
 	};
 	
 	public void initHero( Hero hero ) {
-		
 		hero.heroClass = this;
-		
-		initCommon( hero );
-		
+		HeroInitEvent event = new HeroInitEvent(hero);
+		Server.pluginManager.fireEvent(event);
+		if (!event.overrideCommon) {
+			initCommon(hero);
+
+		}
+		if (!event.overrideInitClass) {
+
+
 		switch (this) {
 		case WARRIOR:
 			initWarrior( hero );
@@ -101,8 +108,8 @@ public enum HeroClass {
 			initHuntress( hero );
 			break;
 		}
-		
-		if (Badges.isUnlocked( masteryBadge() )) {
+		}
+		if (event.tomeOfMastery) {
 			new TomeOfMastery().collect(hero);
 		}
 		
