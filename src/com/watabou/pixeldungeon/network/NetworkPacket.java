@@ -157,8 +157,16 @@ public class NetworkPacket {
                     return new JSONObject();
                 }
                 object.put("id", id);
-                if (heroAsHero && (actor instanceof Hero)) {
-                    object.put("type", "hero");
+                if ((actor instanceof Hero)) {
+
+                    object.put("tier", ((Hero) actor).tier());
+                    if (heroAsHero) {
+                        object.put("type", "hero");
+                    } else {
+                        object.put("type", "character");
+                    }
+                    object.put("class", ((Hero) actor).heroClass);
+                    object.put("sprite_name",((Hero) actor).getSprite().spriteName());
                 } else {
                     object.put("type", "character");
                     if (character.getSprite() != null) {

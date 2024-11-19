@@ -25,6 +25,7 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.items.EquipableItem;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.armor.glyphs.*;
+import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.sprites.HeroSprite;
 import com.watabou.pixeldungeon.sprites.ItemSpriteGlowing;
 import com.watabou.pixeldungeon.utils.GLog;
@@ -109,6 +110,7 @@ public class Armor extends EquipableItem {
 			((HeroSprite) hero.getSprite()).updateArmor();
 
 			hero.spendAndNext( time2equip( hero ) );
+			hero.sendSelf();
 			return true;
 
 		} else {
@@ -130,7 +132,7 @@ public class Armor extends EquipableItem {
 
 			hero.belongings.setArmor(null);
 			((HeroSprite) hero.getSprite()).updateArmor();
-
+			hero.sendSelf();
 			return true;
 
 		} else {
