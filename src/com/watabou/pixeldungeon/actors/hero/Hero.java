@@ -184,6 +184,7 @@ public class Hero extends Char {
 	private static final String GOLD        = "gold";
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
+	private static final String SECRET = "uuid";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -201,7 +202,7 @@ public class Hero extends Char {
 		bundle.put( EXPERIENCE, exp );
 
 		bundle.put( GOLD, getGold());
-
+		bundle.put(SECRET, uuid);
 		belongings.storeInBundle( bundle );
 	}
 
@@ -220,7 +221,7 @@ public class Hero extends Char {
 
 		lvl = bundle.getInt( LEVEL );
 		exp = bundle.getInt( EXPERIENCE );
-
+		uuid = bundle.getString(SECRET);
 		belongings.restoreFromBundle( bundle );
 	}
 
