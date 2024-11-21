@@ -365,7 +365,7 @@ public class Dungeon {
 		return false;
 	}
 
-	private static final String GAME_FILE = "save/game.dat";
+	public static final String GAME_FILE = "save/game.dat";
 	private static final String DEPTH_FILE = "save/depth%d.dat";
 
 	/*
@@ -431,7 +431,7 @@ public class Dungeon {
 		return DEPTH_FILE;
 	}
 
-	public static void saveGame( String fileName ) throws IOException { //TODO FIX IT
+	public static void saveGame() throws IOException { //TODO FIX IT
 		try {
 			Bundle bundle = new Bundle();
 
@@ -440,7 +440,6 @@ public class Dungeon {
 			bundle.put( CHALLENGES, challenges );
 			bundle.put( HEROES, Arrays.asList(heroes));
 			bundle.put( DEPTH, depth );
-
 			for (int d : droppedItems.keySet()) {
 				bundle.put( String.format( DROPPED, d ), droppedItems.get( d ) );
 			}
@@ -491,7 +490,7 @@ public class Dungeon {
 
 	public static void saveAll() throws IOException { //fixme
 			Actor.fixTime();
-			saveGame( gameFile( null) );
+			saveGame();
 			saveLevel();
 
 			GamesInProgress.set( null, depth, -1, challenges != 0 );
@@ -504,17 +503,11 @@ public class Dungeon {
 //		}
 	}
 
-	public static void loadGame( HeroClass cl ) throws IOException {
-		loadGame( gameFile( cl ), true );
-	}
 
-	public static void loadGame( String fileName ) throws IOException {
-		loadGame( fileName, false );
-	}
 
-	public static void loadGame(String fileName, boolean fullLoad ) throws IOException {
+	public static void loadGame(boolean fullLoad ) throws IOException {
 
-		Bundle bundle = gameBundle( fileName );
+		Bundle bundle = gameBundle( GAME_FILE );
 
 		Dungeon.challenges = bundle.getInt( CHALLENGES );
 
@@ -574,7 +567,7 @@ public class Dungeon {
 		depth = bundle.getInt(DEPTH);
 		Statistics.restoreFromBundle( bundle );
 		Journal.restoreFromBundle( bundle );
-
+		switchLevel(loadLevel());
 		droppedItems = new HashMap<>();
 		for (int i=2; i <= Statistics.deepestFloor + 1; i++) {
 			ArrayList<Item> dropped = new ArrayList<Item>();
@@ -632,7 +625,7 @@ public class Dungeon {
 
 	public static Bundle gameBundle( String fileName ) throws IOException {
 
-		InputStream input = Files.newInputStream(Paths.get(fileName));
+		InputStream input = Files.newInputStream(Paths.get(GAME_FILE));
 		Bundle bundle = Bundle.read( input );
 		input.close();
 

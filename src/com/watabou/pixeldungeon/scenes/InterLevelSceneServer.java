@@ -245,7 +245,6 @@ public class InterLevelSceneServer {
 
             GLog.wipe();
 
-            Dungeon.loadGame(StartScene.curClass);
             if (Dungeon.depth == -1) {
                 Dungeon.depth = Statistics.deepestFloor;
                 Dungeon.switchLevel(Dungeon.loadLevel(StartScene.curClass));

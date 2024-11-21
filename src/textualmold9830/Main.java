@@ -2,13 +2,10 @@ package textualmold9830;
 
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.network.Server;
-import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
 import com.watabou.pixeldungeon.texturepack.TexturePackManager;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Base64;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,8 +13,7 @@ public class Main {
         Preferences.load();
         Runtime.getRuntime().addShutdownHook(new Thread(Main::shutdown));
         Server.startServer();
-        Dungeon.init();
-        InterLevelSceneServer.descend(null);
+        startGame(args);
         initTextures();
         Server.pluginManager.loadPlugins();
         System.out.println("Server started");
@@ -42,5 +38,21 @@ public class Main {
         Preferences.save();
         Server.pluginManager.shutdownPlugins();
         Server.stopServer();
+        try {
+            Dungeon.saveAll();
+            System.out.println("Saved the game in save folder");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private static void startGame(String[] args){
+        if ((args.length > 0 && args[0] != null && args[0].equals("reset")) || !GameManager.hasGame()) {
+            GameManager.startNewGame();
+        } else {
+            if(!GameManager.loadGame()){
+                GameManager.startNewGame();
+            };
+
+        }
     }
 }
