@@ -110,7 +110,7 @@ class ClientThread implements Callable<String> {
                     //Level block
                     case ("hero_class"): {
                         if (clientHero == null) {
-                            InitPlayerHero(data.getString(token));
+                            InitPlayerHero(data.getString(token), data.optString("uuid", null));
                         }
                         break;
                     }
@@ -196,6 +196,9 @@ class ClientThread implements Callable<String> {
                         }
                         break;
                     }
+                    case "uuid":
+                        //already parsed
+                        break;
                     default: {
                         GLog.n("Server: Bad token: %s", token);
                         break;
@@ -263,7 +266,7 @@ class ClientThread implements Callable<String> {
     }
 
     //some functions
-    protected void InitPlayerHero(String className) {
+    protected void InitPlayerHero(String className, String UUID) {
         HeroClass curClass;
         try {
             curClass = HeroClass.valueOf(className.toUpperCase());
@@ -273,35 +276,53 @@ class ClientThread implements Callable<String> {
             }
             curClass = Random.element(HeroClass.values());
         }
-        Hero newHero = new Hero();
-        clientHero = newHero;
-        newHero.live();
-
-        curClass.initHero(newHero);
-
-        newHero.pos = Dungeon.GetPosNear(level.entrance);
-        newHero.updateSpriteState();
-        if (newHero.pos == -1) {
-            newHero.pos = level.entrance; //todo  FIXME
-        }
-        Actor.add(newHero);
-        Actor.occupyCell(newHero);
-        newHero.getSprite().place(newHero.pos);
-
-        synchronized (Dungeon.heroes) { //todo fix it. It is not work
-            for (int i = 0; i < heroes.length; i++) {
-                if (Dungeon.heroes[i] == null) {
-                    Dungeon.heroes[i] = newHero;
-                    newHero.networkID = threadID;
-                    newHero.name = "Player" + i;
-                    break;
+        Hero newHero = null;
+        boolean heroFound = false;
+        if (UUID != null){
+            for (Hero hero: heroes){
+                if (hero != null ) {
+                    if (hero.getUUID().equals(UUID)) {
+                        heroFound = true;
+                        newHero = hero;
+                        break;
+                    }
                 }
             }
-
-            if (newHero.networkID == -1) {
-                throw new RuntimeException("Can not find place for hero");
-            }
         }
+        if (!heroFound){
+            newHero = new Hero();
+        }
+        clientHero = newHero;
+        if (!heroFound) {
+            newHero.live();
+
+            curClass.initHero(newHero);
+
+            newHero.pos = Dungeon.GetPosNear(level.entrance);
+
+            newHero.updateSpriteState();
+        }
+            if (newHero.pos == -1) {
+                newHero.pos = level.entrance; //todo  FIXME
+            }
+            Actor.add(newHero);
+            Actor.occupyCell(newHero);
+            newHero.getSprite().place(newHero.pos);
+            if (!heroFound) {
+                synchronized (heroes) { //todo fix it. It is not work
+                     for (int i = 0; i < heroes.length; i++) {
+                         if (heroes[i] == null) {
+                             heroes[i] = newHero;
+                             newHero.networkID = threadID;
+                             newHero.name = "Player" + i;
+                             break;
+                }
+            }
+                     if (newHero.networkID == -1) {
+                         throw new RuntimeException("Can not find place for hero");
+                     }
+                }
+            }
         GameScene.addHeroSprite(newHero);
 
         sendInitData();

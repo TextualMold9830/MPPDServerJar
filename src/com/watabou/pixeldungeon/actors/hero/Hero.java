@@ -70,6 +70,7 @@ import textualmold9830.plugins.events.HeroDoActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.UUID;
 
 import static com.watabou.pixeldungeon.network.SendData.*;
 
@@ -135,6 +136,7 @@ public class Hero extends Char {
 	public int networkID = -1;
 
 	private ArrayList<Mob> visibleEnemies;
+	private String uuid = UUID.randomUUID().toString();
 
 	public Hero() {
 		super();
@@ -163,6 +165,13 @@ public class Hero extends Char {
 		visibleEnemies = new ArrayList<Mob>();
 		cellSelector = new CellSelector(this);
 		setSprite(new HeroSprite(this));
+	}
+	public Hero(String uuid) {
+		this();
+		this.uuid = uuid;
+	}
+	public String getUUID(){
+		return uuid;
 	}
 
 	public int STR() {

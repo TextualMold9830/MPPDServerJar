@@ -281,6 +281,7 @@ public class NetworkPacket {
             object.put("strength", strength);
             object.put("lvl", lvl);
             object.put("exp", exp);
+            object.put("uuid", hero.getUUID());
         } catch (JSONException e) {
 
         }
