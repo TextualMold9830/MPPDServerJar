@@ -683,7 +683,7 @@ public class NetworkPacket {
             heapObj.put("pos", heap.pos);
             heapObj.put("visible_item", Item.packItem(heap.items.getFirst(), observer));
             int heapImage = -1;
-            if (!heap.showsFirstItem()) {
+            if (heap.overridesTexture()) {
                 heapImage = heap.image();
             }
             heapObj.put("visible_sprite", heapImage);

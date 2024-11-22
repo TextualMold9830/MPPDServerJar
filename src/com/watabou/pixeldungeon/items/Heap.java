@@ -111,6 +111,10 @@ public class Heap implements Bundlable {
 		return (type == Type.HEAP || type == Type.FOR_SALE || type == Type.HIDDEN || type == Type.CRYSTAL_CHEST);
 	}
 
+	public boolean overridesTexture() {
+		return !(type == Type.HEAP || type == Type.FOR_SALE);
+	}
+
 	public ItemSpriteGlowing glowing() {
 		return (type == Type.HEAP || type == Type.FOR_SALE) && items.size() > 0 ? items.peek().glowing() : null;
 	}
