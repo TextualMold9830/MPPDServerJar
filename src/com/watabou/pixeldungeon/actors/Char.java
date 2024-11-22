@@ -20,6 +20,7 @@ package com.watabou.pixeldungeon.actors;
 import com.nikita22007.multiplayer.noosa.Camera;
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
+import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.ResultDescriptions;
 import com.watabou.pixeldungeon.actors.buffs.*;
@@ -62,7 +63,7 @@ public abstract class Char extends Actor {
 
 	public int pos = 0;
 
-	private CharSprite sprite = new RatSprite();
+	private CharSprite sprite = BuildConfig.DEBUG? null : new RatSprite();
 
 	public String name = "mob";
 
