@@ -654,7 +654,7 @@ public class Hero extends Char {
 					theKey = belongings.getKey( GoldenKey.class, Dungeon.depth );
 
 					if (theKey == null) {
-						GLog.w( TXT_LOCKED_CHEST );
+						GLog.wWithTarget(HeroHelp.getHeroID(this), TXT_LOCKED_CHEST );
 						ready();
 						return false;
 					}
