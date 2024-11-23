@@ -53,6 +53,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -115,7 +116,7 @@ public class Heap implements Bundlable {
 		return !(type == Type.HEAP || type == Type.FOR_SALE);
 	}
 
-	public ItemSpriteGlowing glowing() {
+	public ItemSpriteGlowing glowing() 	{
 		return (type == Type.HEAP || type == Type.FOR_SALE) && items.size() > 0 ? items.peek().glowing() : null;
 	}
 
@@ -399,6 +400,29 @@ public class Heap implements Bundlable {
 		bundle.put( POS, pos );
 		bundle.put( TYPE, type.toString() );
 		bundle.put( ITEMS, items );
+	}
+
+	@Nullable
+	public JSONObject toJSONObject(Hero observer) {
+		Heap heap = this;
+		if (heap.isEmpty()) {
+			return null;
+		}
+		JSONObject heapObj;
+		heapObj = new JSONObject();
+		try {
+			heapObj.put("pos", heap.pos);
+			heapObj.put("visible_item", Item.packItem(heap.items.getFirst(), observer));
+			int heapImage = -1;
+			if (heap.overridesTexture()) {
+				heapImage = heap.image();
+			}
+			heapObj.put("visible_sprite", heapImage);
+			heapObj.put("show_item", heap.showsFirstItem());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return heapObj;
 	}
 
 }
