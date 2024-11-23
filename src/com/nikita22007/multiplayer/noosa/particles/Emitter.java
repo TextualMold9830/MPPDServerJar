@@ -24,6 +24,7 @@
 
 package com.nikita22007.multiplayer.noosa.particles;
 
+import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.effects.particles.FlowParticle;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.sprites.CharSprite;
@@ -71,10 +72,7 @@ public class Emitter {
 	protected float interval;
 	protected int quantity;
 
-	/**
-	 * if {@code on == false}, Emitter stops emitting
-	 */
-	public boolean on = false;
+	private boolean on = false;
 
 	/**
 	 * Factory which producing particles
@@ -83,6 +81,12 @@ public class Emitter {
 	private Integer cell = null;
 	private PointF shift = new PointF(0, 0);
 
+	private int id = -1;
+
+	private static int lastId = 0;
+	protected final int getNextId() {
+		return ++lastId;
+	}
 
 	public void cellPos(int cell) {
 		cellPos(cell, 0, 0);
@@ -156,14 +160,15 @@ public class Emitter {
 
 	/**
 	 * Emits {@code quantity} particles each {@code interval} seconds
+	 * if quantity is 0, should be stopped manually
 	 * @param factory factory of particles
 	 * @param interval interval between emitting
+	 * @param quantity count of particles
 	 */
 	public void start( Factory factory, float interval, int quantity ) {
 
 		if (quantity == 0) {
-			//todo
-			return;
+			id = getNextId();
 		}
 
 		this.factory = factory;
@@ -180,7 +185,7 @@ public class Emitter {
 		JSONObject actionObj = new JSONObject();
 		try {
 			actionObj.put("action_type", "emitter_visual");
-
+			actionObj.put("id", id);
 			if ((target != null) && (target.ch != null) && (target.ch.id() != -1)) {
 				actionObj.put("target_char", target.ch.id());
 				actionObj.put("fill_target", fillTarget);
@@ -205,6 +210,35 @@ public class Emitter {
 			throw new RuntimeException(e);
 		}
 		SendData.sendCustomActionForAll(actionObj);
+	}
+
+	private void sendChangeOn(boolean on) {
+		JSONObject actionObj = new JSONObject();
+		try {
+			actionObj.put("action_type", "emitter_state");
+			actionObj.put("id", id);
+			actionObj.put("on", on);
+		} catch (JSONException e) {
+			throw new RuntimeException(e);
+		}
+		SendData.sendCustomActionForAll(actionObj);
+	}
+
+	/**
+	 * if {@code on == false}, Emitter stops emitting
+	 */
+	public boolean isOn() {
+		return on;
+	}
+
+	public void setOn(boolean on) {
+		if (this.on == on) return;
+		this.on = on;
+		if (id != -1) {
+			sendChangeOn(on);
+		} else {
+			assert BuildConfig.DEBUG && !on;
+		}
 	}
 
 	abstract public static class Factory {

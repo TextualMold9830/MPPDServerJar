@@ -20,8 +20,6 @@ package com.watabou.pixeldungeon.sprites;
 import com.nikita22007.multiplayer.noosa.particles.Emitter;
 import com.nikita22007.multiplayer.noosa.particles.Emitter.Factory;
 import com.watabou.pixeldungeon.Assets;
-import com.watabou.utils.PointF;
-import com.watabou.utils.Random;
 
 import static com.watabou.pixeldungeon.network.SendData.sendCharSpriteAction;
 
@@ -57,7 +55,7 @@ public class GooSprite extends MobSprite {
 			spray = centerEmitter();
 			spray.pour( GooParticle.FACTORY, 0.04f );
 		} else if (spray != null) {
-			spray.on = false;
+			spray.setOn(false);
 			spray = null;
 		}
 	}

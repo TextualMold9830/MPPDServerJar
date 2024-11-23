@@ -40,7 +40,7 @@ public class CursePersonificationSprite extends WraithSprite {
 	public void kill() {
 		super.kill();
 		if (cloud != null) {
-			cloud.on = false;
+			cloud.setOn(false);
 		}
 	}
 }
