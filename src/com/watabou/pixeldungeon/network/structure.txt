@@ -465,6 +465,7 @@ action emitter_visual
 {
     "action_type": emitter_visual
 
+    "id": -1 //must be other if emmiter is infinity.
     "pos": 2
     OR
     "target_char": 3 //id
@@ -483,9 +484,20 @@ action emitter_visual
     "quantity": 20;
 
     "factory": Emitter.Factory
-
 }
 
+action emitter_state
+{
+    "action_type": "emitter_state"
+    "id": 0 //don't use -1
+    "on": False
+}
+
+action emitter_kill
+{
+    "action_type": "emitter_kill"
+    "id": 0 //ignore -1
+}
 Emitter.Factory
 {
     "factory_type": "speck"
