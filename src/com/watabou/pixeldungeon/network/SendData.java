@@ -414,18 +414,23 @@ public class SendData {
 
     public static void sendUpdateItemFull(Item item) {
         for (Hero hero : Dungeon.heroes) {
-            if (hero == null) {
-                continue;
+            if (hero != null) {
+                if (sendUpdateItemFull(hero, item)){
+                    break;
+                }
             }
-            List<Integer> path = hero.belongings.pathOfItem(item);
-            if ((path == null) || (path.isEmpty())) {
-                continue;
-            }
-            sendUpdateItemFull(hero, item, path);
-            break;
+
         }
     }
 
+    public static boolean sendUpdateItemFull(@NotNull Hero hero, Item item) {
+        List<Integer> path = hero.belongings.pathOfItem(item);
+        if ((path == null) || (path.isEmpty())) {
+            return false;
+        }
+        sendUpdateItemFull(hero, item, path);
+        return true;
+    }
     public static void sendUpdateItemFull(Char owner, Item item, List<Integer> path) {
         if ((owner == null) || !(owner instanceof Hero)) {
             return;

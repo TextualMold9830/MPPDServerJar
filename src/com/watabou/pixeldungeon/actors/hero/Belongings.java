@@ -318,8 +318,9 @@ public class Belongings implements Iterable<Item> {
 	public KindOfWeapon setWeapon(KindOfWeapon weapon) {
 		List<Integer> path = new ArrayList<Integer>(1);
 		path.add(-1);
+		this.weapon = weapon;
 		sendNewInventoryItem(owner, weapon, path);
-		return (this.weapon = weapon);
+		return weapon;
 	}
 
 	public Armor getArmor() {
@@ -329,8 +330,9 @@ public class Belongings implements Iterable<Item> {
 	public Armor setArmor(Armor armor) {
 		List<Integer> path = new ArrayList<Integer>(1);
 		path.add(-2);
+		this.armor = armor;
 		sendNewInventoryItem(owner, armor, path);
-		return (this.armor = armor);
+		return armor;
 	}
 
 	public Ring getRing1() {
@@ -340,8 +342,9 @@ public class Belongings implements Iterable<Item> {
 	public Ring setRing1(Ring ring1) {
 		List<Integer> path = new ArrayList<Integer>(1);
 		path.add(-3);
+		this.ring1 = ring1;
 		sendNewInventoryItem(owner, ring1, path);
-		return (this.ring1 = ring1);
+		return ring1;
 	}
 
 	public Ring getRing2() {
@@ -351,8 +354,9 @@ public class Belongings implements Iterable<Item> {
 	public Ring setRing2(Ring ring2) {
 		List<Integer> path = new ArrayList<Integer>(1);
 		path.add(-4);
+		this.ring2 = ring2;
 		sendNewInventoryItem(owner, ring2, path);
-		return (this.ring2 = ring2);
+		return ring2;
 	}
 
 	private class ItemIterator implements Iterator<Item> {
