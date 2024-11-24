@@ -599,7 +599,7 @@ public class SendData {
         try {
             AtomicReference<JSONObject> dataRef = clients[networkID].packet.dataRef;
             synchronized (clients[networkID].packet.dataRef) {
-                JSONObject uiObj = dataRef.get().optJSONObject("iu");
+                JSONObject uiObj = dataRef.get().optJSONObject("ui");
                 uiObj = uiObj != null ? uiObj : new JSONObject();
                 uiObj.put("cell_listener_prompt", new_prompt == null ? "" : new_prompt);
                 dataRef.get().put("ui", uiObj);
@@ -624,7 +624,7 @@ public class SendData {
         try {
             AtomicReference<JSONObject> dataRef = clients[networkID].packet.dataRef;
             synchronized (clients[networkID].packet.dataRef) {
-                JSONObject uiObj = dataRef.get().optJSONObject("iu");
+                JSONObject uiObj = dataRef.get().optJSONObject("ui");
                 uiObj = uiObj != null ? uiObj : new JSONObject();
                 uiObj.put("attack_indicator_target", target);
                 dataRef.get().put("ui", uiObj);
