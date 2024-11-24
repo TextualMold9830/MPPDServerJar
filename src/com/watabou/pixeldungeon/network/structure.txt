@@ -481,7 +481,7 @@ action emitter_visual
     "height": 32f
 
     "interval": 1f;
-    "quantity": 20;
+    "quantity": 20; // 0 == infinity. emitter will be ignored if quantity == 0 and id == -1
 
     "factory": Emitter.Factory
 }
@@ -489,7 +489,7 @@ action emitter_visual
 action emitter_state
 {
     "action_type": "emitter_state"
-    "id": 0 //don't use -1
+    "id": 0 // ignore -1
     "on": False
 }
 
@@ -498,6 +498,7 @@ action emitter_kill
     "action_type": "emitter_kill"
     "id": 0 //ignore -1
 }
+
 Emitter.Factory
 {
     "factory_type": "speck"

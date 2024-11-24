@@ -148,7 +148,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 
 	public synchronized void update() {
 
-		Server.parseActions();
+		boolean parsedAnything = Server.parseActions();
 
 		boolean hasConnectedHero = false;
 		for (Hero hero : Dungeon.heroes) {
@@ -171,6 +171,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 					break;
 				}
 				case PAUSE_ACTORS: {
+					waitNewJson();
 					return;
 				}
 				case PROCESS_ACTORS: {
@@ -194,6 +195,8 @@ public class GameScene extends PixelScene {     //only client, exclude static
 			}
 		}
 
+		boolean isHeroActing = Actor.currentActor() instanceof Hero;
+
 		for (Hero hero : Dungeon.heroes) {
 			if (hero == null) {
 				continue;
@@ -204,6 +207,27 @@ public class GameScene extends PixelScene {     //only client, exclude static
 			hero.cellSelector.enabled = hero.getReady();
 		}
 
+		if (!isHeroActing){
+			return;
+		};
+		if (!parsedAnything){
+			waitNewJson();
+		}
+	}
+
+	synchronized void waitNewJson() {
+
+		double sleep_time = (PING_TIME - (timeTotal - lastPingTime)) * 1000;
+		int sleep_time_int = (int) sleep_time;
+		if (sleep_time_int > 0) {
+			try {
+				this.wait(sleep_time_int);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		} else {
+			lastPingTime = timeTotal;
+		}
 	}
 
 	private void addBlobSprite( final Blob gas ) {
@@ -375,4 +399,11 @@ public class GameScene extends PixelScene {     //only client, exclude static
 			return null;
 		}
 
+	public static void notifySelf() {
+		if (scene != null) {
+			synchronized (scene) {
+				scene.notifyAll();
+			}
+		}
+	}
 }
