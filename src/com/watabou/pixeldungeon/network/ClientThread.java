@@ -10,6 +10,7 @@ import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.hero.HeroClass;
 import com.watabou.pixeldungeon.items.Item;
+import com.watabou.pixeldungeon.items.keys.IronKey;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.pixeldungeon.ui.Window;
@@ -456,7 +457,7 @@ class ClientThread {
         packet.packAndAddLevel(level, clientHero);
         packet.packAndAddHero(clientHero);
         packet.packAndAddDepth(Dungeon.depth);
-        packet.packAndAddIronKeysCount(Dungeon.depth);
+        packet.packAndAddIronKeysCount(clientHero.belongings.updateIronKeysCountVisual(false));
         packet.addInventoryFull(clientHero);
         addAllCharsToSend();
 

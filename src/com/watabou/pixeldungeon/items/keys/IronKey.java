@@ -39,7 +39,7 @@ public class IronKey extends Key {
 		boolean result = super.collect( bag );
 		if (result && depth == Dungeon.depth) {
 			if (bag.owner instanceof Hero){
-				((Hero)bag.owner).belongings.countIronKeys();
+				((Hero)bag.owner).belongings.updateIronKeysCountVisual();
 			}
 		}
 		return result;
@@ -48,7 +48,7 @@ public class IronKey extends Key {
 	@Override
 	public void onDetach( Bag container) {
 		if (depth == Dungeon.depth) {
-			((Hero)container.owner).belongings.countIronKeys();
+			((Hero)container.owner).belongings.updateIronKeysCountVisual();
 		}
 	}
 

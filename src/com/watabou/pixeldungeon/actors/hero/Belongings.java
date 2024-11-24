@@ -19,7 +19,6 @@ package com.watabou.pixeldungeon.actors.hero;
 
 import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.Dungeon;
-import com.watabou.pixeldungeon.HeroHelp;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.KindOfWeapon;
 import com.watabou.pixeldungeon.items.armor.Armor;
@@ -165,8 +164,7 @@ public class Belongings implements Iterable<Item> {
 		return null;
 	}
 
-	public void countIronKeys() {
-
+	public int getIronKeysCount() {
 		int keyscount = 0;
 
 		for (Item item : backpack) {
@@ -174,10 +172,21 @@ public class Belongings implements Iterable<Item> {
 				keyscount++;
 			}
 		}
-		if (keyscount != IronKeyCount_visual) {
-			IronKeyCount_visual = keyscount;
-			sendIronKeysCount(owner.networkID, keyscount);
+		return keyscount;
+	}
+	public int updateIronKeysCountVisual() {
+		return updateIronKeysCountVisual(true);
+	}
+
+	public int updateIronKeysCountVisual(boolean send) {
+		final int keysCount = getIronKeysCount();
+		if (keysCount != IronKeyCount_visual) {
+			IronKeyCount_visual = keysCount;
+			if (send) {
+				sendIronKeysCount(owner.networkID, keysCount);
+			}
 		}
+		return keysCount;
 	}
 
 	public void identify() {
