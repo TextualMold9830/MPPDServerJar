@@ -60,7 +60,7 @@ public enum Rankings {
 
 		String gameFile = Utils.format( DETAILS_FILE, SystemTime.now );
 		try {
-			com.watabou.pixeldungeon.Dungeon.saveGame( gameFile );
+			com.watabou.pixeldungeon.Dungeon.saveGame( );
 			rec.gameFile = gameFile;
 		} catch (IOException e) {
 			rec.gameFile = "";
