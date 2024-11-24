@@ -1,6 +1,7 @@
 package com.watabou.pixeldungeon.network;
 
 import com.nikita22007.multiplayer.utils.Log;
+import com.watabou.noosa.Scene;
 import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.PixelDungeon;
@@ -10,6 +11,7 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.hero.HeroClass;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.scenes.GameScene;
+import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.pixeldungeon.ui.Window;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.utils.Utils;
@@ -26,13 +28,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.function.Supplier;
 
 import static com.watabou.pixeldungeon.Dungeon.heroes;
 import static com.watabou.pixeldungeon.Dungeon.level;
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
-class ClientThread implements Callable<String> {
+class ClientThread {
 
     public static final String CHARSET = "UTF-8";
 
@@ -50,7 +55,7 @@ class ClientThread implements Callable<String> {
     protected final NetworkPacket packet = new NetworkPacket();
 
     @NotNull
-    private FutureTask<String> jsonCall;
+    private CompletableFuture<String> jsonCall;
 
     public ClientThread(int ThreadID, Socket clientSocket, @Nullable Hero hero) {
         clientHero = hero;
@@ -83,12 +88,12 @@ class ClientThread implements Callable<String> {
 
     protected void updateTask() {
         if ((jsonCall == null) || (jsonCall.isDone())) {
-            jsonCall = new FutureTask<String>(this);
-            new Thread(jsonCall).start();
+            new CompletableFuture<String>();
+            jsonCall = CompletableFuture.supplyAsync(this::runTask).whenComplete((result, exception) -> GameScene.notifySelf());
         }
     }
-    @Override
-    public String call() {
+    //@Override
+    public String runTask() {
         if (clientSocket.isClosed()) {
             return null;
         }
@@ -212,15 +217,15 @@ class ClientThread implements Callable<String> {
     }
 
 
-    public void parse() {
+    public boolean parse() {
         if (!jsonCall.isDone()) {
-            return;
+            return false;
         }
         try {
             String json = jsonCall.get();
             if (json == null){
                 disconnect();
-                return;
+                return false;
             }
             updateTask();
             try {
@@ -235,6 +240,7 @@ class ClientThread implements Callable<String> {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
     //network functions
@@ -441,6 +447,7 @@ class ClientThread implements Callable<String> {
         writeStream = null;
         jsonCall.cancel(true);
         GLog.n("player " + threadID + " disconnected");
+        GameScene.notifySelf();
     }
 
     private void sendInitData() {

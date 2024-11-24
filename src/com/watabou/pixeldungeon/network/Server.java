@@ -114,13 +114,17 @@ public class Server extends Thread {
         return true;
     }
 
-    public static void parseActions() {
+    public static boolean parseActions() {
+        boolean parsedAnything = false;
         for (ClientThread client : com.watabou.pixeldungeon.network.Server.clients) {
             if (client == null) {
                 continue;
             }
-            client.parse();
+            if (client.parse()) {
+                parsedAnything = true;
+            }
         }
+        return parsedAnything;
     }
 
     public static void startClientThread(Socket client) throws IOException {

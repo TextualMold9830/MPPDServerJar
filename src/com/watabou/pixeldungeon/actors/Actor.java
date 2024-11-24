@@ -212,6 +212,10 @@ public abstract class Actor implements Bundlable {
 		}
 	}
 
+	public static Actor currentActor() {
+		return current;
+	}
+
 	public static void process() {
 		if (PixelDungeon.requestedReset()){
 			return;
