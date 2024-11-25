@@ -55,7 +55,6 @@ public class Server extends Thread {
                             if (Game.instance != null) {
                                 if ((Game.scene() instanceof GameScene)) {
                                     Game.instance.server_step();
-                                    sleep(0);
                                 } else {
                                     sleep(500);
                                 }
