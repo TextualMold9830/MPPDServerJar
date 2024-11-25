@@ -404,16 +404,12 @@ public class GameScene extends PixelScene {     //only client, exclude static
 	public static void ready(@NotNull Hero hero) {
 		selectCell(hero, hero.defaultCellListener );
 	}
-
-		public String prompt() {
-			return null;
-		}
-
+	private synchronized void notifyScene(){
+		this.notify();
+	}
 	public static void notifySelf() {
 		if (scene != null) {
-			synchronized (scene) {
-				scene.notifyAll();
-			}
+			scene.notifyScene();
 		}
 	}
 }
