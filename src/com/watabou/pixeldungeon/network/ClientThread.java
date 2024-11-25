@@ -244,6 +244,7 @@ class ClientThread {
                 PixelDungeon.reportException(e);
                 GLog.n(e.getStackTrace().toString());
                 disconnect();
+                return false;
             }
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
