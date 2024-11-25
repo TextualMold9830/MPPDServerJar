@@ -47,7 +47,9 @@ import org.json.JSONObject;
 import textualmold9830.Preferences;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.watabou.noosa.Game.timeTotal;
 
@@ -144,7 +146,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		}
 	}
 
-	public static final double PING_TIME = 2.0;
+	public static final double PING_TIME = 20.0;
 	private double lastPingTime = 0;
 
 	public synchronized void update() {
@@ -223,7 +225,13 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		if (Thread.currentThread() != Server.serverStepThread) return;
 		if (sleep_time_int > 0) {
 			try {
+				System.out.print(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()));
+				System.out.print(" Waiting during ");
+				System.out.print(sleep_time_int);
+				System.out.println(" ms");
 				this.wait(sleep_time_int);
+				System.out.print(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()));
+				System.out.println(" WakedUp");
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
