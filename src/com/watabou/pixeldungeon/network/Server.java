@@ -39,7 +39,7 @@ public class Server extends Thread {
     protected static final int TIME_TO_STOP = 3000; //ms
     protected static final int SLEEP_TIME = 100; // ms
 
-    protected static Thread serverStepThread;
+    public static Thread serverStepThread;
 
     public static boolean startServerStepLoop() {
         if ((serverStepThread != null) && (serverStepThread.isAlive())) {

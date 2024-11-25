@@ -220,6 +220,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 
 		double sleep_time = (PING_TIME - (timeTotal - lastPingTime)) * 1000;
 		int sleep_time_int = (int) sleep_time;
+		if (Thread.currentThread() != Server.serverStepThread) return;
 		if (sleep_time_int > 0) {
 			try {
 				this.wait(sleep_time_int);
