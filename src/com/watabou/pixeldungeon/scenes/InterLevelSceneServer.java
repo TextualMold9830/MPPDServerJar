@@ -109,9 +109,8 @@ public class InterLevelSceneServer {
     public static void descend(@Nullable Hero hero)  {// спуск
         try {
             Generator.reset();
-            for (int i = 0; i < heroes.length; i++) {
-                SendData.sendInterLevelScene(i,"DESCEND");
-            }
+            SendData.sendInterLevelSceneForAll("DESCEND");
+
             Actor.fixTime();
             if (Dungeon.depth > 0) {
                 Dungeon.saveLevel();
@@ -124,9 +123,7 @@ public class InterLevelSceneServer {
             } else {
                 Dungeon.switchLevel(level, level.entrance, hero);
             }
-            for (int i = 0; i < heroes.length; i++) {
-                SendData.sendInterLevelSceneFadeOut(i);
-            }
+            SendData.sendInterLevelSceneFadeOutForAll();
             ShowStoryIfNeed(Dungeon.depth);
             sendMessage(false);
         }catch (IOException e){
@@ -141,9 +138,7 @@ public class InterLevelSceneServer {
 
         try {
             Generator.reset();
-            for (int i = 0; i < heroes.length; i++) {
-                SendData.sendInterLevelScene(i, "FALL");
-            }
+            SendData.sendInterLevelSceneForAll("FALL");
             Actor.fixTime();
             Dungeon.saveLevel();
 
@@ -151,9 +146,7 @@ public class InterLevelSceneServer {
             level = getNextLevel();
             Dungeon.switchLevel(level, fallIntoPit ? level.pitCell() : level.randomRespawnCell(), hero);
 
-            for (int i = 0; i < heroes.length; i++) {
-                SendData.sendInterLevelSceneFadeOut(i);
-            }
+            SendData.sendInterLevelSceneFadeOutForAll();
             for (Hero hero_ : heroes) {
                 if (hero_ != null && hero.isAlive()) {
                     Chasm.heroLand(hero_);
@@ -190,19 +183,15 @@ public class InterLevelSceneServer {
         }
         try {
             Generator.reset();
-        for (int i = 0; i < heroes.length; i++) {
-            SendData.sendInterLevelScene(i,"ASCEND");
-        }
-        Actor.fixTime();
+            SendData.sendInterLevelSceneForAll("ASCEND");
+            Actor.fixTime();
 
             Dungeon.saveLevel();
             Dungeon.depth--;
             Level level = Dungeon.loadLevel();
             Dungeon.switchLevel(level, level.exit, hero);
 
-            for (int i = 0; i < heroes.length; i++) {
-                SendData.sendInterLevelSceneFadeOut(i);
-            }
+            SendData.sendInterLevelSceneFadeOutForAll();
             sendMessage(true);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -214,19 +203,14 @@ public class InterLevelSceneServer {
         try {
             Generator.reset();
             if (depth != Dungeon.depth) {
-                for (int i = 0; i < heroes.length; i++) {
-                    SendData.sendInterLevelScene(i,"RETURN");
-                }
-
+                SendData.sendInterLevelSceneForAll("RETURN");
                 Actor.fixTime();
                 Dungeon.saveLevel();
                 Dungeon.depth = depth;
                 Level level = Dungeon.loadLevel();
                 Dungeon.switchLevel(level, pos, hero);
-                for (int i = 0; i < heroes.length; i++) {
-                    SendData.sendInterLevelSceneFadeOut(i);
-                    sendMessage(true);
-                }
+                SendData.sendInterLevelSceneFadeOutForAll();
+                sendMessage(true);
             } else {
                 hero.pos = getNearClearCell(pos);
             }
@@ -262,9 +246,7 @@ public class InterLevelSceneServer {
     public static void resurrect(Hero hero)  { //respawn by ankh
 
         Generator.reset();
-        for (int i = 0; i< heroes.length; i++) {
-            SendData.sendInterLevelScene(i, "RESURRECT");
-        }
+        SendData.sendInterLevelSceneForAll("RESURRECT");
         Actor.fixTime();
         switch (Settings.resurrectMode){
             case RESET_LEVEL: {
@@ -284,10 +266,7 @@ public class InterLevelSceneServer {
             }
         }
         WandOfBlink.appear(hero,hero.pos);
-        for (int i = 0; i< heroes.length; i++) {
-            SendData.sendInterLevelSceneFadeOut(i);
-        }
-
+        SendData.sendInterLevelSceneFadeOutForAll();
         sendMessage(false);
         Game.switchScene( GameScene.class );
     }

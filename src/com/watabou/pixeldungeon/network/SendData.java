@@ -194,8 +194,21 @@ public class SendData {
     }
 
     //-----------------------------Interlevel Scene
+
+    public static void sendInterLevelSceneForAll(String type) {
+        for (int i = 0; i < clients.length; i++) {
+            sendInterLevelScene(i, type);
+        }
+    }
+
     public static void sendInterLevelScene(int ID, String type) {
         sendInterLevelScene(ID, type, true);
+    }
+
+    public static void sendInterLevelSceneForAll(String type, boolean reset_level) {
+        for (int i = 0; i < clients.length; i++) {
+            sendInterLevelScene(i, type, reset_level);
+        }
     }
 
     public static void sendInterLevelScene(int ID, String type, boolean reset_level) {
@@ -208,6 +221,13 @@ public class SendData {
             }
             clients[ID].packet.packAndAddInterLevelSceneType(type, reset_level);
             clients[ID].flush();
+        }
+    }
+
+
+    public static void sendInterLevelSceneFadeOutForAll() {
+        for (int i = 0; i < clients.length; i++) {
+            sendInterLevelSceneFadeOut(i);
         }
     }
 
@@ -634,6 +654,4 @@ public class SendData {
             e.printStackTrace();
         }
     }
-
-
 }
