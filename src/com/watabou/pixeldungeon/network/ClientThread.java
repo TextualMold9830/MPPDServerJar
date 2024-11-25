@@ -28,10 +28,7 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 import java.util.function.Supplier;
 
 import static com.watabou.pixeldungeon.Dungeon.heroes;
@@ -56,7 +53,7 @@ class ClientThread {
     protected final NetworkPacket packet = new NetworkPacket();
 
     @NotNull
-    private CompletableFuture<JSONObject> jsonCall;
+    volatile private CompletableFuture<JSONObject> jsonCall;
 
     public ClientThread(int ThreadID, Socket clientSocket, @Nullable Hero hero) {
         clientHero = hero;
@@ -86,20 +83,29 @@ class ClientThread {
         }
         updateTask();
     }
-
     protected void updateTask() {
         if ((jsonCall == null) || (jsonCall.isDone())) {
             new CompletableFuture<String>();
-            jsonCall = CompletableFuture.supplyAsync(this::runTask).whenComplete((result, exception) -> GameScene.notifySelf());
+            jsonCall = CompletableFuture.supplyAsync(this::runTask);
+            jsonCall.whenComplete((result, exception) -> {
+                GameScene.notifySelf();
+            });
         }
     }
     //@Override
+    @Nullable
     public JSONObject runTask() {
         if (clientSocket.isClosed()) {
             return null;
         }
         try {
-            return new JSONObject(reader.readLine());
+            String line = reader.readLine();
+            if (line == null) {
+                return null;
+            }
+            JSONObject obj = new JSONObject();
+            System.out.println (String.format("task Thread: %s finished", Thread.currentThread().getName()));
+            return obj;
         } catch (JSONException e) {
             Log.e("ParseThread", e.getMessage());
             return null;
