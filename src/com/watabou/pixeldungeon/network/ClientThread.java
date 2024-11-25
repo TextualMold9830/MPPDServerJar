@@ -56,7 +56,7 @@ class ClientThread {
     protected final NetworkPacket packet = new NetworkPacket();
 
     @NotNull
-    private CompletableFuture<String> jsonCall;
+    private CompletableFuture<JSONObject> jsonCall;
 
     public ClientThread(int ThreadID, Socket clientSocket, @Nullable Hero hero) {
         clientHero = hero;
@@ -94,12 +94,15 @@ class ClientThread {
         }
     }
     //@Override
-    public String runTask() {
+    public JSONObject runTask() {
         if (clientSocket.isClosed()) {
             return null;
         }
         try {
-            return reader.readLine();
+            return new JSONObject(reader.readLine());
+        } catch (JSONException e) {
+            Log.e("ParseThread", e.getMessage());
+            return null;
         } catch (IOException e) {
             Log.e("ParseThread", e.getMessage());
             return null;
@@ -107,8 +110,12 @@ class ClientThread {
     }
 
     public void parse(@NotNull String json) throws JSONException {
-
         JSONObject data = new JSONObject(json);
+        parse(data);
+    }
+
+    public void parse(@NotNull JSONObject data) throws JSONException {
+
         for (Iterator<String> it = data.keys(); it.hasNext(); ) {
             String token = it.next();
             try {
@@ -223,14 +230,14 @@ class ClientThread {
             return false;
         }
         try {
-            String json = jsonCall.get();
-            if (json == null){
+            JSONObject jsonObject = jsonCall.get();
+            if (jsonObject == null){
                 disconnect();
                 return false;
             }
             updateTask();
             try {
-                parse(json);
+                parse(jsonObject);
             } catch (JSONException e) {
                 PixelDungeon.reportException(e);
                 GLog.n(e.getStackTrace().toString());
