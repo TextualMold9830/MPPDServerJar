@@ -71,6 +71,7 @@ public class Server extends Thread {
                 }
             };
             serverStepThread.setDaemon(true);
+            serverStepThread.setName("Server Step Thread");
         }
         serverStepThread.start();
         return true;
