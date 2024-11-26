@@ -3,6 +3,7 @@ package com.watabou.pixeldungeon.network;
 
 
 import com.watabou.noosa.Game;
+import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.Settings;
 import com.watabou.pixeldungeon.actors.hero.Hero;
@@ -66,7 +67,10 @@ public class Server extends Thread {
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        System.exit(2);
+                        if (BuildConfig.STOP_SERVER_ON_EXCEPTION) {
+                            pluginManager.shutdownPlugins();
+                            System.exit(2);
+                        }
                     }
                 }
             };
