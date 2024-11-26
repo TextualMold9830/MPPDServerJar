@@ -19,6 +19,7 @@ import static com.watabou.pixeldungeon.network.ClientThread.CHARSET;
 
 
 public class RelayThread extends Thread {
+    private static int restartCount = 0;
     protected OutputStreamWriter writeStream;
     protected BufferedWriter writer;
     protected InputStreamReader readStream;
@@ -82,15 +83,24 @@ public class RelayThread extends Thread {
             writer.write(name.toString());
             writer.write('\n');
             writer.flush();
-            //We wait for reader to be ready so we don't prematurely stop RelayThread
-            long deathTime = System.currentTimeMillis() + 2000; // We wait at most 2000 milliseconds
-            while (!reader.ready()){if (System.currentTimeMillis() >= deathTime){break;}}
             while (true) {
                 String json = reader.readLine();
                 if (json == null){
-                    GLog.h("relay thread stopped");
+                    // we silence relay related messages for the first three times. We do not want confused users.
+                    if (restartCount < 3) {
+                        GLog.h("relay thread stopped");
+                    }
                     socket.close();
                     this.callback.onDisconnect();
+                    if (restartCount < 10) {
+                        if (restartCount < 3) {
+                            System.out.println("Restarting relay");
+                        }
+                        new RelayThread().start();
+                        restartCount++;
+                    } else {
+                        System.out.println("Starting relay failed");
+                    }
                     return;
                 }
                 JSONObject port_obj = new JSONObject(json);
