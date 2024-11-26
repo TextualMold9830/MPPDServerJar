@@ -265,10 +265,41 @@ public class Dungeon {
 			if (ID == -1) {
 				return;
 			}
+			saveHero(heroes[ID]);
+			Actor.freeCell(heroes[ID].pos);
+			Actor.remove(hero);
 			heroes[ID] = null;
 		} else {
 			hero.next();
 		}
+	}
+	public static void saveHero(Hero hero){
+        try
+		{
+			Bundle bundle = new Bundle();
+			hero.storeInBundle(bundle);
+            OutputStream saveFile = Files.newOutputStream(Path.of("save/heroes",hero.getUUID()));
+			Bundle.write(bundle, saveFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+	public static Optional<Hero> loadHero(String uuid){
+		Path savePath = Path.of("save/heroes", uuid);
+		if (Files.exists(savePath)){
+            try {
+                Bundle bundle = Bundle.read(Files.newInputStream(savePath));
+				if (!bundle.isNull()){
+					Hero hero = new Hero();
+					hero.restoreFromBundle(bundle);
+					return Optional.of(hero);
+				}
+            } catch (IOException e) {
+				e.printStackTrace();
+				return Optional.empty();
+            }
+        }
+		return Optional.empty();
 	}
 
 	public static void switchLevelToAll(final Level level,int pos ){

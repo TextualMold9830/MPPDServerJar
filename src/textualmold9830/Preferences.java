@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.UUID;
 
 public class Preferences {
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -22,10 +23,11 @@ public class Preferences {
     public static ITEM_COLLECTED_MESSAGE_MODE itemCollectedMessageMode;
 
     public static NO_CONNECTED_HERO_BEHAVIOUR noConnectedHeroBehaviour = NO_CONNECTED_HERO_BEHAVIOUR.PAUSE_ACTORS;
+    public static String serverUUID = UUID.randomUUID().toString();
 
     public static void save() {
         try {
-            Files.write(Path.of("config.json"), gson.toJson(new PreferencesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, timeToSkipTurn,sharedHunger, levelSize)).getBytes());
+            Files.write(Path.of("config.json"), gson.toJson(new PreferencesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, timeToSkipTurn,sharedHunger, levelSize, serverUUID)).getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -45,6 +47,7 @@ public class Preferences {
                 timeToSkipTurn = prefs.timeToSkipTurn;
                 sharedHunger = prefs.sharedHunger;
                 levelSize = prefs.levelSize;
+                serverUUID = prefs.serverUUID;
             } catch (IOException e) {
                 e.printStackTrace();
             }

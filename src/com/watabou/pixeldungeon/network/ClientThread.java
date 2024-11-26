@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
+import textualmold9830.Preferences;
 
 import java.io.*;
 import java.net.Socket;
@@ -28,6 +29,7 @@ import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -293,14 +295,10 @@ class ClientThread {
         Hero newHero = null;
         boolean heroFound = false;
         if (UUID != null){
-            for (Hero hero: heroes){
-                if (hero != null ) {
-                    if (hero.getUUID().equals(UUID)) {
-                        heroFound = true;
-                        newHero = hero;
-                        break;
-                    }
-                }
+            Optional<Hero> optHero = Dungeon.loadHero(UUID);
+            if (optHero.isPresent()) {
+                newHero = optHero.get();
+                heroFound = true;
             }
         }
         if (!heroFound){
@@ -460,7 +458,7 @@ class ClientThread {
 
     private void sendInitData() {
         Server.textures.forEach(this::sendTexture);
-
+        //TODO: send server UUID here?
         packet.packAndAddLevel(level, clientHero);
         packet.packAndAddHero(clientHero);
         packet.packAndAddDepth(Dungeon.depth);

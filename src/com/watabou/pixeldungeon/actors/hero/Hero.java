@@ -1264,7 +1264,7 @@ public class Hero extends Char {
 		if (cause instanceof Doom) {
 			((Doom)cause).onDeath();
 		}
-
+		freeCell(pos);
 		//Dungeon.deleteGame( this.heroClass, true );
 	}
 
