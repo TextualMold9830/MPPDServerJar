@@ -216,7 +216,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		}
 	}
 
-	synchronized void waitNewJson() {
+	private void waitNewJson() {
 
 		double sleep_time = (PING_TIME - (timeTotal - lastPingTime)) * 1000;
 		int sleep_time_int = (int) sleep_time;

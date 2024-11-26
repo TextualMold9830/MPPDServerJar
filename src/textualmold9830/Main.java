@@ -12,10 +12,10 @@ public class Main {
         initFolders();
         Preferences.load();
         Runtime.getRuntime().addShutdownHook(new Thread(Main::shutdown));
-        Server.startServer();
         startGame(args);
         initTextures();
         Server.pluginManager.loadPlugins();
+        Server.startServer();
         System.out.println("Server started");
 
     }
