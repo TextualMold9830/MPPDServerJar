@@ -25,7 +25,7 @@ public class Preferences {
 
     public static void save() {
         try {
-            Files.write(Path.of("config.json"), gson.toJson(new PreferncesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, timeToSkipTurn,sharedHunger, levelSize)).getBytes());
+            Files.write(Path.of("config.json"), gson.toJson(new PreferencesData(challenges, onlineMode, serverName, useCustomRelay, customRelayAddress, customRelayPort, timeToSkipTurn,sharedHunger, levelSize)).getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,7 @@ public class Preferences {
         if (Files.exists(configPath)){
             try {
                 String data = new String(Files.readAllBytes(configPath));
-                PreferncesData prefs = gson.fromJson(data, PreferncesData.class);
+                PreferencesData prefs = gson.fromJson(data, PreferencesData.class);
                 challenges = prefs.challenges;
                 onlineMode = prefs.onlineMode;
                 serverName = prefs.serverName;

@@ -1,6 +1,6 @@
 package textualmold9830;
 
-public class PreferncesData {
+public class PreferencesData {
     public int challenges = 0;
 
     public  boolean onlineMode = true;
@@ -12,10 +12,10 @@ public class PreferncesData {
     public boolean sharedHunger = false;
     public int levelSize;
 
-    public PreferncesData() {
+    public PreferencesData() {
     }
 
-    public PreferncesData(int challenges, boolean onlineMode, String serverName, boolean useCustomRelay, String customRelayAddress, int customRelayPort, float timeToSkipTurn, boolean sharedHunger, int levelSize) {
+    public PreferencesData(int challenges, boolean onlineMode, String serverName, boolean useCustomRelay, String customRelayAddress, int customRelayPort, float timeToSkipTurn, boolean sharedHunger, int levelSize) {
         this.challenges = challenges;
         this.onlineMode = onlineMode;
         this.serverName = serverName;
