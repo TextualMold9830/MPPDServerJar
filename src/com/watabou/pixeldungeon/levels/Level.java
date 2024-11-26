@@ -73,6 +73,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Random;
 
 import com.watabou.noosa.Scene;
+import org.jetbrains.annotations.NotNull;
 import textualmold9830.Preferences;
 
 public abstract class Level implements Bundlable {
@@ -503,7 +504,7 @@ public abstract class Level implements Bundlable {
 		SendData.sendLevelCell(Dungeon.level,  cell);
 	}
 
-	public Heap drop( Item item, int cell ) {
+	public Heap drop(@NotNull Item item, int cell ) {
 
 		if (Dungeon.isChallenged( Challenges.NO_FOOD ) && item instanceof Food) {
 			item = new Gold( item.price() );

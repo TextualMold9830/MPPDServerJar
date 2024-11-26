@@ -17,11 +17,10 @@ public class GameManager {
     public static boolean  loadGame(){
         try {
             Dungeon.init();
-            Dungeon.loadGame(true);
-            Game.switchScene(GameScene.class);
+            InterLevelSceneServer.restore();
             System.out.println("game loaded");
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
