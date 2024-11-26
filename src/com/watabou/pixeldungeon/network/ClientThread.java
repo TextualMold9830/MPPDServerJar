@@ -108,9 +108,7 @@ class ClientThread {
             if (line == null) {
                 return null;
             }
-            JSONObject obj = new JSONObject();
-            System.out.println (String.format("task Thread: %s finished", Thread.currentThread().getName()));
-            return obj;
+            return new JSONObject(line);
         } catch (JSONException e) {
             Log.e("ParseThread", e.getMessage());
             return null;
