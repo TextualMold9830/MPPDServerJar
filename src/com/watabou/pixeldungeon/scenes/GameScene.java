@@ -135,15 +135,6 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		super.destroy();
 	}
 
-	public synchronized void pause() {
-		try {
-			Dungeon.saveAll();
-			Badges.saveGlobal();
-		} catch (IOException e) {
-			//
-		}
-	}
-
 	public static final double PING_TIME = 2.0;
 	private double lastPingTime = 0;
 
