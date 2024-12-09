@@ -479,6 +479,12 @@ public abstract class Wand extends KindOfWeapon {
 		}
 
 		@Override
+		public void detach() {
+			super.detach();
+			Wand.this.stopCharging();
+		}
+
+		@Override
 		public boolean act() {
 
 			if (getCurCharges() < maxCharges) {
