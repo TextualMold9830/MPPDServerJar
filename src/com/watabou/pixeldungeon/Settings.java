@@ -7,7 +7,7 @@ public class Settings {
     public static String defaultRelayServerAddress = "195.43.142.107";
     //public static String relayServerAddress = "192.168.1.84";
     public static int defaultRelayServerPort = 25555;
-    public static boolean returnDisabled = true;
+    public static boolean returnDisabled = false;
 
     public static int maxPlayers = 32; // todo setup while loading
     public static boolean killOnDisconnect = false;
