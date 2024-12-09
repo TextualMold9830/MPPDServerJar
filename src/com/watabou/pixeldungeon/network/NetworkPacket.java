@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import textualmold9830.Preferences;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -828,6 +829,11 @@ public class NetworkPacket {
         synchronized (dataRef)
         {
             dataRef.get().put("texturepack", base64String);
+        }
+    }
+    public void packAndAddServerUUID(){
+        synchronized (dataRef){
+            dataRef.get().put("server_uuid", Preferences.serverUUID);
         }
     }
     public void packAndAddRawTextures(String data) {

@@ -22,7 +22,7 @@ public class Main {
     private static void initFolders(){
             new File("plugins").mkdirs();
             new File("config").mkdirs();
-            new File("save").mkdirs();
+            new File("save/heroes/").mkdirs();
             new File("textures").mkdirs();
     }
     private static void initTextures(){

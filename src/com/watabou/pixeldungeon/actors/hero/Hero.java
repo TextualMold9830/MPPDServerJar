@@ -137,6 +137,7 @@ public class Hero extends Char {
 
 	private ArrayList<Mob> visibleEnemies;
 	private String uuid = UUID.randomUUID().toString();
+	private int lastDepth = Dungeon.depth;
 
 	public Hero() {
 		super();
@@ -185,6 +186,7 @@ public class Hero extends Char {
 	private static final String LEVEL		= "lvl";
 	private static final String EXPERIENCE	= "exp";
 	private static final String SECRET = "uuid";
+	private static final String LAST_DEPTH = "last_depth";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
@@ -203,6 +205,7 @@ public class Hero extends Char {
 
 		bundle.put( GOLD, getGold());
 		bundle.put(SECRET, uuid);
+		bundle.put(LAST_DEPTH, Dungeon.depth);
 		belongings.storeInBundle( bundle );
 	}
 
@@ -223,6 +226,10 @@ public class Hero extends Char {
 		exp = bundle.getInt( EXPERIENCE );
 		uuid = bundle.getString(SECRET);
 		belongings.restoreFromBundle( bundle );
+		lastDepth = bundle.getInt(LAST_DEPTH);
+		if (lastDepth != Dungeon.depth) {
+			pos = Dungeon.level.entrance;
+		}
 	}
 
 	public static void preview( GamesInProgress.Info info, Bundle bundle ) {

@@ -58,6 +58,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 import static com.watabou.pixeldungeon.BuildConfig.DEBUG;
@@ -265,40 +266,49 @@ public class Dungeon {
 			if (ID == -1) {
 				return;
 			}
-			saveHero(heroes[ID]);
-			Actor.freeCell(heroes[ID].pos);
-			Actor.remove(hero);
-			heroes[ID] = null;
 		} else {
 			hero.next();
 		}
+		int ID = Arrays.asList(heroes).indexOf(hero);
+		if (heroes[ID].isAlive()) {
+			saveHero(heroes[ID]);
+		}
+		Actor.freeCell(heroes[ID].pos);
+		Actor.remove(hero);
+		heroes[ID] = null;
 	}
 	public static void saveHero(Hero hero){
         try
 		{
 			Bundle bundle = new Bundle();
 			hero.storeInBundle(bundle);
-            OutputStream saveFile = Files.newOutputStream(Path.of("save/heroes",hero.getUUID()));
+            OutputStream saveFile = Files.newOutputStream(Path.of("save/heroes",hero.getUUID()), StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
 			Bundle.write(bundle, saveFile);
+			saveFile.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 	public static Optional<Hero> loadHero(String uuid){
-		Path savePath = Path.of("save/heroes", uuid);
-		if (Files.exists(savePath)){
-            try {
-                Bundle bundle = Bundle.read(Files.newInputStream(savePath));
-				if (!bundle.isNull()){
-					Hero hero = new Hero();
-					hero.restoreFromBundle(bundle);
-					return Optional.of(hero);
+		if (uuid != null && !uuid.isBlank()) {
+			Path savePath = Path.of("save/heroes/", uuid);
+			if (Files.exists(savePath)) {
+				try {
+					Bundle bundle = Bundle.read(Files.newInputStream(savePath));
+					if (!bundle.isNull()) {
+						Hero hero = new Hero();
+						hero.restoreFromBundle(bundle);
+						return Optional.of(hero);
+					}
+				} catch (IOException e) {
+					System.out.println(uuid);
+					e.printStackTrace();
+					return Optional.empty();
 				}
-            } catch (IOException e) {
-				e.printStackTrace();
-				return Optional.empty();
-            }
-        }
+			} else {
+				System.out.println("Failed to find hero with UUID: " + uuid);
+			}
+		}
 		return Optional.empty();
 	}
 
@@ -398,6 +408,7 @@ public class Dungeon {
 
 	public static final String GAME_FILE = "save/game.dat";
 	private static final String DEPTH_FILE = "save/depth%d.dat";
+	private static final String HERO_DIRECTORY = "save/heroes/";
 
 	/*
 	private static final String WR_GAME_FILE	= "warrior.dat";
@@ -635,6 +646,17 @@ public class Dungeon {
 
 		try {
 			Files.deleteIfExists(Paths.get(GAME_FILE));
+			if (Files.exists(Path.of("save/heroes/"))) {
+			Files.list(Path.of("save/heroes/")).forEach((path->{
+				try {
+					Files.delete(path);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}));
+			Files.delete(Path.of("save/heroes/"));
+			}
+
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -650,7 +672,6 @@ public class Dungeon {
 				depth++;
 			}
 		}
-
 		GamesInProgress.delete( );
 	}
 

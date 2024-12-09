@@ -28,6 +28,11 @@ public class GameManager {
     public static void startNewGame(){
         Dungeon.deleteGame(true);
         Dungeon.init();
+        try {
+            Files.createDirectories(Path.of("save/heroes/"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         InterLevelSceneServer.descend(null);
     }
     //This could be used in the future

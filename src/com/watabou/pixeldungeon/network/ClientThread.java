@@ -78,6 +78,8 @@ class ClientThread {
             this.threadID = ThreadID;
             reader = new BufferedReader(readStream);
             writer = new BufferedWriter(writeStream, 16384);
+            packet.packAndAddServerUUID();
+            flush();
         } catch (IOException e) {
             GLog.n(e.getMessage());
             disconnect();
@@ -307,6 +309,7 @@ class ClientThread {
             if (optHero.isPresent()) {
                 newHero = optHero.get();
                 heroFound = true;
+                //System.out.println("Found hero with UUID: " + UUID);
             }
         }
         if (!heroFound){
@@ -328,7 +331,6 @@ class ClientThread {
             Actor.add(newHero);
             Actor.occupyCell(newHero);
             newHero.getSprite().place(newHero.pos);
-            if (!heroFound) {
                 synchronized (heroes) { //todo fix it. It is not work
                      for (int i = 0; i < heroes.length; i++) {
                          if (heroes[i] == null) {
@@ -342,9 +344,8 @@ class ClientThread {
                          throw new RuntimeException("Can not find place for hero");
                      }
                 }
-            }
         GameScene.addHeroSprite(newHero);
-
+        newHero.next();
         sendInitData();
     }
 
@@ -445,28 +446,30 @@ class ClientThread {
             }
         }
     }
-
+    boolean disconnected = false;
     public void disconnect() {
-        try {
-            clientSocket.close(); //it creates exception when we will wait client data
-        } catch (Exception ignore) {
+        if (!disconnected) {
+            disconnected = true;
+            try {
+                clientSocket.close(); //it creates exception when we will wait client data
+            } catch (Exception ignore) {
+            }
+            if (clientHero != null) {
+                clientHero.networkID = -1;
+                clientHero.next();
+                Dungeon.removeHero(clientHero);
+            }
+            Server.clients[threadID] = null;
+            readStream = null;
+            writeStream = null;
+            jsonCall.cancel(true);
+            GLog.n("player " + threadID + " disconnected");
+            GameScene.notifySelf();
         }
-        if (clientHero != null) {
-            clientHero.networkID = -1;
-            clientHero.next();
-            Dungeon.removeHero(clientHero);
-        }
-        Server.clients[threadID] = null;
-        readStream = null;
-        writeStream = null;
-        jsonCall.cancel(true);
-        GLog.n("player " + threadID + " disconnected");
-        GameScene.notifySelf();
     }
 
     private void sendInitData() {
         Server.textures.forEach(this::sendTexture);
-        //TODO: send server UUID here?
         packet.packAndAddLevel(level, clientHero);
         packet.packAndAddHero(clientHero);
         packet.packAndAddDepth(Dungeon.depth);
