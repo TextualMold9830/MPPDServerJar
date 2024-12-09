@@ -597,15 +597,6 @@ public class Dungeon {
 
 		@SuppressWarnings("unused")
 		String version = bundle.getString( VERSION );
-		heroes = new Hero[bundle.getInt(MAX_PLAYERS_SETTING)];
-		Collection<Bundlable> loadedHeroes = bundle.getCollection(HEROES);
-		{
-			int i = 0;
-			for (Bundlable hero : loadedHeroes) {
-				heroes[i] =(Hero) hero;
-				i++;
-			}
-		}
 		depth = bundle.getInt(DEPTH);
 		Statistics.restoreFromBundle( bundle );
 		Journal.restoreFromBundle( bundle );
