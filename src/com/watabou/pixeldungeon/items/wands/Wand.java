@@ -481,8 +481,11 @@ public abstract class Wand extends KindOfWeapon {
 
 		@Override
 		public void detach() {
-			super.detach();
-			Wand.this.stopCharging();
+			if (target == null) {
+				Wand.this.stopCharging();
+			} else {
+				super.detach();
+			}
 		}
 
 		@Override
