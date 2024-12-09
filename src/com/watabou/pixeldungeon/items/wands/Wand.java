@@ -200,8 +200,9 @@ public abstract class Wand extends KindOfWeapon {
 
 	public void stopCharging() {
 		if (charger != null) {
-			charger.detach();
+			Charger oldCharger = charger;
 			charger = null;
+			oldCharger.detach();
 		}
 	}
 
