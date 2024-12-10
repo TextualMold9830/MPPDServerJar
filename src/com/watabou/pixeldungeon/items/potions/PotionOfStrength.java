@@ -35,7 +35,6 @@ public class PotionOfStrength extends Potion {
 		for (Hero h:
 			 Dungeon.heroes) {
 			if (h != null) {
-				System.out.println(h);
 				h.setSTR(h.getSTR() + 1);
 				h.getSprite().showStatus(CharSprite.POSITIVE, "+1 str");
 			}
