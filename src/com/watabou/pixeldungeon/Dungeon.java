@@ -480,7 +480,11 @@ public class Dungeon {
 			bundle.put( VERSION, Game.version );
 			bundle.put( MAX_PLAYERS_SETTING, Settings.maxPlayers );
 			bundle.put( CHALLENGES, challenges );
-			bundle.put( HEROES, Arrays.asList(heroes));
+			for(Hero hero: Dungeon.heroes) {
+				if (hero != null) {
+					Dungeon.saveHero(hero);
+				}
+			}
 			bundle.put( DEPTH, depth );
 			for (int d : droppedItems.keySet()) {
 				bundle.put( String.format( DROPPED, d ), droppedItems.get( d ) );
