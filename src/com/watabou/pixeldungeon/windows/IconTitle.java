@@ -18,9 +18,9 @@
 package com.watabou.pixeldungeon.windows;
 
 import com.watabou.noosa.Image;
+import com.watabou.noosa.ui.Component;
 import com.watabou.pixeldungeon.items.Item;
 
-import java.awt.*;
 
 public class IconTitle extends Component {
 

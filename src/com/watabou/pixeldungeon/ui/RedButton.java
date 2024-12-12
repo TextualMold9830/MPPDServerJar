@@ -19,9 +19,9 @@ package com.watabou.pixeldungeon.ui;
 
 import com.watabou.noosa.Image;
 import com.nikita22007.multiplayer.noosa.audio.Sample;
+import com.watabou.noosa.ui.Button;
 import com.watabou.pixeldungeon.Assets;
 
-import java.awt.*;
 
 // red buton with white  text what  used in windows
 public class RedButton extends Button {
