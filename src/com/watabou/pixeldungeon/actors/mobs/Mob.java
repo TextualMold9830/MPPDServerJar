@@ -181,8 +181,11 @@ class Mob extends Char {
 				return source;
 			}
 		}
-
-		return enemy != null && enemy.isAlive() ? enemy : HeroHelp.GetRandomHero();// Dungeon.hero;
+		enemy =  enemy != null && enemy.isAlive() ? enemy : HeroHelp.GetNearestHero(pos, 8);// Dungeon.hero;
+		if (enemy == null) {
+			enemy = HeroHelp.GetRandomHero();
+		}
+		return enemy;
 	}
 
 	protected boolean moveSprite(int from, int to) {
