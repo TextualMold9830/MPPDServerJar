@@ -17,6 +17,7 @@ public class GameManager {
     public static boolean  loadGame(){
         try {
             Dungeon.init();
+            Dungeon.depth = 0;
             Dungeon.level = Dungeon.loadLevel();
             InterLevelSceneServer.restore();
             System.out.println("game loaded");
