@@ -215,8 +215,8 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		if (sleep_time_int > 0) {
 			try {
 				this.wait(sleep_time_int);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+			} catch (InterruptedException ignored) {
+				//also thrown when server should stop
 			}
 		} else {
 			lastPingTime = timeTotal;
