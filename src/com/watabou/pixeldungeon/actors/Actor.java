@@ -90,6 +90,9 @@ public abstract class Actor implements Bundlable {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		time = bundle.getFloat( TIME );
+		if (this instanceof Hero) {
+			time = now + 1;
+		}
 		id = bundle.getInt( ID );
 	}
 
