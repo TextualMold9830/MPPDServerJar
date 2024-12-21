@@ -18,6 +18,7 @@
 package com.watabou.pixeldungeon.actors.mobs.npcs;
 
 import com.watabou.pixeldungeon.Dungeon;
+import com.watabou.pixeldungeon.actors.Alignment;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.items.Heap;
@@ -32,6 +33,7 @@ public abstract class NPC extends Mob {
 
 		hostile = false;
 		setState(PASSIVE);
+		alignment = Alignment.NEUTRAL;
 	}
 
 	protected void throwItem() {

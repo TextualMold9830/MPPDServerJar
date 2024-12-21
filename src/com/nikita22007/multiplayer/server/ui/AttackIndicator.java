@@ -22,7 +22,6 @@ package com.nikita22007.multiplayer.server.ui;
 
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.hero.Hero;
-import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.utils.Random;
@@ -73,10 +72,11 @@ public class AttackIndicator {
 		candidates.clear();
 		int v = owner.visibleEnemies();
 		for (int i = 0; i < v; i++) {
-			Mob mob = owner.visibleEnemy(i);
-			if (Level.adjacent(heroPos, mob.pos)) {
-				candidates.add(mob);
+			Char ch = owner.visibleEnemy(i);
+			if (Level.adjacent(heroPos, ch.pos)) {
+				candidates.add(ch);
 			}
+
 		}
 
 		if (!candidates.contains(getLastTarget())) {

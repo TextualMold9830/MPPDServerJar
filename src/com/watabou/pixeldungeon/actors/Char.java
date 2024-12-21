@@ -50,7 +50,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 public abstract class Char extends Actor {
-
+	public String alignment;
 	protected static final String TXT_HIT		= "%s hit %s";
 	protected static final String TXT_KILL		= "%s killed you...";
 	protected static final String TXT_DEFEAT	= "%s defeated %s";

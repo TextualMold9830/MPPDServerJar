@@ -25,6 +25,7 @@ import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.HeroHelp;
 import com.watabou.pixeldungeon.Statistics;
 import com.watabou.pixeldungeon.actors.Actor;
+import com.watabou.pixeldungeon.actors.Alignment;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.buffs.Amok;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
@@ -45,6 +46,9 @@ import com.watabou.utils.Random;
 
 public abstract
 class Mob extends Char {
+	{
+		alignment = Alignment.ENEMY;
+	}
 
 	private static final String TXT_DIED = "You hear something died in the distance";
 

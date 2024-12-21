@@ -71,6 +71,7 @@ public class MirrorImage extends NPC {
 		tier = hero.tier();
 		attack = hero.attackSkill( hero );
 		damage = hero.damageRoll();
+		alignment = owner.alignment;
 	}
 
 	@Override

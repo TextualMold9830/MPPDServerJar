@@ -23,6 +23,7 @@ import com.nikita22007.multiplayer.server.effects.Flare;
 import com.nikita22007.multiplayer.server.ui.AttackIndicator;
 import com.watabou.pixeldungeon.*;
 import com.watabou.pixeldungeon.actors.Actor;
+import com.watabou.pixeldungeon.actors.Alignment;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.buffs.*;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
@@ -37,6 +38,7 @@ import com.watabou.pixeldungeon.items.keys.IronKey;
 import com.watabou.pixeldungeon.items.keys.Key;
 import com.watabou.pixeldungeon.items.keys.SkeletonKey;
 import com.watabou.pixeldungeon.items.potions.Potion;
+import com.watabou.pixeldungeon.items.potions.PotionOfHealing;
 import com.watabou.pixeldungeon.items.potions.PotionOfMight;
 import com.watabou.pixeldungeon.items.potions.PotionOfStrength;
 import com.watabou.pixeldungeon.items.rings.*;
@@ -86,7 +88,7 @@ public class Hero extends Char {
 		"It's easier for you to hit enemies and dodge their attacks.";
 
 	public static final String TXT_YOU_NOW_HAVE	= "You now have %s";
-	public static final String TXT_SB_NOW_HAVE	= "%s now have %s";
+	public static final String TXT_SB_NOW_HAVE	= "%s now has %s";
 
 	private static final String TXT_SOMETHING_ELSE	= "There is something else here";
 	private static final String TXT_LOCKED_CHEST	= "This chest is locked and you don't have matching key";
@@ -135,12 +137,13 @@ public class Hero extends Char {
 
 	public int networkID = -1;
 
-	private ArrayList<Mob> visibleEnemies;
+	private ArrayList<Char> visibleEnemies;
 	private String uuid = UUID.randomUUID().toString();
 	private int lastDepth = Dungeon.depth;
 
 	public Hero() {
 		super();
+		alignment = Alignment.ALLY;
 		final  Hero hero =  this;
 		defaultCellListener= new CellSelector.Listener() { //client
 			@Override
@@ -163,7 +166,7 @@ public class Hero extends Char {
 
 		belongings = new Belongings( this );
 
-		visibleEnemies = new ArrayList<Mob>();
+		visibleEnemies = new ArrayList<Char>();
 		cellSelector = new CellSelector(this);
 		setSprite(new HeroSprite(this));
 	}
@@ -391,7 +394,7 @@ public class Hero extends Char {
 			return false;
 		}
 
-		checkVisibleMobs();
+		checkVisibleEnemies();
 		attackIndicator.updateState();
 
 		if (curAction == null) {
@@ -912,21 +915,22 @@ public class Hero extends Char {
 		}
 	}
 
-	private void checkVisibleMobs() {
-		ArrayList<Mob> visible = new ArrayList<Mob>();
+	private void checkVisibleEnemies() {
+		ArrayList<Char> visible = new ArrayList<>();
 
-		boolean newMob = false;
-
-		for (Mob m : Dungeon.level.mobs) {
-			if (this.fieldOfView[ m.pos ] && m.hostile) {
-				visible.add( m );
-				if (!visibleEnemies.contains( m )) {
-					newMob = true;
-				}
+		boolean newEnemy = false;
+		for (Actor actor: Actor.all()) {
+			if (actor instanceof Char) {
+				Char possibleEnemy = (Char) actor;
+				if ( fieldOfView[ possibleEnemy.pos ] && Alignment.isHostile(possibleEnemy.alignment, alignment)){
+					visible.add(possibleEnemy);
+					if (!visibleEnemies.contains( possibleEnemy )) {
+						newEnemy = true;
+					}
+				};
 			}
 		}
-
-		if (newMob) {
+		if (newEnemy) {
 			interrupt();
 			restoreHealth = false;
 		}
@@ -938,7 +942,7 @@ public class Hero extends Char {
 		return visibleEnemies.size();
 	}
 
-	public Mob visibleEnemy( int index ) {
+	public Char visibleEnemy(int index ) {
 		return visibleEnemies.get( index % visibleEnemies.size() );
 	}
 
@@ -1014,11 +1018,12 @@ public class Hero extends Char {
 
 			curAction = new HeroAction.Cook( cell );
 
-		} else if (this.fieldOfView[cell] && (ch = Actor.findChar( cell )) instanceof Mob) {
+		} else if (this.fieldOfView[cell] && (ch = Actor.findChar( cell )) != null) {
 
 			if (ch instanceof NPC) {
 				curAction = new HeroAction.Interact( (NPC)ch );
-			} else {
+			} else if (Alignment.isHostile(alignment, ch.alignment)){
+
 				curAction = new HeroAction.Attack( ch );
 			}
 
@@ -1256,6 +1261,41 @@ public class Hero extends Char {
 		Collections.shuffle( passable );
 
 		ArrayList<Item> items = new ArrayList<Item>( this.belongings.backpack.items );
+		//These must drop;
+		ArrayList<Item> mustDropItems = new ArrayList<Item>();
+		for(int i = 0; i < items.size(); i++) {
+			Item item = Random.element(mustDropItems);
+			//Every important item should drop
+			//Keys are important but also every item that would prevent others from completing the game
+			boolean isImportant = false;
+			if (item instanceof Key) {
+				isImportant = true;
+			}
+			//Limited drops are important
+			if (item instanceof PotionOfStrength || item instanceof ScrollOfUpgrade){
+				isImportant = true;
+			}
+			//Rare consumables are too
+			if (item instanceof PotionOfMight || item instanceof ScrollOfEnchantment){
+				isImportant = true;
+			}
+			//Boss drops are important
+			if (item instanceof LloydsBeacon || item instanceof TomeOfMastery || item instanceof RingOfThorns || item instanceof ArmorKit || item instanceof Amulet) {
+				isImportant = true;
+			}
+			//Potion of healing is debatable
+			if (item instanceof PotionOfHealing) {
+				isImportant = true;
+			}
+			if (isImportant) {
+				mustDropItems.add(item);
+			}
+		}
+		for(Item importantItem : mustDropItems){
+			 Dungeon.level.drop(importantItem , Random.element(passable)).sendDropVisualAction(pos);
+			 //We do not want duplicates
+			 items.remove(importantItem);
+		}
 		for (Integer cell : passable) {
 			if (items.isEmpty()) {
 				break;

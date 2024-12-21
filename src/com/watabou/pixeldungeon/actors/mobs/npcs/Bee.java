@@ -41,7 +41,7 @@ public class Bee extends NPC {
 		WANDERING = new Wandering();
 
 		this.owner=owner;
-
+		alignment = owner.alignment;
 		flying = true;
 		setState(WANDERING);
 	}
