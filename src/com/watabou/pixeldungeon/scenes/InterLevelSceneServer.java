@@ -185,8 +185,6 @@ public class InterLevelSceneServer {
             Generator.reset();
             SendData.sendInterLevelSceneForAll("ASCEND");
             Actor.fixTime();
-
-            Dungeon.saveLevel();
             Dungeon.depth--;
             Level level = Dungeon.loadLevel();
             Dungeon.switchLevel(level, level.exit, hero);
