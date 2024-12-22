@@ -39,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import textualmold9830.plugins.PluginLoader;
 
 public class Bundle {
 
@@ -94,7 +95,7 @@ public class Bundle {
 				Class cl = Class.forName( clName );
 				return cl;
 			} catch (ClassNotFoundException e) {
-				return null;
+				return PluginLoader.classForName(clName);
 			}
 		}
 		return null;
@@ -106,13 +107,18 @@ public class Bundle {
 	
 	private Bundlable get() {
 		if (data == null) return null;
+		String clName = getString( CLASS_NAME );
+		if (aliases.containsKey( clName )) {
+			clName = aliases.get( clName );
+		}
+		Class<?> cl;
 		try {
-			String clName = getString( CLASS_NAME );
-			if (aliases.containsKey( clName )) {
-				clName = aliases.get( clName );
-			}
-			
-			Class<?> cl = Class.forName( clName );
+			System.out.println(clName);
+			cl = Class.forName(clName);
+		} catch (ClassNotFoundException e) {
+			cl = PluginLoader.classForName(clName);
+		}
+		try {
 			if (cl != null) {
 				Bundlable object = (Bundlable)cl.newInstance();
 				object.restoreFromBundle( this );
@@ -120,9 +126,7 @@ public class Bundle {
 			} else {
 				return null;
 			}
-		} catch (ClassNotFoundException e ) {
-			return null;
-		} catch (InstantiationException e ) {
+		}  catch (InstantiationException e ) {
 			return null;
 		} catch (IllegalAccessException e ) {
 			return null;
@@ -197,6 +201,7 @@ public class Bundle {
 					Class cl = Class.forName( clName );
 					result[i] = cl;
 				} catch (ClassNotFoundException e) {
+					result[i] = PluginLoader.classForName(clName);
 					result[i] = null;
 				}
 			}

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PluginLoader {
+    static ArrayList<URLClassLoader> loaders = new ArrayList<>();
     private static final String PLUGINS_DIRECTORY = "plugins";
 
 
@@ -23,6 +24,7 @@ public class PluginLoader {
         for (File file : pluginFiles) {
             if (file.getName().endsWith(".jar")) {
                 URLClassLoader loader = new URLClassLoader(new URL[]{file.toURI().toURL()});
+                loaders.add(loader);
                 ScanResult result = new ClassGraph()
                         .addClassLoader(loader)
                         .enableClassInfo()
@@ -43,5 +45,21 @@ public class PluginLoader {
             e.printStackTrace();
         }
         return null;
+    }
+    public static Class<?> classForName(String name){
+        Class<?> clazz = null;
+        for (ClassLoader loader: loaders){
+            try {
+                Class<?> temp = loader.loadClass(name);
+                if (temp != null){
+                    clazz = temp;
+                    System.out.println("Found class in plugin: " + name);
+                    break;
+                }
+            } catch (ClassNotFoundException e) {
+                //There will be plugins without that class
+            }
+        }
+        return clazz;
     }
 }
