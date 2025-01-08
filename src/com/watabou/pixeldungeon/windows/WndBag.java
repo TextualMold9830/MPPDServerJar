@@ -28,6 +28,7 @@ import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.network.SpecialSlot;
 import com.watabou.pixeldungeon.plants.Plant.Seed;
 import com.watabou.pixeldungeon.ui.Window;
+import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.utils.Utils;
 
 import org.jetbrains.annotations.Nullable;
@@ -155,11 +156,20 @@ public class WndBag extends Window {
 
 	public void selectItem(@Nullable Item item){
 		if (listener!=null){
-			listener.onSelect(item);
+			if (IsItemEnable(mode, item, Item.curUser)) {
+				listener.onSelect(item);
+			} else {
+				listener.onInvalidSelect(item);
+			}
 		}
 	}
 
 	public interface Listener {
+		//Called when a valid item is selected
 		void onSelect( Item item );
+		//Called when an invalid item is selected see IsItemEnable
+		default void onInvalidSelect(Item item){
+			GLog.nWithTarget(Item.curUser.networkID, "Invalid item selected");
+		}
 	}
 }
