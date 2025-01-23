@@ -14,6 +14,7 @@ import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.bags.Bag;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.plants.Plant;
+import com.watabou.pixeldungeon.plants.PlantCache;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -773,6 +774,7 @@ public class NetworkPacket {
             if (plant == null) {
                 plantObj.put("plant_info", JSONObject.NULL);
             } else {
+                PlantCache.add(pos);
                 JSONObject plantInfoObj = new JSONObject();
                 plantInfoObj.put("sprite_id", plant.image);
                 plantInfoObj.put("name", plant.plantName);
@@ -783,7 +785,12 @@ public class NetworkPacket {
                 if (!dataRef.get().has(PLANTS)) {
                     dataRef.get().put(PLANTS, new JSONArray());
                 }
-                dataRef.get().getJSONArray(PLANTS).put(plantObj);
+                if (PlantCache.contains(pos)) {
+                    dataRef.get().getJSONArray(PLANTS).put(plantObj);
+                    if (plant == null) {
+                        PlantCache.remove(pos);
+                    }
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
