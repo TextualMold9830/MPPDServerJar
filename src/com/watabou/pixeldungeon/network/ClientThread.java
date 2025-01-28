@@ -1,7 +1,6 @@
 package com.watabou.pixeldungeon.network;
 
 import com.nikita22007.multiplayer.utils.Log;
-import com.watabou.noosa.Scene;
 import com.watabou.pixeldungeon.BuildConfig;
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.PixelDungeon;
@@ -10,9 +9,7 @@ import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.hero.HeroClass;
 import com.watabou.pixeldungeon.items.Item;
-import com.watabou.pixeldungeon.items.keys.IronKey;
 import com.watabou.pixeldungeon.scenes.GameScene;
-import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.pixeldungeon.ui.Window;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.pixeldungeon.utils.Utils;
@@ -21,7 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
-import textualmold9830.Preferences;
+import textualmold9830.plugins.events.ClientFlushEvent;
+import textualmold9830.plugins.events.ClientParseEvent;
 
 import java.io.*;
 import java.net.Socket;
@@ -30,17 +28,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.function.Supplier;
 
 import static com.watabou.pixeldungeon.Dungeon.heroes;
 import static com.watabou.pixeldungeon.Dungeon.level;
-import static java.util.concurrent.CompletableFuture.supplyAsync;
 
-class ClientThread {
+public class ClientThread {
 
     public static final String CHARSET = "UTF-8";
 
@@ -53,7 +47,7 @@ class ClientThread {
 
     protected final Socket clientSocket;
 
-    protected Hero clientHero;
+    public Hero clientHero;
 
     protected final NetworkPacket packet = new NetworkPacket();
 
@@ -126,7 +120,7 @@ class ClientThread {
     }
 
     public void parse(@NotNull JSONObject data) throws JSONException {
-
+        Server.pluginManager.fireEvent(new ClientParseEvent(this, data));
         for (Iterator<String> it = data.keys(); it.hasNext(); ) {
             String token = it.next();
             try {
@@ -270,6 +264,7 @@ class ClientThread {
                 if (packet.dataRef.get().length() == 0) {
                     return;
                 }
+                Server.pluginManager.fireEvent(new ClientFlushEvent(this, packet.dataRef));
                 if (BuildConfig.DEBUG) {
                     try {
                         Log.i("flush", "clientID: " + threadID + " data:" + packet.dataRef.get().toString(4));
