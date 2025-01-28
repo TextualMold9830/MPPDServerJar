@@ -148,8 +148,10 @@ public class Hero extends Char {
 		defaultCellListener= new CellSelector.Listener() { //client
 			@Override
 			public void onSelect( Integer cell ) {
-				if (hero.handle( cell )) {
-					hero.next();
+				if(hero.ready) {
+					if (hero.handle(cell)) {
+						hero.next();
+					}
 				}
 			}
 			@Override
