@@ -113,7 +113,6 @@ public class Bundle {
 		}
 		Class<?> cl;
 		try {
-			System.out.println(clName);
 			cl = Class.forName(clName);
 		} catch (ClassNotFoundException e) {
 			cl = PluginLoader.classForName(clName);
