@@ -9,12 +9,18 @@ import com.watabou.pixeldungeon.Settings;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.utils.GLog;
+import net.posick.mDNS.MulticastDNSService;
+import net.posick.mDNS.ServiceInstance;
+import net.posick.mDNS.ServiceName;
+import org.xbill.DNS.Name;
+import org.xbill.DNS.TextParseException;
+import textualmold9830.Main;
+import textualmold9830.Preferences;
 import textualmold9830.plugins.PluginManager;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.*;
 import java.util.ArrayList;
 
 import static com.watabou.pixeldungeon.Dungeon.heroes;
@@ -36,6 +42,8 @@ public class Server extends Thread {
     protected static RelayThread relay;
 
     //NSD
+    public static final String SERVICETYPE = "_mppd._tcp.local"; // _name._protocol //mppd=MultiPlayerPixelDungeon
+
     public static volatile RegListenerState regListenerState = RegListenerState.NONE;
     protected static final int TIME_TO_STOP = 3000; //ms
     protected static final int SLEEP_TIME = 100; // ms
@@ -87,12 +95,17 @@ public class Server extends Thread {
             return false;
         }
         clients = new ClientThread[Settings.maxPlayers];
-        serviceName = PixelDungeon.serverName();
+        serviceName = PixelDungeon.serverName() + "._mppd._tcp.local.";
         regListenerState = RegListenerState.NONE;
         if (!initializeServerSocket()) {
             return false;
         }
-        registerService(localPort);
+        try {
+            registerService(localPort);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to start local discovery service");
+        }
 
         started = true;
         serverThread = new Server();
@@ -153,9 +166,9 @@ public class Server extends Thread {
     public void run() {
         if (PixelDungeon.onlineMode()) {
             relay = new RelayThread();
-            }
-            relay.start();
 
+            relay.start();
+        }
         while (started) { //clients  listener
             Socket client;
             try {
@@ -170,14 +183,45 @@ public class Server extends Thread {
     }
 
     //NSD
-    protected static void registerService(int port) {
-        // Create the NsdServiceInfo object, and populate it.
+    public static MulticastDNSService mDNSService;
 
-        // The name is subject to change based on conflicts
-        // with other services advertised on the same network.
+    static {
+        try {
+            if (!Preferences.onlineMode) {
+                mDNSService = new MulticastDNSService();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    public static ServiceInstance service;
+
+    protected static void registerService(int port) throws IOException {
+        if (!PixelDungeon.onlineMode()) {
+            ServiceName serviceName = new ServiceName(Server.serviceName);
+            Name hostname = new Name("mppd.local.");
+            InetAddress[] addresses = new InetAddress[]{InetAddress.getLocalHost()};
+            String[] txtValues = new String[]{""};
+            service = new ServiceInstance(serviceName, 0, 0, port, hostname, addresses, txtValues);
+            ServiceInstance registeredService = mDNSService.register(service);
+            if (registeredService != null) {
+                System.out.println("Services Successfully Registered: \n\t" + registeredService);
+            } else {
+                System.err.println("Services Registration Failed!");
+            }
+
+        }
+    }
     public static void unregisterService() {
+        if (!PixelDungeon.onlineMode()) {
+            try {
+                mDNSService.unregister(service);
+            } catch (IOException e) {
+                System.out.println("Failed to stop discovery service");
+                e.printStackTrace();
+            }
+        }
     }
 
     protected static boolean initializeServerSocket() {
