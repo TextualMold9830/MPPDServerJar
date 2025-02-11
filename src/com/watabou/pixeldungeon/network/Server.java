@@ -13,8 +13,6 @@ import net.posick.mDNS.MulticastDNSService;
 import net.posick.mDNS.ServiceInstance;
 import net.posick.mDNS.ServiceName;
 import org.xbill.DNS.Name;
-import org.xbill.DNS.TextParseException;
-import textualmold9830.Main;
 import textualmold9830.Preferences;
 import textualmold9830.plugins.PluginManager;
 
@@ -22,6 +20,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import static com.watabou.pixeldungeon.Dungeon.heroes;
 
@@ -184,11 +183,12 @@ public class Server extends Thread {
 
     //NSD
     public static MulticastDNSService mDNSService;
-
+    static boolean useNSD = false;
     static {
         try {
-            if (!Preferences.onlineMode) {
+            if (!Preferences.onlineMode || getLocalIPAddress() != null) {
                 mDNSService = new MulticastDNSService();
+                useNSD = true;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -198,10 +198,9 @@ public class Server extends Thread {
     public static ServiceInstance service;
 
     protected static void registerService(int port) throws IOException {
-        if (!PixelDungeon.onlineMode()) {
             ServiceName serviceName = new ServiceName(Server.serviceName);
             Name hostname = new Name("mppd.local.");
-            InetAddress[] addresses = new InetAddress[]{InetAddress.getLocalHost()};
+            InetAddress[] addresses = new InetAddress[]{getLocalIPAddress()};
             String[] txtValues = new String[]{""};
             service = new ServiceInstance(serviceName, 0, 0, port, hostname, addresses, txtValues);
             ServiceInstance registeredService = mDNSService.register(service);
@@ -210,8 +209,6 @@ public class Server extends Thread {
             } else {
                 System.err.println("Services Registration Failed!");
             }
-
-        }
     }
     public static void unregisterService() {
         if (!PixelDungeon.onlineMode()) {
@@ -234,6 +231,25 @@ public class Server extends Thread {
         // Store the chosen port.
         localPort = serverSocket.getLocalPort();
         return true;
+    }
+    public static InetAddress getLocalIPAddress() throws SocketException {
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface iface = interfaces.nextElement();
+            // We don't want loopback addresses
+            if (iface.isLoopback() || !iface.isUp()) {
+                continue;
+            }
+
+            Enumeration<InetAddress> addresses = iface.getInetAddresses();
+            while (addresses.hasMoreElements()) {
+                InetAddress addr = addresses.nextElement();
+                // Check for IPv4 (optional, but often desired)
+                if (addr.getAddress().length == 4)
+                return addr;
+            }
+        }
+        return null; // No suitable address found
     }
     public static enum RegListenerState {NONE, UNREGISTERED, REGISTERED, REGISTRATION_FAILED, UNREGISTRATION_FAILED}
 }
