@@ -217,6 +217,20 @@ public class ClientThread {
                     case "uuid":
                         //already parsed
                         break;
+                    case "chat": {
+                        if (clientHero == null) {
+                            break;
+                        }
+                        String text = data.getJSONObject(token).optString("message", null);
+                        if (text == null) {
+                            text = data.getJSONObject(token).optString("text", "");
+                        }
+                        if (text.trim().isEmpty()) {
+                            break;
+                        }
+                        GLog.i("%s: %s", clientHero.name,  text);
+                        break;
+                    }
                     default: {
                         GLog.n("Server: Bad token: %s", token);
                         break;
