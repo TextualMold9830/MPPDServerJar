@@ -26,9 +26,7 @@ import textualmold9830.Preferences;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.nikita22007.multiplayer.utils.Utils.putToJSONArray;
@@ -36,6 +34,8 @@ import static com.watabou.pixeldungeon.utils.Utils.toSnakeCase;
 
 public class NetworkPacket {
     public static final String CELLS = "cells";
+    public static final String STATES = "states";
+    public static String CELLS_MAP = "cells_map";
     public static final String MAP = "map";
     public static final String ACTORS = "actors";
     public static final String PLANTS = "plants";
@@ -45,7 +45,13 @@ public class NetworkPacket {
         VISITED,
         UNVISITED,
         MAPPED;
-
+        public int toInt(){
+            return switch (this) {
+                case UNVISITED -> 0;
+                case VISITED -> 1;
+                case MAPPED -> 2;
+            };
+        }
         public String toString() {
             return this.name().toLowerCase();
         }
@@ -396,7 +402,9 @@ public class NetworkPacket {
         }
         return cell;
     }
-
+    public JSONObject packCellNoState(int pos, int id) {
+        return new JSONObject().put("id", id).put("position",pos);
+    }
     protected void packAndAddCell(int pos, int id, CellState state) {
         addCell(packCell(pos, id, state));
     }
@@ -418,6 +426,46 @@ public class NetworkPacket {
             );
         }
     }
+    public void packAndAddLevelCellsSeparateState(Level level){
+        addCellsToMapArray(level.map);
+        for (int i = 0; i < level.LENGTH; i++) {
+            addState(getCellState(level.visited[i], level.mapped[i]).toInt());
+        }
+    }
+    protected void addState(CellState state) {
+        addState(state.toInt());
+    }
+    protected void addState(int state) {
+        try {
+            synchronized (dataRef) {
+                JSONObject data = dataRef.get();
+                if (!data.has(MAP)) {
+                    data.put(MAP, new JSONObject());
+                }
+                JSONObject map = data.getJSONObject(MAP);
+                if (!map.has(STATES)) {
+                    map.put(CELLS, new JSONArray());
+                }
+                map.accumulate(STATES, state);
+            }
+        } catch (JSONException ignored) {
+        }
+
+    }
+    protected void addCellsToMapArray(int[] cells) {
+        try {
+            synchronized (dataRef) {
+                JSONObject data = dataRef.get();
+                if (!data.has(MAP)) {
+                    data.put(MAP, new JSONObject());
+                }
+                JSONObject map = data.getJSONObject(MAP);
+                map.put(CELLS_MAP, cells);
+            }
+        } catch (JSONException ignored) {
+        }
+    }
+
 
     public void packAndAddLevelHeaps(HashMap<Integer, Heap> heaps, Hero observer) {
         for (Heap heap : heaps.values()) {
@@ -429,7 +477,7 @@ public class NetworkPacket {
         packAndAddLevelParams(level);
         packAndAddLevelEntrance(level.entrance);
         packAndAddLevelExit(level.exit);
-        packAndAddLevelCells(level);
+        packAndAddLevelCellsSeparateState(level);
         packAndAddLevelHeaps(level.heaps, observer);
         packAndAddPlants(level);
     }
@@ -846,5 +894,6 @@ public class NetworkPacket {
     public void packAndAddRawTextures(String data) {
         dataRef.get().put("texturepack",data);
     }
+
 
 }
