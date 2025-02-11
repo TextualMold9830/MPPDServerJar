@@ -225,10 +225,10 @@ public class ClientThread {
                         if (text == null) {
                             text = data.getJSONObject(token).optString("text", "");
                         }
-                        if (text.trim().isEmpty()) {
+                        if (text.isBlank()) {
                             break;
                         }
-                        GLog.i("%s: %s", clientHero.name,  text);
+                        GLog.i("%s: %s", clientHero.name,  text.trim());
                         break;
                     }
                     default: {
