@@ -1020,7 +1020,7 @@ public class Hero extends Char {
 
 			curAction = new HeroAction.Cook( cell );
 
-		} else if (this.fieldOfView[cell] && (ch = Actor.findChar( cell )) != null) {
+		} else if (this.fieldOfView[cell] && (ch = Actor.findChar( cell )) != null && ch != this) {
 
 			if (ch instanceof NPC) {
 				curAction = new HeroAction.Interact( (NPC)ch );
