@@ -187,11 +187,13 @@ public class Server extends Thread {
     static {
         try {
             if (!Preferences.onlineMode || getLocalIPAddress() != null) {
-                mDNSService = new MulticastDNSService();
                 useNSD = true;
                 if (System.getProperty("os.name").contains("Android")){
                     useNSD = false;
                 }
+            }
+            if (useNSD){
+                mDNSService = new MulticastDNSService();
             }
         } catch (IOException e) {
             e.printStackTrace();
