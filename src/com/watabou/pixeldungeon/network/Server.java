@@ -189,6 +189,9 @@ public class Server extends Thread {
             if (!Preferences.onlineMode || getLocalIPAddress() != null) {
                 mDNSService = new MulticastDNSService();
                 useNSD = true;
+                if (System.getProperty("os.name").contains("Android")){
+                    useNSD = false;
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -244,9 +247,9 @@ public class Server extends Thread {
             Enumeration<InetAddress> addresses = iface.getInetAddresses();
             while (addresses.hasMoreElements()) {
                 InetAddress addr = addresses.nextElement();
-                // Check for IPv4 (optional, but often desired)
+                //Sadly IPv4 only
                 if (addr.getAddress().length == 4)
-                return addr;
+                    return addr;
             }
         }
         return null; // No suitable address found
