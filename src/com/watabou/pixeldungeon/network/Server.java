@@ -188,7 +188,7 @@ public class Server extends Thread {
         try {
             if (!Preferences.onlineMode || getLocalIPAddress() != null) {
                 useNSD = true;
-                if (System.getProperty("os.name").contains("Android")){
+                if (System.getProperty("java.vm.vendor") .equals("Termux")){
                     useNSD = false;
                 }
             }
@@ -203,6 +203,7 @@ public class Server extends Thread {
     public static ServiceInstance service;
 
     protected static void registerService(int port) throws IOException {
+        if (useNSD) {
             ServiceName serviceName = new ServiceName(Server.serviceName);
             Name hostname = new Name("mppd.local.");
             InetAddress[] addresses = new InetAddress[]{getLocalIPAddress()};
@@ -214,9 +215,10 @@ public class Server extends Thread {
             } else {
                 System.err.println("Services Registration Failed!");
             }
+        }
     }
     public static void unregisterService() {
-        if (!PixelDungeon.onlineMode()) {
+        if (useNSD) {
             try {
                 mDNSService.unregister(service);
             } catch (IOException e) {
