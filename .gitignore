@@ -37,3 +37,4 @@ bin/
 /save/
 /save/*
 /textures/
+config.json
