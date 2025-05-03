@@ -17,8 +17,6 @@
  */
 package com.watabou.pixeldungeon.items.quest;
 
-import java.util.ArrayList;
-
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
@@ -26,7 +24,8 @@ import com.watabou.pixeldungeon.actors.buffs.Invisibility;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
-import com.watabou.pixeldungeon.utils.GLog;
+
+import java.util.ArrayList;
 
 public class PhantomFish extends Item {
 
@@ -59,7 +58,6 @@ public class PhantomFish extends Item {
 			Sample.INSTANCE.play( Assets.SND_EAT );
 			Sample.INSTANCE.play( Assets.SND_MELD );
 
-			GLog.i( "You see your hands turn invisible!" );
 			Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
 
 			hero.spend( TIME_TO_EAT );

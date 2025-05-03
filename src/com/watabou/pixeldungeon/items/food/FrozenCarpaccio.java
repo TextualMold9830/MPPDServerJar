@@ -48,7 +48,6 @@ public class FrozenCarpaccio extends com.watabou.pixeldungeon.items.food.Food {
 
 			switch (Random.Int( 5 )) {
 			case 0:
-				GLog.i( "You see your hands turn invisible!" );
 				Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
 				break;
 			case 1:

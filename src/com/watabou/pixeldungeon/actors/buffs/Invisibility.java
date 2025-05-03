@@ -20,6 +20,7 @@ package com.watabou.pixeldungeon.actors.buffs;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.ui.BuffIndicator;
+import com.watabou.pixeldungeon.utils.GLog;
 
 public class Invisibility extends FlavourBuff {
 
@@ -29,6 +30,10 @@ public class Invisibility extends FlavourBuff {
 	public boolean attachTo( Char target ) {
 		if (super.attachTo( target )) {
 			target.invisible++;
+
+			if (target instanceof Hero) {
+				GLog.iWithTarget( ((Hero)target).networkID, "You see your hands turn invisible!" );
+			}
 			return true;
 		} else {
 			return false;

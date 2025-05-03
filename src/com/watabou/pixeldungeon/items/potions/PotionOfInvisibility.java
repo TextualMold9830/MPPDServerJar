@@ -24,7 +24,6 @@ import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.buffs.Invisibility;
 import com.watabou.pixeldungeon.actors.hero.Hero;
-import com.watabou.pixeldungeon.utils.GLog;
 
 public class PotionOfInvisibility extends Potion {
 
@@ -38,7 +37,6 @@ public class PotionOfInvisibility extends Potion {
 	protected void apply( Hero hero ) {
 		setKnown();
 		Buff.affect( hero, Invisibility.class, Invisibility.DURATION );
-		GLog.i( "You see your hands turn invisible!" );
 		Sample.INSTANCE.play( Assets.SND_MELD );
 	}
 
