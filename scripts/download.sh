@@ -1,0 +1,1 @@
+curl -LO "https://github.com/TextualMold9830/MPPDServerJar/releases/download/Stable/MPPDServer.jar"
