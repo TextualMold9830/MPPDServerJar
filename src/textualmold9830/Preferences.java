@@ -7,13 +7,24 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Random;
 import java.util.UUID;
 
 public class Preferences {
 
     public static int challenges = 0;
     public static boolean onlineMode = true;
-    public static String serverName = "Nik-MPPDJarServer";
+    public static String serverName;
+    static {
+        String id = UUID.randomUUID().toString();
+        Random random = new Random();
+        StringBuilder nameBuilder = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            nameBuilder.append(id.charAt(random.nextInt(id.length())));
+        }
+        nameBuilder.append("-MPPDServerJar");
+        serverName = nameBuilder.toString();
+    }
     public static boolean useCustomRelay = false;
     public static String customRelayAddress = "";
     public static int customRelayPort = 0;
