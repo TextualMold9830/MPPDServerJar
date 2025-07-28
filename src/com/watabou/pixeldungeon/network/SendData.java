@@ -10,6 +10,7 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.items.Heap;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.levels.Level;
+import com.watabou.pixeldungeon.network.packets.RedirectPacket;
 import com.watabou.pixeldungeon.plants.Plant;
 import com.watabou.pixeldungeon.sprites.CharSprite;
 import org.jetbrains.annotations.NotNull;
@@ -653,5 +654,10 @@ public class SendData {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    public static void sendRedirect(Hero hero, RedirectPacket redirectPacket)
+    {
+        clients[hero.networkID].packet.packAndAddRedirect(redirectPacket);
+        clients[hero.networkID].flush();
     }
 }

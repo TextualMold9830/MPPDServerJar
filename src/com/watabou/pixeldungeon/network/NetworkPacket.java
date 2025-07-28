@@ -13,6 +13,7 @@ import com.watabou.pixeldungeon.items.Heap;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.bags.Bag;
 import com.watabou.pixeldungeon.levels.Level;
+import com.watabou.pixeldungeon.network.packets.RedirectPacket;
 import com.watabou.pixeldungeon.plants.Plant;
 import com.watabou.pixeldungeon.plants.PlantCache;
 import com.watabou.pixeldungeon.sprites.CharSprite;
@@ -22,7 +23,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import textualmold9830.Preferences;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -894,6 +894,8 @@ public class NetworkPacket {
     public void packAndAddRawTextures(String data) {
         dataRef.get().put("texturepack",data);
     }
-
+    public void packAndAddRedirect(RedirectPacket redirectPacket) {
+        dataRef.get().put("redirect", redirectPacket.toJSON());
+    }
 
 }
