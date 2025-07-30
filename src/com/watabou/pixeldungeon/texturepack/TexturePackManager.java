@@ -31,7 +31,6 @@ public class TexturePackManager {
                             name = name.substring(name.indexOf('/')+1);
                         }
                         animationMap.put(name.replace(".json",""), name);
-                        System.out.println("added animation with name: " + name);
                     }
                 }
             }
