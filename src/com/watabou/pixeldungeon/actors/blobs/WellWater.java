@@ -71,7 +71,7 @@ public class WellWater extends Blob {
 			volume = off[pos] = cur[pos] = 0;
 			return true;
 
-		} else if ((heap = Dungeon.level.heaps.get( pos )) != null) {
+		} else if ((heap = level.heaps.get( pos )) != null) {
 
 			Item oldItem = heap.peek();
 			Item newItem = affectItem( oldItem );
@@ -83,7 +83,7 @@ public class WellWater extends Blob {
 				} else if (oldItem.quantity() > 1) {
 
 					oldItem.quantity( oldItem.quantity() - 1 );
-					heap.drop( newItem );
+					heap.drop(level, newItem );
 
 				} else {
 					heap.replace( oldItem, newItem );
@@ -99,7 +99,7 @@ public class WellWater extends Blob {
 				do {
 					newPlace = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
 				} while (!Level.passable[newPlace] && !Level.avoid[newPlace]);
-				Dungeon.level.drop( heap.pickUp(), newPlace ).sendDropVisualAction(pos);
+				level.drop( heap.pickUp(level), newPlace ).sendDropVisualAction(pos);
 
 				return false;
 
@@ -127,18 +127,18 @@ public class WellWater extends Blob {
 		volume = cur[pos] = amount;
 	}
 
-	public static void affectCell( int cell ) {
+	public static void affectCell(Level level, int cell ) {
 
 		Class<?>[] waters = {WaterOfHealth.class, WaterOfAwareness.class, WaterOfTransmutation.class};
 
 		for (Class<?>waterClass : waters) {
-			WellWater water = (WellWater)Dungeon.level.blobs.get( waterClass );
+			WellWater water = (WellWater)level.blobs.get( waterClass );
 			if (water != null &&
 				water.volume > 0 &&
 				water.pos == cell &&
 				water.affect()) {
 
-				Level.set( cell, Terrain.EMPTY_WELL );
+				Level.set(level, cell, Terrain.EMPTY_WELL );
 				GameScene.updateMap( cell );
 
 				return;

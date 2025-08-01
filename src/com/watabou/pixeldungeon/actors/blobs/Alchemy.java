@@ -23,6 +23,7 @@ import com.watabou.pixeldungeon.effects.BlobEmitter;
 import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.items.Heap;
 import com.watabou.pixeldungeon.items.Item;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.utils.Bundle;
 
 public class Alchemy extends Blob {
@@ -57,13 +58,13 @@ public class Alchemy extends Blob {
 		volume = cur[pos] = amount;
 	}
 
-	public static void transmute( int cell ) {
-		Heap heap = Dungeon.level.heaps.get( cell );
+	public static void transmute(Level level, int cell ) {
+		Heap heap = level.heaps.get( cell );
 		if (heap != null) {
 
-			Item result = heap.transmute();
+			Item result = heap.transmute(level);
 			if (result != null) {
-				Dungeon.level.drop( result, cell ).sendDropVisualAction(cell);
+				level.drop( result, cell ).sendDropVisualAction(cell);
 			}
 		}
 	}

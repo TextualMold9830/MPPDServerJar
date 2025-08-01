@@ -48,7 +48,7 @@ public class WandOfTeleportation extends Wand {
 			int count = 10;
 			int pos;
 			do {
-				pos = Dungeon.level.randomRespawnCell();
+				pos = curUser.level.randomRespawnCell();
 				if (count-- <= 0) {
 					break;
 				}

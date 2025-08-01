@@ -54,7 +54,7 @@ public class WandOfFlock extends Wand {
 		}
 
 		boolean[] passable = BArray.or( Level.passable, Level.avoid, null );
-		for (Actor actor : Actor.all()) {
+		for (Actor actor : Actor.all().get(curUser.level)) {
 			if (actor instanceof Char) {
 				passable[((Char)actor).pos] = false;
 			}
@@ -79,8 +79,8 @@ public class WandOfFlock extends Wand {
 						Sheep sheep = new Sheep();
 						sheep.lifespan = lifespan;
 						sheep.pos = j;
-						GameScene.add( sheep );
-						Dungeon.level.mobPress( sheep );
+						GameScene.add( sheep, curUser.level );
+						curUser.level.mobPress( sheep );
 
 						CellEmitter.get( j ).burst( Speck.factory( Speck.WOOL ), 4 );
 

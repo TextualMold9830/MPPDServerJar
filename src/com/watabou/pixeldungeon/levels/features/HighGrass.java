@@ -38,7 +38,7 @@ public class HighGrass {
 
 	public static void trample( Level level, int pos, Char ch ) {
 
-		Level.set( pos, Terrain.GRASS );
+		Level.set(level, pos, Terrain.GRASS );
 		GameScene.updateMap( pos );
 
 		if (!Dungeon.isChallenged( Challenges.NO_HERBALISM )) {

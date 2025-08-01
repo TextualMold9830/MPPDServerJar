@@ -55,8 +55,9 @@ public class LeafParticle{
 			public JSONObject customParams() {
 				JSONObject object = super.customParams();
 				try {
-					object.put("first_color", Dungeon.level.color1);
-					object.put("second_color", Dungeon.level.color2);
+					//TODO: check this
+					//object.put("first_color", level.color1);
+					//object.put("second_color", level.color2);
 				} catch (JSONException e) {
 					throw new RuntimeException(e);
 				}

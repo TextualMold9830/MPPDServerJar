@@ -20,6 +20,7 @@ package com.watabou.pixeldungeon.actors.mobs.npcs;
 import java.util.HashSet;
 
 import com.watabou.pixeldungeon.Dungeon;
+import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.buffs.Poison;
 import com.watabou.pixeldungeon.actors.hero.Hero;
@@ -102,7 +103,7 @@ public class Bee extends NPC {
 
 		if (enemy == null || !enemy.isAlive()) {
 			HashSet<Mob> enemies = new HashSet<Mob>();
-			for (Mob mob:Dungeon.level.mobs) {
+			for (Mob mob: ((Actor)this).level.mobs) {
 				if (mob.hostile && this.fieldOfView[mob.pos]) {
 					enemies.add( mob );
 				}

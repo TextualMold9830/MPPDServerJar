@@ -33,7 +33,7 @@ public abstract class ItemSprite  {
 
 	public static final int SIZE	= 16;
 
-	public static void dropEffects(Heap heap) {
+	public static void dropEffects(Level level, Heap heap) {
 
 		if (heap == null) {
 			return;
@@ -60,7 +60,7 @@ public abstract class ItemSprite  {
 			if (water) {
 				GameScene.ripple(heap.pos);
 			} else {
-				int cell = Dungeon.level.map[heap.pos];
+				int cell = level.map[heap.pos];
 				water = (cell == Terrain.WELL || cell == Terrain.ALCHEMY);
 			}
 			for (int ID = 0; ID < visibleForHeroes.length; ID++) {

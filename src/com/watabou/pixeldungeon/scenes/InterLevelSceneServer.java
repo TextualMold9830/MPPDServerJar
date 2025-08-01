@@ -11,6 +11,7 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.items.Generator;
 import com.watabou.pixeldungeon.items.wands.WandOfBlink;
 import com.watabou.pixeldungeon.levels.Level;
+import com.watabou.pixeldungeon.levels.LobbyLevel;
 import com.watabou.pixeldungeon.levels.RegularLevel;
 import com.watabou.pixeldungeon.levels.features.Chasm;
 import com.watabou.pixeldungeon.network.SendData;
@@ -24,7 +25,7 @@ import textualmold9830.plugins.events.DungeonPostGenerateLevelEvent;
 
 import java.io.IOException;
 
-import static com.watabou.pixeldungeon.Dungeon.heroes;
+import static com.watabou.pixeldungeon.Dungeon.*;
 import static com.watabou.pixeldungeon.levels.Level.getNearClearCell;
 
 public class InterLevelSceneServer {
@@ -75,15 +76,15 @@ public class InterLevelSceneServer {
         }*/
     }
 
-    private static void sendMessage(boolean acend){
-        if (acend) {
+    private static void sendMessage(Level level, boolean ascend){
+        if (ascend) {
             if (Dungeon.depth < Statistics.deepestFloor) {
                 GLog.h( TXT_WELCOME_BACK, Dungeon.depth );
             } else {
                 GLog.h( TXT_WELCOME, Dungeon.depth );
                 Sample.INSTANCE.play( Assets.SND_DESCEND );
             }
-            switch (Dungeon.level.feeling) {
+            switch (level.feeling) {
                 case CHASM:
                     GLog.w( TXT_CHASM );
                     break;
@@ -95,8 +96,8 @@ public class InterLevelSceneServer {
                     break;
                 default:
             }
-            if (Dungeon.level instanceof RegularLevel &&
-                    ((RegularLevel) Dungeon.level).secretDoors > Random.IntRange( 3, 4 )) {
+            if (level instanceof RegularLevel &&
+                    ((RegularLevel) level).secretDoors > Random.IntRange( 3, 4 )) {
                 GLog.w( TXT_SECRETS );
             }
             if (Dungeon.nightMode && !Dungeon.bossLevel(Dungeon.depth)) {
@@ -113,19 +114,30 @@ public class InterLevelSceneServer {
 
             Actor.fixTime();
             if (Dungeon.depth > 0) {
-                Dungeon.saveLevel();
+                if (hero != null) {
+                    Dungeon.saveLevel(hero.level);
+                }
             }
 
             Level level;
-            level = getNextLevel();
+            if (hero != null) {
+                level = getNextLevel(hero.level);
+            } else {
+                level = new LobbyLevel();
+                level.depth = 0;
+                level.levelID = Dungeon.DUNGEON_LEVEL_PREFIX + level.depth;
+                level.descendDestinationID = DUNGEON_LEVEL_PREFIX + level.depth + 1;
+                level.create();
+            }
+            loadedLevels.put(level.levelID, level);
             if (hero == null) {
                 Dungeon.switchLevel(level);
             } else {
-                Dungeon.switchLevel(level, level.entrance, hero);
+                Dungeon.switchLevel(level.levelID, level.entrance, hero);
             }
             SendData.sendInterLevelSceneFadeOutForAll();
             ShowStoryIfNeed(Dungeon.depth);
-            sendMessage(false);
+            sendMessage(level, false);
         }catch (IOException e){
             throw new RuntimeException(e);
         }
@@ -140,11 +152,11 @@ public class InterLevelSceneServer {
             Generator.reset();
             SendData.sendInterLevelSceneForAll("FALL");
             Actor.fixTime();
-            Dungeon.saveLevel();
+            Dungeon.saveLevel(hero.level);
 
             Level level;
-            level = getNextLevel();
-            Dungeon.switchLevel(level, fallIntoPit ? level.pitCell() : level.randomRespawnCell(), hero);
+            level = getNextLevel(hero.level);
+            Dungeon.switchLevel(level.levelID, fallIntoPit ? level.pitCell() : level.randomRespawnCell(), hero);
 
             SendData.sendInterLevelSceneFadeOutForAll();
             for (Hero hero_ : heroes) {
@@ -154,30 +166,29 @@ public class InterLevelSceneServer {
             }
 
             ShowStoryIfNeed(Dungeon.depth);
-            sendMessage(false);
+            sendMessage(level, false);
         }catch (IOException e){
             throw new RuntimeException(e);
         }
         Game.switchScene( GameScene.class );
     }
-    private static Level getNextLevel() throws IOException {
+    private static Level getNextLevel(Level origin) throws IOException {
 
-        if (Dungeon.depth >= Statistics.deepestFloor) {
 
             Level level = Dungeon.newLevel();
+            level.levelID = origin.descendDestinationID;
+            level.ascendDestinationID = origin.levelID;
+            level.descendDestinationID = origin.levelID.replaceAll("\\d","") + origin.depth+1;
             DungeonPostGenerateLevelEvent event = new DungeonPostGenerateLevelEvent(level);
             Server.pluginManager.fireEvent(event);
+            level.levelID = Dungeon.defaultLevelIDForCurDepth();
             level = event.level;
             return level;
-        } else {
-            Dungeon.depth++;
-            return Dungeon.loadLevel();
-        }
-    };
+    }
 
     public static void ascend(Hero hero) {
         try {
-            Dungeon.saveLevel();
+            Dungeon.saveLevel(hero.level);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -186,31 +197,31 @@ public class InterLevelSceneServer {
             SendData.sendInterLevelSceneForAll("ASCEND");
             Actor.fixTime();
             Dungeon.depth--;
-            Level level = Dungeon.loadLevel();
-            Dungeon.switchLevel(level, level.exit, hero);
+            Level level = Dungeon.loadLevel(hero.level.ascendDestinationID);
+            Dungeon.switchLevel(level.levelID, level.exit, hero);
 
             SendData.sendInterLevelSceneFadeOutForAll();
-            sendMessage(true);
+            sendMessage(level, true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         Game.switchScene( GameScene.class );
     }
 
-    public static void returnTo(int  depth, int pos, Hero  hero) {
+    public static void returnTo(String levelID, int pos, Hero  hero) {
         try {
             Generator.reset();
-            if (depth != Dungeon.depth) {
+            if (hero.level.levelID != levelID) {
                 SendData.sendInterLevelSceneForAll("RETURN");
                 Actor.fixTime();
-                Dungeon.saveLevel();
-                Dungeon.depth = depth;
-                Level level = Dungeon.loadLevel();
-                Dungeon.switchLevel(level, pos, hero);
+                Dungeon.saveLevel(hero.level);
+                Level level = Dungeon.loadLevel(levelID);
+                Dungeon.switchLevel(level.levelID, pos, hero);
                 SendData.sendInterLevelSceneFadeOutForAll();
-                sendMessage(true);
+                sendMessage(level, true);
             } else {
-                hero.pos = getNearClearCell(pos);
+                //TODO: check this
+                hero.pos = getNearClearCell(hero.level, pos);
             }
             WandOfBlink.appear(hero, hero.pos);
         } catch (IOException e) {
@@ -230,9 +241,9 @@ public class InterLevelSceneServer {
             Dungeon.loadGame(true);
             if (Dungeon.depth == -1) {
                 Dungeon.depth = Statistics.deepestFloor;
-                Dungeon.switchLevel(Dungeon.loadLevel(StartScene.curClass));
+                Dungeon.switchLevel(Dungeon.loadLevel(Dungeon.defaultLevelIDForCurDepth()));
             } else {
-                Level level = Dungeon.loadLevel(StartScene.curClass);
+                Level level = Dungeon.loadLevel(Dungeon.defaultLevelIDForCurDepth());
                 Dungeon.switchLevel(level);
             }
         }catch (IOException  e){
@@ -256,17 +267,17 @@ public class InterLevelSceneServer {
                     Dungeon.switchLevelToAll(level, level.entrance);
                 } else {
                     hero.resurrect(-1);
-                    Dungeon.resetLevel();
+                    Dungeon.resetLevel(hero.level);
                 }
             }
             case RESPAWN_HERO:
             {
-                Dungeon.switchLevel(Dungeon.level,Dungeon.level.entrance, hero);
+                Dungeon.switchLevel(hero.level.levelID ,hero.level.entrance, hero);
             }
         }
         WandOfBlink.appear(hero,hero.pos);
         SendData.sendInterLevelSceneFadeOutForAll();
-        sendMessage(false);
+        sendMessage(hero.level,false);
         Game.switchScene( GameScene.class );
     }
 

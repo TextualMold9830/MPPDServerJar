@@ -49,9 +49,9 @@ public final class ShadowCaster {
 
 	private static Obstacles obs = new Obstacles();
 
-	public synchronized static void castShadow( int x, int y, boolean[] fieldOfView, int distance ) {
+	public synchronized static void castShadow( int x, int y, boolean[] fieldOfView, int distance, Level level ) {
 
-		losBlocking = Level.losBlocking;
+		losBlocking = level.losBlocking;
 
 		if (distance > MAX_DISTANCE) {
 			Log.e("PixelDungeonServer", String.format("view distance > MAX_DISTANCE.  distance: %d; set: %d", distance,  MAX_DISTANCE));

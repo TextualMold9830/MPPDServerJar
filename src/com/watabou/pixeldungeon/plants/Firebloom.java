@@ -40,7 +40,7 @@ public class Firebloom extends com.watabou.pixeldungeon.plants.Plant {
 	public void activate( Char ch ) {
 		super.activate( ch );
 
-		GameScene.add( Blob.seed( pos, 2, Fire.class ) );
+		GameScene.add( Blob.seed(ch.level, pos, 2, Fire.class ) , ch.level);
 
 		if (Dungeon.visibleforAnyHero(pos)) {
 			CellEmitter.get( pos ).burst( FlameParticle.FACTORY, 5 );

@@ -76,7 +76,7 @@ public class DM300 extends Mob {
 
 	@Override
 	public boolean act() {
-		GameScene.add( Blob.seed( pos, 30, ToxicGas.class ) );
+		GameScene.add( Blob.seed(level, pos, 30, ToxicGas.class ), level );
 		return super.act();
 	}
 
@@ -84,7 +84,7 @@ public class DM300 extends Mob {
 	public void move( int step ) {
 		super.move( step );
 
-		if (Dungeon.level.map[step] == Terrain.INACTIVE_TRAP && getHP() < getHT()) {
+		if (level.map[step] == Terrain.INACTIVE_TRAP && getHP() < getHT()) {
 
 			setHP(getHP() + Random.Int( 1, getHT() - getHP()));
 			getSprite().emitter().burst( ElmoParticle.FACTORY, 5 );
@@ -115,8 +115,8 @@ public class DM300 extends Mob {
 		if (Dungeon.visibleforAnyHero(cell)) {
 			if (Level.water[cell]) {
 				GameScene.ripple(cell);
-			} else if (Dungeon.level.map[cell] == Terrain.EMPTY) {
-				Level.set(cell, Terrain.EMPTY_DECO);
+			} else if (level.map[cell] == Terrain.EMPTY) {
+				Level.set(level, cell, Terrain.EMPTY_DECO);
 				GameScene.updateMap(cell);
 			}
 		}
@@ -134,7 +134,7 @@ public class DM300 extends Mob {
 		super.die( cause );
 
 		GameScene.bossSlain();
-		Dungeon.level.drop( new SkeletonKey(), pos );
+		level.drop( new SkeletonKey(), pos );
 
 		Badges.validateBossSlain();
 

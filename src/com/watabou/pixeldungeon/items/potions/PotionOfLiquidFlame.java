@@ -44,7 +44,7 @@ public class PotionOfLiquidFlame extends Potion {
 				Sample.INSTANCE.play(Assets.SND_SHATTER, hero);
 			}
 		}
-		GameScene.add( Blob.seed( cell, 2, Fire.class ) );
+		GameScene.add( Blob.seed(curUser.level, cell, 2, Fire.class ), curUser.level );
 	}
 
 	@Override

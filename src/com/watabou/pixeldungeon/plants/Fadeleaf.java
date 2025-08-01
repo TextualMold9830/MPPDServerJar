@@ -52,7 +52,7 @@ public class Fadeleaf extends com.watabou.pixeldungeon.plants.Plant {
 			int count = 10;
 			int newPos;
 			do {
-				newPos = Dungeon.level.randomRespawnCell();
+				newPos = ch.level.randomRespawnCell();
 				if (count-- <= 0) {
 					break;
 				}

@@ -46,9 +46,9 @@ public class Bomb extends Item {
 	}
 
 	@Override
-	protected void onThrow( int cell ) {
+	protected void onThrow(Hero user, int cell ) {
 		if (Level.pit[cell]) {
-			super.onThrow( cell );
+			super.onThrow(user, cell );
 		} else {
 			Sample.INSTANCE.play( Assets.SND_BLAST, 2 );
 
@@ -62,7 +62,7 @@ public class Bomb extends Item {
 						CellEmitter.get( c ).burst( SmokeParticle.FACTORY, 4 );
 
 					if (Level.flamable[c]) {
-						Dungeon.level.destroy( c );
+						user.level.destroy( c );
 						GameScene.updateMap( c );
 						terrainAffected = true;
 					}

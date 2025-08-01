@@ -29,7 +29,7 @@ public class ToxicTrap {
 
 	public static void trigger( int pos, Char ch ) {
 
-		GameScene.add( Blob.seed( pos, 300 + 20 * Dungeon.depth, ToxicGas.class ) );
+		GameScene.add( Blob.seed(ch.level, pos, 300 + 20 * Dungeon.depth, ToxicGas.class ), ch.level );
 
 	}
 }

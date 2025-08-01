@@ -97,23 +97,23 @@ public class Wraith extends Mob {
 			"Being an ethereal entity, it is very hard to hit with a regular weapon.";
 	}
 
-	public static void spawnAround( int pos ) {
+	public static void spawnAround( int pos, Level level ) {
 		for (int n : Level.NEIGHBOURS4) {
 			int cell = pos + n;
-			if (Level.passable[cell] && Actor.findChar( cell ) == null) {
-				spawnAt( cell );
+			if (level.passable[cell] && Actor.findChar( cell ) == null) {
+				spawnAt( cell, level );
 			}
 		}
 	}
 
-	public static Wraith spawnAt( int pos ) {
+	public static Wraith spawnAt( int pos, Level level ) {
 		if (Level.passable[pos] && Actor.findChar( pos ) == null) {
 
 			Wraith w = new Wraith();
 			w.adjustStats( Dungeon.depth );
 			w.pos = pos;
 			w.setState(w.HUNTING);
-			GameScene.add( w, SPAWN_DELAY );
+			GameScene.add( w, SPAWN_DELAY, level);
 
 			w.getSprite().alpha( 0 );
 			AlphaTweener.showAlphaTweener(w.getSprite(), 1, 0.5f );

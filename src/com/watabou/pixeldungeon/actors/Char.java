@@ -83,7 +83,7 @@ public abstract class Char extends Actor {
 
 	@Override
 	protected boolean act() {
-		Dungeon.level.updateFieldOfView( this );
+		level.updateFieldOfView( this );
 		return false;
 	}
 
@@ -354,7 +354,7 @@ public abstract class Char extends Actor {
 	public void add( Buff buff ) {
 
 		buffs.add( buff );
-		Actor.add( buff );
+		Actor.add( buff, level);
 
 		if (getSprite() != null) {
 			if (buff instanceof Poison) {
@@ -479,19 +479,19 @@ public abstract class Char extends Actor {
 
 		if (Level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
 			step = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
-			if (!(Level.passable[step] || Level.avoid[step]) || Actor.findChar( step ) != null) {
+			if (!(level.passable[step] || level.avoid[step]) || Actor.findChar( step ) != null) {
 				return;
 			}
 		}
 
-		if (Dungeon.level.map[pos] == Terrain.OPEN_DOOR) {
-			Door.leave( pos );
+		if (level.map[pos] == Terrain.OPEN_DOOR) {
+			Door.leave(level, pos );
 		}
 
 		pos = step;
 
-		if (flying && Dungeon.level.map[pos] == Terrain.DOOR) {
-			Door.enter( pos );
+		if (flying && level.map[pos] == Terrain.DOOR) {
+			Door.enter(level, pos );
 		}
 
 		if (!(this instanceof Hero)) {
@@ -534,6 +534,13 @@ public abstract class Char extends Actor {
 		this.HP = HP;
 		sendSelf();
 	}
+	public void setHP(int HP, boolean send) {
+		this.HP = HP;
+		if (send) {
+			sendSelf();
+		}
+	}
+
 
 	public int getHT() {
 		return HT;
@@ -544,9 +551,17 @@ public abstract class Char extends Actor {
 		sendSelf();
 		return HT;
 	}
+	public int setHT(int HT, boolean send) {
+		this.HT = HT;
+		if (send) {
+			sendSelf();
+		}
+		return HT;
+	}
+
 
 	public void sendSelf(){
-		if ( !all().contains(this) ){
+		if (level == null || all().get(level) == null || !all().get(level).contains(this)){
 			return;
 		}
 		SendData.sendActor(this);

@@ -52,8 +52,8 @@ public class PotionOfPurity extends Potion {
 		boolean procd = false;
 
 		Blob[] blobs = {
-				Dungeon.level.blobs.get(ToxicGas.class),
-				Dungeon.level.blobs.get(ParalyticGas.class)
+				curUser.level.blobs.get(ToxicGas.class),
+				curUser.level.blobs.get(ParalyticGas.class)
 		};
 
 		for (int j = 0; j < blobs.length; j++) {

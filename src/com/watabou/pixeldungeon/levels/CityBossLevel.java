@@ -189,7 +189,7 @@ public class CityBossLevel extends Level {
 				!passable[boss.pos] ||
 				!outsideEntraceRoom( boss.pos ) ||
 				(Dungeon.visibleforAnyHero(boss.pos) && count++ < 20));
-			GameScene.add( boss );
+			GameScene.add( boss, this );
 			
 			if (Dungeon.visibleforAnyHero(boss.pos)) {
 				boss.notice();
@@ -197,7 +197,7 @@ public class CityBossLevel extends Level {
 				AlphaTweener.showAlphaTweener(boss.getSprite(), 1, 0.1f );
 			}
 			
-			set( arenaDoor, Terrain.LOCKED_DOOR );
+			set(this, arenaDoor, Terrain.LOCKED_DOOR );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
 		}
@@ -211,7 +211,7 @@ public class CityBossLevel extends Level {
 			
 			keyDropped = true;
 			
-			set( arenaDoor, Terrain.DOOR );
+			set(this, arenaDoor, Terrain.DOOR );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
 		}

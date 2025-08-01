@@ -125,7 +125,7 @@ public class Statue extends Mob {
 
 	@Override
 	public void die( Object cause ) {
-		Dungeon.level.drop( weapon, pos );
+		level.drop( weapon, pos );
 		super.die( cause );
 	}
 

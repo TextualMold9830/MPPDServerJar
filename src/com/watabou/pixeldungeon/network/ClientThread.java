@@ -32,7 +32,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static com.watabou.pixeldungeon.Dungeon.heroes;
-import static com.watabou.pixeldungeon.Dungeon.level;
 
 public class ClientThread {
 
@@ -329,15 +328,17 @@ public class ClientThread {
             newHero.live();
 
             curClass.initHero(newHero);
-
-            newHero.pos = Dungeon.GetPosNear(level.entrance);
+            if (newHero.level == null){
+                Dungeon.switchLevel(Dungeon.defaultLevelIDForCurDepth(), newHero.pos, newHero);
+            }
+            newHero.pos = Dungeon.GetPosNear(newHero.level, newHero.level.entrance);
 
             newHero.updateSpriteState();
         }
             if (newHero.pos == -1) {
-                newHero.pos = level.entrance; //todo  FIXME
+                newHero.pos = newHero.level.entrance; //todo  FIXME
             }
-            Actor.add(newHero);
+            Actor.add(newHero, newHero.level);
             Actor.occupyCell(newHero);
             newHero.getSprite().place(newHero.pos);
                 synchronized (heroes) { //todo fix it. It is not work
@@ -366,7 +367,7 @@ public class ClientThread {
     }
 
     public void addAllCharsToSend() {
-        for (Actor actor : Actor.all()) {
+        for (Actor actor : Actor.all().get(clientHero.level)) {
             if (actor instanceof Char) {
                 addCharToSend((Char) actor);
             }
@@ -479,7 +480,7 @@ public class ClientThread {
 
     private void sendInitData() {
         Server.textures.forEach(this::sendTexture);
-        packet.packAndAddLevel(level, clientHero);
+        packet.packAndAddLevel(clientHero.level, clientHero);
         packet.packAndAddHero(clientHero);
         packet.packAndAddDepth(Dungeon.depth);
         packet.packAndAddIronKeysCount(clientHero.belongings.updateIronKeysCountVisual(false));

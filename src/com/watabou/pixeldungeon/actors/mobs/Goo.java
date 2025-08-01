@@ -126,7 +126,7 @@ public class Goo extends Mob {
 						@Override
 						public void call() {
 							move( dest );
-							Dungeon.level.mobPress( Goo.this );
+							level.mobPress( Goo.this );
 							Goo.super.doAttack( enemy );
 						}
 					};
@@ -177,7 +177,7 @@ public class Goo extends Mob {
 
 	@Override
 	public void move( int step ) {
-		((SewerBossLevel)Dungeon.level).seal();
+		((SewerBossLevel)level).seal();
 		super.move( step );
 	}
 
@@ -186,10 +186,10 @@ public class Goo extends Mob {
 
 		super.die( cause );
 
-		((SewerBossLevel)Dungeon.level).unseal();
+		((SewerBossLevel)level).unseal();
 
 		GameScene.bossSlain();
-		Dungeon.level.drop( new SkeletonKey(), pos );
+		level.drop( new SkeletonKey(), pos );
 
 		Badges.validateBossSlain();
 

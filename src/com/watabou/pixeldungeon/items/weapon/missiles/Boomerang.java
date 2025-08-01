@@ -75,7 +75,7 @@ public class Boomerang extends MissileWeapon {
 	}
 
 	@Override
-	protected void miss( int cell ) {
+	protected void miss(Hero user, int cell ) {
 		circleBack( cell, curUser );
 	}
 
@@ -89,7 +89,7 @@ public class Boomerang extends MissileWeapon {
 			owner.spend( -TIME_TO_EQUIP );
 		} else
 		if (!collect( curUser.belongings.backpack )) {
-			Dungeon.level.drop( this, owner.pos );
+			owner.level.drop( this, owner.pos );
 		}
 	}
 

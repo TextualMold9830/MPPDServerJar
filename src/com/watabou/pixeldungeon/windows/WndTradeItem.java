@@ -162,7 +162,7 @@ public class WndTradeItem extends WndOptions {
 
 	private void buy( Heap heap ) {
 
-		Item item = heap.pickUp();
+		Item item = heap.pickUp(getOwnerHero().level);
 
 		int price = price( item );
 		getOwnerHero().setGold(getOwnerHero().getGold() - price);
@@ -170,7 +170,7 @@ public class WndTradeItem extends WndOptions {
 		GLog.i( TXT_BOUGHT, item.name(), price );
 
 		if (!item.doPickUp(getOwnerHero())) {
-			Dungeon.level.drop( item, heap.pos );
+			getOwnerHero().level.drop( item, heap.pos );
 		}
 	}
 

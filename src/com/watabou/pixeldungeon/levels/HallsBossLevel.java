@@ -189,7 +189,7 @@ public class HallsBossLevel extends Level {
 			} while (
 				!passable[boss.pos] ||
 				Dungeon.visibleforAnyHero(boss.pos));
-			GameScene.add( boss );
+			GameScene.add( boss, this );
 			boss.spawnFists();
 			
 			stairs = entrance;
@@ -198,7 +198,7 @@ public class HallsBossLevel extends Level {
 	}
 	
 	private void doMagic( int cell ) {
-		set( cell, Terrain.EMPTY_SP );
+		set(this, cell, Terrain.EMPTY_SP );
 		CellEmitter.get( cell ).start( FlameParticle.FACTORY, 0.1f, 3 );
 	}
 	
@@ -210,7 +210,7 @@ public class HallsBossLevel extends Level {
 			keyDropped = true;
 			
 			entrance = stairs;
-			set( entrance, Terrain.ENTRANCE );
+			set(this, entrance, Terrain.ENTRANCE );
 			GameScene.updateMap( entrance );
 		}
 		

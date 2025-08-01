@@ -40,10 +40,10 @@ public class Freezing {
 		if (fire != null) {
 			fire.clear( cell );
 		}
-
-		Heap heap = Dungeon.level.heaps.get( cell );
+		//TODO: check this
+		Heap heap = fire.level.heaps.get( cell );
 		if (heap != null) {
-			heap.freeze();
+			heap.freeze(fire.level);
 		}
 
 		if (Dungeon.visibleforAnyHero(cell)) {

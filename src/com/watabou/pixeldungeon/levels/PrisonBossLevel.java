@@ -319,12 +319,12 @@ public class PrisonBossLevel extends RegularLevel {
 			Mob boss = Bestiary.mob( Dungeon.depth );
 			boss.setState(boss.HUNTING);
 			boss.pos = pos;
-			GameScene.add( boss );
+			GameScene.add( boss, this );
 			boss.notice();
 			
 			mobPress( boss );
 			
-			set( arenaDoor, Terrain.LOCKED_DOOR );
+			set(this, arenaDoor, Terrain.LOCKED_DOOR );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
 		}
@@ -337,7 +337,7 @@ public class PrisonBossLevel extends RegularLevel {
 			
 			keyDropped = true;
 			
-			set( arenaDoor, Terrain.DOOR );
+			set(this, arenaDoor, Terrain.DOOR );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
 		}

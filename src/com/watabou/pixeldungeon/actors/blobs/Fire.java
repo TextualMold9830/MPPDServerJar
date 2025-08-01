@@ -51,8 +51,8 @@ public class Fire extends Blob {
 				fire = cur[pos] - 1;
 				if (fire <= 0 && flamable[pos]) {
 
-					int oldTile = Dungeon.level.map[pos];
-					Dungeon.level.destroy( pos );
+					int oldTile = level.map[pos];
+					level.destroy( pos );
 
 					observe = true;
 					GameScene.updateMap( pos );
@@ -85,9 +85,9 @@ public class Fire extends Blob {
 			Buff.affect( ch, Burning.class ).reignite( ch );
 		}
 
-		Heap heap = Dungeon.level.heaps.get( pos );
+		Heap heap = level.heaps.get( pos );
 		if (heap != null) {
-			heap.burn();
+			heap.burn(level);
 		}
 	}
 

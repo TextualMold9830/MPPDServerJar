@@ -18,7 +18,7 @@ public class GameManager {
         try {
             Dungeon.init();
             Dungeon.loadGame(true);
-            Dungeon.level = Dungeon.loadLevel();
+            Dungeon.loadLevel(Dungeon.defaultLevelIDForCurDepth());
             InterLevelSceneServer.restore();
             System.out.println("game loaded");
             return true;

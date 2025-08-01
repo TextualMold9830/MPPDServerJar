@@ -55,7 +55,7 @@ public class ScrollOfMirrorImage extends Scroll {
 
 			MirrorImage mob = new MirrorImage();
 			mob.duplicate( curUser );
-			GameScene.add( mob );
+			GameScene.add( mob, curUser.level );
 			WandOfBlink.appear( mob, respawnPoints.get( index ) );
 
 			respawnPoints.remove( index );

@@ -55,7 +55,7 @@ public class LloydsBeacon extends Item {
 	public static final String AC_SET		= "SET";
 	public static final String AC_RETURN	= "RETURN";
 
-	private int returnDepth	= -1;
+	private String returnLevelID = null;
 	private int returnPos;
 
 	{
@@ -71,8 +71,8 @@ public class LloydsBeacon extends Item {
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		super.storeInBundle( bundle );
-		bundle.put( DEPTH, getReturnDepth());
-		if (getReturnDepth() != -1) {
+		bundle.put( DEPTH, getReturnLevelID());
+		if (getReturnLevelID() != null) {
 			bundle.put( POS, returnPos );
 		}
 	}
@@ -80,7 +80,7 @@ public class LloydsBeacon extends Item {
 	@Override
 	public void restoreFromBundle( Bundle bundle ) {
 		super.restoreFromBundle(bundle);
-		setReturnDepth(bundle.getInt( DEPTH ));
+		setReturnLevelID(bundle.getString( DEPTH ));
 		returnPos	= bundle.getInt( POS );
 	}
 
@@ -88,7 +88,7 @@ public class LloydsBeacon extends Item {
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
 		actions.add( AC_SET );
-		if (getReturnDepth() != -1) {
+		if (getReturnLevelID() != null) {
 			actions.add( AC_RETURN );
 		}
 		return actions;
@@ -115,7 +115,7 @@ public class LloydsBeacon extends Item {
 
 		if (action == AC_SET) {
 
-			setReturnDepth(Dungeon.depth);
+			setReturnLevelID(hero.level.levelID);
 			returnPos = hero.pos;
 
 			hero.spend( LloydsBeacon.TIME_TO_USE );
@@ -130,13 +130,13 @@ public class LloydsBeacon extends Item {
 
 		} else if (action == AC_RETURN) {
 
-			if (getReturnDepth() == Dungeon.depth) {
+			if (getReturnLevelID() == hero.level.levelID) {
 				reset();
 				WandOfBlink.appear( hero, returnPos );
-				Dungeon.level.press( returnPos, hero );
+				hero.level.press( returnPos, hero );
 				Dungeon.observeAll();
 			} else {
-				InterLevelSceneServer.returnTo(getReturnDepth(), returnPos, hero );
+				InterLevelSceneServer.returnTo(getReturnLevelID(), returnPos, hero );
 				reset();
 			}
 
@@ -149,7 +149,7 @@ public class LloydsBeacon extends Item {
 	}
 
 	public void reset() {
-		setReturnDepth(-1);
+		setReturnLevelID(null);
 	}
 
 	@Override
@@ -165,20 +165,20 @@ public class LloydsBeacon extends Item {
 	private static final ItemSpriteGlowing WHITE = new ItemSpriteGlowing( 0xFFFFFF );
 
 	public void updateGlowing() {
-		setGlowing(getReturnDepth() != -1 ? WHITE : null);
+		setGlowing(getReturnLevelID() != null ? WHITE : null);
 	}
 
 	@Override
 	public String info() {
-		return TXT_INFO + (getReturnDepth() == -1 ? "" : Utils.format( TXT_SET, getReturnDepth()) );
+		return TXT_INFO + (getReturnLevelID() == null ? "" : Utils.format( TXT_SET, getReturnLevelID()) );
 	}
 
-	private int getReturnDepth() {
-		return returnDepth;
+	private String getReturnLevelID() {
+		return returnLevelID;
 	}
 
-	private void setReturnDepth(int returnDepth) {
-		this.returnDepth = returnDepth;
+	private void setReturnLevelID(String returnLevelID) {
+		this.returnLevelID = returnLevelID;
 		updateGlowing();
 	}
 }

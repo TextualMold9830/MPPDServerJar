@@ -79,9 +79,9 @@ public class CursePersonification extends com.watabou.pixeldungeon.actors.mobs.M
 					enemy.pos = newPos;
 					// FIXME
 					if (enemy instanceof com.watabou.pixeldungeon.actors.mobs.Mob) {
-						Dungeon.level.mobPress( (Mob)enemy );
+						level.mobPress( (Mob)enemy );
 					} else {
-						Dungeon.level.press( newPos, enemy );
+						level.press( newPos, enemy );
 					}
 
 				}

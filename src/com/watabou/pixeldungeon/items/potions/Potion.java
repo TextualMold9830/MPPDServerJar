@@ -185,7 +185,7 @@ public class Potion extends Item {
 
 		hero.spend( TIME_TO_DRINK );
 		hero.busy();
-		onThrow( hero.pos );
+		onThrow(hero, hero.pos );
 
 		Sample.INSTANCE.play( Assets.SND_DRINK );
 
@@ -193,14 +193,14 @@ public class Potion extends Item {
 	}
 
 	@Override
-	protected void onThrow( int cell ) {
+	protected void onThrow(Hero user, int cell ) {
 		if (Actor.findChar(cell) instanceof Hero) {
 
 			apply( (Hero)Actor.findChar(cell));
 
-		} else if (Dungeon.level.map[cell] == Terrain.WELL || Level.pit[cell]) {
+		} else if (user.level.map[cell] == Terrain.WELL || Level.pit[cell]) {
 
-			super.onThrow( cell );
+			super.onThrow(user, cell );
 
 		} else  {
 

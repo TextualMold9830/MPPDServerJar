@@ -90,7 +90,7 @@ public class RogueArmor extends ClassArmor {
 
 				curUser.setHP(curUser.getHP() - (curUser.getHP() / 3));
 
-				for (Mob mob : Dungeon.level.mobs) {
+				for (Mob mob : curUser.level.mobs) {
 					if (curUser.fieldOfView[mob.pos]) {
 						Buff.prolong( mob, Blindness.class, 2 );
 						mob.setState(mob.WANDERING);
@@ -101,7 +101,7 @@ public class RogueArmor extends ClassArmor {
 				WandOfBlink.appear( curUser, target );
 				CellEmitter.get( target ).burst( Speck.factory( Speck.WOOL ), 10 );
 				Sample.INSTANCE.play( Assets.SND_PUFF );
-				Dungeon.level.press( target, curUser );
+				curUser.level.press( target, curUser );
 				Dungeon.observeAll();
 
 				curUser.spendAndNext( Actor.TICK );

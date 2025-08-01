@@ -74,7 +74,7 @@ public class Sign {
 
 	public static void read(int pos, Hero owner) {
 
-		if (Dungeon.level instanceof DeadEndLevel) {
+		if (owner.level instanceof DeadEndLevel) {
 
 			GameScene.show(new WndMessage(TXT_DEAD_END, owner));
 
@@ -86,7 +86,7 @@ public class Sign {
 				GameScene.show(new WndMessage(TIPS[index], owner));
 			} else {
 
-				Dungeon.level.destroy( pos );
+				owner.level.destroy( pos );
 				GameScene.updateMap( pos );
 				GameScene.discoverTile( pos, Terrain.SIGN );
 

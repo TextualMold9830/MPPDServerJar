@@ -45,6 +45,7 @@ import com.watabou.pixeldungeon.items.quest.DriedRose;
 import com.watabou.pixeldungeon.items.quest.RatSkull;
 import com.watabou.pixeldungeon.items.weapon.Weapon;
 import com.watabou.pixeldungeon.items.weapon.missiles.MissileWeapon;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.levels.SewerLevel;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.sprites.GhostSprite;
@@ -147,7 +148,7 @@ public class Ghost extends NPC {
 		}
 
 		b.pos = a.pos;
-		GameScene.add( b );
+		GameScene.add( b, a.level );
 
 		if (a.getSprite().flipHorizontal) {
 			b.getSprite().turnTo(b.pos, b.pos - 1);
@@ -306,12 +307,12 @@ public class Ghost extends NPC {
 			}
 		}
 
-		public static void processSewersKill( int pos ) {
+		public static void processSewersKill(Level level, int pos ) {
 			if (spawned && given && !processed && (depth == Dungeon.depth)) {
 				switch (type) {
 				case ROSE:
 					if (Random.Int( left2kill ) == 0) {
-						Dungeon.level.drop( new DriedRose(), pos );
+						level.drop( new DriedRose(), pos );
 						processed = true;
 					} else {
 						left2kill--;
@@ -319,9 +320,9 @@ public class Ghost extends NPC {
 					break;
 				case RAT:
 					FetidRat rat = new FetidRat();
-					rat.pos = Dungeon.level.randomRespawnCell();
+					rat.pos = level.randomRespawnCell();
 					if (rat.pos != -1) {
-						GameScene.add( rat );
+						GameScene.add( rat, level );
 						processed = true;
 					}
 					break;
@@ -345,7 +346,7 @@ public class Ghost extends NPC {
 		protected void relocate( Ghost ghost ) {
 			int newPos = -1;
 			for (int i=0; i < 10; i++) {
-				newPos = Dungeon.level.randomRespawnCell();
+				newPos = ghost.level.randomRespawnCell();
 				if (newPos != -1) {
 					break;
 				}

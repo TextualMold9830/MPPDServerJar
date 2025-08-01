@@ -166,7 +166,7 @@ class Mob extends Char {
 			if (enemy instanceof Hero || enemy == null) {
 
 				HashSet<Mob> enemies = new HashSet<Mob>();
-				for (Mob mob : Dungeon.level.mobs) {
+				for (Mob mob : level.mobs) {
 					if (mob != this && this.fieldOfView[mob.pos]) {
 						enemies.add(mob);
 					}
@@ -185,7 +185,7 @@ class Mob extends Char {
 				return source;
 			}
 		}
-		enemy =  enemy != null && enemy.isAlive() ? enemy : HeroHelp.GetNearestHero(pos, 8);// Dungeon.hero;
+		enemy =  enemy != null && enemy.isAlive() ? enemy : HeroHelp.GetNearestHero(pos, 8, level);// Dungeon.hero;
 		if (enemy == null) {
 			enemy = HeroHelp.GetRandomHero();
 		}
@@ -263,7 +263,7 @@ class Mob extends Char {
 		super.move(step);
 
 		if (!flying) {
-			Dungeon.level.mobPress(this);
+			level.mobPress(this);
 		}
 	}
 
@@ -350,7 +350,7 @@ class Mob extends Char {
 	@Override
 	public void destroy() {
 		super.destroy();
-		Dungeon.level.mobs.remove(this);
+		level.mobs.remove(this);
 	}
 
 	public int exp(int level){
@@ -414,7 +414,7 @@ class Mob extends Char {
 				item = (Item)loot;
 
 			}
-			Dungeon.level.drop( item, pos );
+			level.drop( item, pos );
 		}
 	}
 
@@ -480,7 +480,7 @@ class Mob extends Char {
 				target = enemy.pos;
 
 				if (Dungeon.isChallenged( Challenges.SWARM_INTELLIGENCE )) {
-					for (Mob mob : Dungeon.level.mobs) {
+					for (Mob mob : level.mobs) {
 						if (mob != Mob.this) {
 							mob.beckon( target );
 						}
@@ -528,7 +528,7 @@ class Mob extends Char {
 					spend( 1 / speed() );
 					return moveSprite( oldPos, pos );
 				} else {
-					target = Dungeon.level.randomDestination();
+					target = level.randomDestination();
 					spend( TICK );
 				}
 
@@ -569,7 +569,7 @@ class Mob extends Char {
 
 					spend( TICK );
 					setState(WANDERING);
-					target = Dungeon.level.randomDestination();
+					target = level.randomDestination();
 					return true;
 				}
 			}

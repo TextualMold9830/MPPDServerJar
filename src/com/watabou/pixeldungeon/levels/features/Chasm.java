@@ -70,8 +70,8 @@ public class Chasm {
 
 		if (hero.isAlive()) {
 			hero.interrupt();
-			if (Dungeon.level instanceof RegularLevel) {
-				Room room = ((RegularLevel)Dungeon.level).room( pos );
+			if (hero.level instanceof RegularLevel) {
+				Room room = ((RegularLevel)hero.level).room( pos );
 				if ((room != null) && (room.type == Room.Type.WEAK_FLOOR)) {
 					InterLevelSceneServer.fall(hero,true);
 				}else {

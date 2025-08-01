@@ -67,7 +67,7 @@ public class FetidRat extends Mob {
 	@Override
 	public int defenseProc( Char enemy, int damage ) {
 
-		GameScene.add( Blob.seed( pos, 20, ParalyticGas.class ) );
+		GameScene.add( Blob.seed(enemy.level, pos, 20, ParalyticGas.class ), enemy.level);
 
 		return super.defenseProc(enemy, damage);
 	}
@@ -76,7 +76,7 @@ public class FetidRat extends Mob {
 	public void die( Object cause ) {
 		super.die( cause );
 
-		Dungeon.level.drop( new RatSkull(), pos );
+		level.drop( new RatSkull(), pos );
 	}
 
 	@Override

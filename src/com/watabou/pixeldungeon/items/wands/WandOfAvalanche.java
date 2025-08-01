@@ -79,12 +79,12 @@ public class WandOfAvalanche extends Wand {
 
 				if (ch != null && ch.isAlive()) {
 					if (ch instanceof Mob) {
-						Dungeon.level.mobPress( (Mob)ch );
+						curUser.level.mobPress( (Mob)ch);
 					} else {
-						Dungeon.level.press( i, ch );
+						curUser.level.press( i, ch );
 					}
 				} else {
-					Dungeon.level.press( i, null );
+					curUser.level.press( i, null );
 				}
 
 				boolean[] visible = Dungeon.visibleForHeroes(i);

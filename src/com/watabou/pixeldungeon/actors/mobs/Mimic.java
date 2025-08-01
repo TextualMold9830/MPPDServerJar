@@ -86,7 +86,7 @@ public class Mimic extends com.watabou.pixeldungeon.actors.mobs.Mob {
 			Gold gold = new Gold( Random.Int( ((Hero) enemy).getGold() / 10,  ((Hero) enemy).getGold() / 2 ) );
 			if (gold.quantity() > 0) {
 				((Hero) enemy).setGold(((Hero) enemy).getGold() - gold.quantity());
-				Dungeon.level.drop( gold, enemy.pos);
+				((Actor)this).level.drop( gold, enemy.pos);
 			}
 		}
 		return super.attackProc( enemy, damage );
@@ -109,7 +109,7 @@ public class Mimic extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 		if (items != null) {
 			for (Item item : items) {
-				Dungeon.level.drop( item, pos );
+				((Actor)this).level.drop( item, pos );
 			}
 		}
 	}
@@ -144,9 +144,9 @@ public class Mimic extends com.watabou.pixeldungeon.actors.mobs.Mob {
 				ch.pos = newPos;
 				// FIXME
 				if (ch instanceof com.watabou.pixeldungeon.actors.mobs.Mob) {
-					Dungeon.level.mobPress( (Mob)ch );
+					ch.level.mobPress( (Mob)ch );
 				} else {
-					Dungeon.level.press( newPos, ch );
+					ch.level.press( newPos, ch );
 				}
 			} else {
 				return null;
@@ -159,7 +159,7 @@ public class Mimic extends com.watabou.pixeldungeon.actors.mobs.Mob {
 		m.setHP(m.getHT());
 		m.pos = pos;
 		m.setState(m.HUNTING);
-		GameScene.add( m, 1 );
+		GameScene.add( m, 1, enemy.level );
 		if (!(enemy==null)) {
 			m.getSprite().turnTo(pos, enemy.pos);
 		}

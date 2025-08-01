@@ -201,7 +201,7 @@ public class SewerBossLevel extends RegularLevel {
 	public void seal() {
 		if (entrance != 0) {
 			
-			set( entrance, Terrain.WATER_TILES );
+			set(this, entrance, Terrain.WATER_TILES );
 			GameScene.updateMap( entrance );
 			GameScene.ripple( entrance );
 			
@@ -216,7 +216,7 @@ public class SewerBossLevel extends RegularLevel {
 			entrance = stairs;
 			stairs = 0;
 			
-			set( entrance, Terrain.ENTRANCE );
+			set(this, entrance, Terrain.ENTRANCE );
 			GameScene.updateMap( entrance );
 		}
 	}

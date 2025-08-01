@@ -84,7 +84,7 @@ public class Thief extends com.watabou.pixeldungeon.actors.mobs.Mob {
 		super.die( cause );
 
 		if (item != null) {
-			Dungeon.level.drop( item, pos );
+			level.drop( item, pos );
 		}
 	}
 
@@ -110,7 +110,7 @@ public class Thief extends com.watabou.pixeldungeon.actors.mobs.Mob {
 	@Override
 	public int defenseProc(Char enemy, int damage) {
 		if (getState() == FLEEING) {
-			Dungeon.level.drop( new Gold(), pos );
+			enemy.level.drop( new Gold(), pos );
 		}
 
 		return damage;

@@ -89,7 +89,7 @@ public class Burning extends com.watabou.pixeldungeon.actors.buffs.Buff implemen
 					item = item.detach( ((Hero)target).belongings.backpack );
 					ChargrilledMeat steak = new ChargrilledMeat();
 					if (!steak.collect( ((Hero)target).belongings.backpack )) {
-						Dungeon.level.drop( steak, target.pos );
+						level.drop( steak, target.pos );
 					}
 					GLog.w( TXT_BURNS_UP, item.toString() );
 
@@ -104,7 +104,7 @@ public class Burning extends com.watabou.pixeldungeon.actors.buffs.Buff implemen
 			}
 
 		if (Level.flamable[target.pos]) {
-			GameScene.add( Blob.seed( target.pos, 4, Fire.class ) );
+			GameScene.add( Blob.seed(level, target.pos, 4, Fire.class ), level );
 		}
 
 		spend( TICK );

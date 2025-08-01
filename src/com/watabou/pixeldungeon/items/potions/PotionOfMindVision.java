@@ -35,7 +35,7 @@ public class PotionOfMindVision extends Potion {
 		Buff.affect( hero, MindVision.class, MindVision.DURATION );
 		Dungeon.observeAll();
 
-		if (Dungeon.level.mobs.size() > 0) {
+		if (hero.level.mobs.size() > 0) {
 			GLog.i( "You can somehow feel the presence of other creatures' minds!" );
 		} else {
 			GLog.i( "You can somehow tell that you are alone on this level at the moment." );

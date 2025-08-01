@@ -103,7 +103,7 @@ public class WarriorArmor extends ClassArmor {
 					@Override
 					public void call() {
 						curUser.move( dest );
-						Dungeon.level.press( dest, curUser );
+						curUser.level.press( dest, curUser );
 						Dungeon.observeAll();
 
 						for (int i=0; i < Level.NEIGHBOURS8.length; i++) {

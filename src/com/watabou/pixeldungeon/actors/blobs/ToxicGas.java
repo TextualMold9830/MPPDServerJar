@@ -50,7 +50,7 @@ public class ToxicGas extends com.watabou.pixeldungeon.actors.blobs.Blob impleme
 			}
 		}
 
-		Blob blob = Dungeon.level.blobs.get( ParalyticGas.class );
+		Blob blob = level.blobs.get( ParalyticGas.class );
 		if (blob != null) {
 
 			int par[] = blob.cur;

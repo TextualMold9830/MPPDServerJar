@@ -240,7 +240,7 @@ public abstract class Item implements Bundlable {
 
 	public void doDrop( Hero hero ) {
 		hero.spendAndNext( TIME_TO_DROP );
-		Dungeon.level.drop( detachAll( hero.belongings.backpack ), hero.pos ).sendDropVisualAction(hero.pos);
+		hero.level.drop( detachAll( hero.belongings.backpack ), hero.pos ).sendDropVisualAction(hero.pos);
 	}
 
 	public void doThrow( Hero hero ) {
@@ -269,8 +269,8 @@ public abstract class Item implements Bundlable {
 		execute( hero, defaultAction );
 	}
 
-	protected void onThrow( int cell ) {
-		Heap heap = Dungeon.level.drop( this, cell );
+	protected void onThrow(Hero user, int cell ) {
+		Heap heap = user.level.drop( this, cell );
 		if (!heap.isEmpty()) {
 			heap.sendDropVisualAction( cell );
 		}
@@ -729,7 +729,7 @@ public abstract class Item implements Bundlable {
 			reset( user.pos, cell, this, new Callback() {
 				@Override
 				public void call() {
-					Item.this.detach( user.belongings.backpack ).onThrow( cell );
+					Item.this.detach( user.belongings.backpack ).onThrow(user,  cell );
 					user.spendAndNext( finalDelay );
 				}
 			} );

@@ -53,19 +53,19 @@ abstract public class MissileWeapon extends Weapon {
 	}
 
 	@Override
-	protected void onThrow( int cell ) {
+	protected void onThrow(Hero user, int cell ) {
 		Char enemy = Actor.findChar( cell );
 		if (enemy == null || enemy == curUser) {
-			super.onThrow( cell );
+			super.onThrow(user, cell );
 		} else {
 			if (!curUser.shoot( enemy, this )) {
-				miss( cell );
+				miss(user, cell );
 			}
 		}
 	}
 
-	protected void miss( int cell ) {
-		super.onThrow( cell );
+	protected void miss(Hero user, int cell ) {
+		super.onThrow(user, cell );
 	}
 
 	@Override

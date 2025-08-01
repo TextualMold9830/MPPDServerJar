@@ -43,7 +43,7 @@ public class Shopkeeper extends NPC {
 
 		throwItem();
 		Hero nearestHero;
-		nearestHero=HeroHelp.GetNearestHero(pos,MAX_HERO_PATH_LENGTH);
+		nearestHero=HeroHelp.GetNearestHero(pos,MAX_HERO_PATH_LENGTH, level);
 		if (nearestHero!=null) {
 			getSprite().turnTo(pos, nearestHero.pos);
 		}
@@ -62,10 +62,10 @@ public class Shopkeeper extends NPC {
 	}
 
 	protected void flee() {
-		for (Heap heap: Dungeon.level.heaps.values()) {
+		for (Heap heap: level.heaps.values()) {
 			if (heap.type == Heap.Type.FOR_SALE) {
 				CellEmitter.get( heap.pos ).burst( ElmoParticle.FACTORY, 4 );
-				heap.destroy();
+				heap.destroy(level);
 			}
 		}
 

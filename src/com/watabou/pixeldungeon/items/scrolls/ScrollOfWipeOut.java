@@ -85,14 +85,14 @@ public class ScrollOfWipeOut extends Item {
 
 		Invisibility.dispel(curUser);
 
-		for (Mob mob : Dungeon.level.mobs.toArray( new Mob[0] )) {
+		for (Mob mob : curUser.level.mobs.toArray( new Mob[0] )) {
 			if (!Bestiary.isBoss( mob )) {
 				Sample.INSTANCE.play( Assets.SND_CURSED, 0.3f, 0.3f, Random.Float( 0.6f, 0.9f ) );
 				mob.die( this );
 			}
 		}
 
-		for (Heap heap : Dungeon.level.heaps.values()) {
+		for (Heap heap : curUser.level.heaps.values()) {
 			switch (heap.type) {
 			case FOR_SALE:
 				heap.type = Type.HEAP;

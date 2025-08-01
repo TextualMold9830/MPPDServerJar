@@ -31,9 +31,8 @@ public class Rotberry extends com.watabou.pixeldungeon.plants.Plant {
 	public void activate( Char ch ) {
 		super.activate( ch );
 
-		GameScene.add( Blob.seed( pos, 100, ToxicGas.class ) );
-
-		Dungeon.level.drop( new Seed(), pos );
+		GameScene.add( Blob.seed(ch.level, pos, 100, ToxicGas.class ), ch.level );
+		ch.level.drop( new Seed(), pos );
 
 		if (ch != null) {
 			Buff.prolong( ch, Roots.class, Roots.TICK * 3 );
@@ -60,8 +59,8 @@ public class Rotberry extends com.watabou.pixeldungeon.plants.Plant {
 		public boolean collect( Bag container ) {
 			if (super.collect( container )) {
 
-				if (Dungeon.level != null) {
-					for (Mob mob : Dungeon.level.mobs) {
+				if (container.owner.level != null) {
+					for (Mob mob : container.owner.level.mobs) {
 						mob.beckon( container.owner.pos);
 					}
 

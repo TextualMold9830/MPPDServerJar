@@ -42,6 +42,7 @@ import com.watabou.pixeldungeon.items.food.ChargrilledMeat;
 import com.watabou.pixeldungeon.items.food.FrozenCarpaccio;
 import com.watabou.pixeldungeon.items.food.MysteryMeat;
 import com.watabou.pixeldungeon.items.scrolls.Scroll;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.plants.Plant.Seed;
 import com.watabou.pixeldungeon.sprites.ItemSprite;
@@ -129,19 +130,19 @@ public class Heap implements Bundlable {
 		case MIMIC:
 			if (Mimic.spawnAt( pos, items,  hero ) != null) {
 				GLog.n( TXT_MIMIC );
-				destroy();
+				destroy(hero.level);
 			} else {
 				type = Type.CHEST;
 			}
 			break;
 		case TOMB:
-			Wraith.spawnAround( hero.pos );
+			Wraith.spawnAround( hero.pos, hero.level );
 			break;
 		case SKELETON:
 			CellEmitter.center( pos ).start( Speck.factory( Speck.RATTLE ), 0.1f, 3 );
 			for (Item item : items) {
 				if (item.cursed) {
-					if (Wraith.spawnAt( pos ) == null) {
+					if (Wraith.spawnAt( pos, hero.level ) == null) {
 						hero.getSprite().emitter().burst( ShadowParticle.CURSE, 6 );
 						hero.damage( hero.getHP() / 2, this );
 					}
@@ -165,11 +166,11 @@ public class Heap implements Bundlable {
 		return items.size();
 	}
 
-	public Item pickUp() {
+	public Item pickUp(Level level) {
 
 		Item item = items.removeFirst();
 		if (items.isEmpty()) {
-			destroy();
+			destroy(level);
 		}
 			sendHeap(this);
 
@@ -180,7 +181,7 @@ public class Heap implements Bundlable {
 		return items.peek();
 	}
 
-	public void drop(@NotNull Item item ) {
+	public void drop(Level level, @NotNull Item item ) {
 
 		if (item.stackable) {
 
@@ -202,7 +203,7 @@ public class Heap implements Bundlable {
 			items.addFirst( item );
 		}
 		sendHeap(this);
-		ItemSprite.dropEffects(this);
+		ItemSprite.dropEffects(level, this);
 	}
 
 	public void sendDropVisualAction(int from) {
@@ -227,14 +228,14 @@ public class Heap implements Bundlable {
 		sendHeap(this);
 	}
 
-	public void burn() {
+	public void burn(Level level) {
 
 		if (type == Type.MIMIC) {
 			Mimic m = Mimic.spawnAt( pos, items );
 			if (m != null) {
 				Buff.affect( m, Burning.class ).reignite( m );
 				m.getSprite().emitter().burst( FlameParticle.FACTORY, 5 );
-				destroy();
+				destroy(level);
 			}
 		}
 		if (type != Type.HEAP) {
@@ -266,20 +267,20 @@ public class Heap implements Bundlable {
 				}
 
 			if (isEmpty()) {
-				destroy();
+				destroy(level);
 			}
 
 		}
 		sendHeap(this);
 	}
 
-	public void freeze() {
+	public void freeze(Level level) {
 
 		if (type == Type.MIMIC) {
 			Mimic m = Mimic.spawnAt( pos, items );
 			if (m != null) {
 				Buff.prolong( m, Frost.class, Frost.duration( m ) * Random.Float( 1.0f, 1.5f ) );
-				destroy();
+				destroy(level);
 			}
 		}
 		if (type != Type.HEAP) {
@@ -296,13 +297,13 @@ public class Heap implements Bundlable {
 
 		if (frozen) {
 			if (isEmpty()) {
-				destroy();
+				destroy(level);
 			}
 		}
 		sendHeap(this);
 	}
 
-	public Item transmute() {
+	public Item transmute(Level level) {
 
 		CellEmitter.get( pos ).burst( Speck.factory( Speck.BUBBLE ), 3 );
 		Splash.at( pos, 0xFFFFFF, 3 );
@@ -330,7 +331,7 @@ public class Heap implements Bundlable {
 
 				CellEmitter.center( pos ).burst( Speck.factory( Speck.EVOKE ), 3 );
 
-				destroy();
+				destroy(level);
 
 				Statistics.potionsCooked++;
 				Badges.validatePotionsCooked();
@@ -342,7 +343,7 @@ public class Heap implements Bundlable {
 				Seed proto = (Seed)items.get( Random.chances( chances ) );
 				Class<? extends Item> itemClass = proto.alchemyClass;
 
-				destroy();
+				destroy(level);
 
 				Statistics.potionsCooked++;
 				Badges.validatePotionsCooked();
@@ -376,8 +377,8 @@ public class Heap implements Bundlable {
 		return items == null || items.size() == 0;
 	}
 
-	public void destroy() {
-		Dungeon.level.heaps.remove( this.pos );
+	public void destroy(Level level) {
+		level.heaps.remove( this.pos );
 		items.clear();
 		items = null;
 		sendHeapRemoving(this);

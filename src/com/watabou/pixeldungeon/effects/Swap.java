@@ -44,16 +44,16 @@ public class Swap {
 
 			if (!ch1.flying) {
 				if (ch1 instanceof Mob) {
-					Dungeon.level.mobPress( (Mob)ch1 );
+					ch1.level.mobPress( (Mob)ch1 );
 				} else {
-					Dungeon.level.press( ch1.pos, ch1 );
+					ch1.level.press( ch1.pos, ch1 );
 				}
 			}
 			if (!ch2.flying) {
 				if (ch2 instanceof Mob) {
-					Dungeon.level.mobPress( (Mob)ch2 );
+					ch1.level.mobPress( (Mob)ch2 );
 				} else {
-					Dungeon.level.press( ch2.pos, ch2 );
+					ch1.level.press( ch2.pos, ch2 );
 				}
 			}
 

@@ -93,7 +93,7 @@ public class Skeleton extends Mob {
 					loot = l;
 				}
 			}
-			Dungeon.level.drop( loot, pos );
+			level.drop( loot, pos );
 		}
 	}
 

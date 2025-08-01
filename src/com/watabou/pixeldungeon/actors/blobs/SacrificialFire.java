@@ -97,7 +97,7 @@ public class SacrificialFire extends Blob {
 
 		Wound.hit( ch );
 
-		SacrificialFire fire = (SacrificialFire)Dungeon.level.blobs.get( SacrificialFire.class );
+		SacrificialFire fire = (SacrificialFire)ch.level.blobs.get( SacrificialFire.class );
 		if (fire != null) {
 
 			int exp = 0;
@@ -119,7 +119,7 @@ public class SacrificialFire extends Blob {
 
 					GLog.w( TXT_REWARD );
 					new Flare( 7, 32 ).color( 0x66FFFF, true ).show( fire.pos, 2f );
-					Dungeon.level.drop( new ScrollOfWipeOut(), fire.pos );
+					ch.level.drop( new ScrollOfWipeOut(), fire.pos );
 				}
 			} else {
 

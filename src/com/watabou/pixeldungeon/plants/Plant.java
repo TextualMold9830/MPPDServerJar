@@ -59,18 +59,18 @@ public class Plant implements Bundlable {
 	}
 
 	public void wither(Char ch) {
-		wither();
+		wither(ch.level);
 		if (ch instanceof Hero && ((Hero)ch).subClass == HeroSubClass.WARDEN) {
 			if (Random.Int( 5 ) == 0) {
-				Dungeon.level.drop( Generator.random( Generator.Category.SEED ), pos );
+				ch.level.drop(Generator.random( Generator.Category.SEED ), pos );
 			}
 			if (Random.Int( 5 ) == 0) {
-				Dungeon.level.drop( new Dewdrop(), pos );
+				ch.level.drop( new Dewdrop(), pos );
 			}
 		}
 	}
-	public void wither() {
-		Dungeon.level.uproot( pos );
+	public void wither(Level level) {
+		level.uproot( pos );
 
 		if (Dungeon.visibleforAnyHero(pos)) {
 			CellEmitter.get( pos ).burst( LeafParticle.GENERAL, 6 );
@@ -120,11 +120,11 @@ public class Plant implements Bundlable {
 		}
 
 		@Override
-		protected void onThrow( int cell ) {
-			if (Dungeon.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell]) {
-				super.onThrow( cell );
+		protected void onThrow(Hero user, int cell ) {
+			if (user.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell]) {
+				super.onThrow(user, cell );
 			} else {
-				Dungeon.level.plant( this, cell );
+				user.level.plant( this, cell );
 			}
 		}
 
@@ -134,7 +134,7 @@ public class Plant implements Bundlable {
 
 				hero.spend( TIME_TO_PLANT );
 				hero.busy();
-				((Seed)detach( hero.belongings.backpack )).onThrow( hero.pos );
+				((Seed)detach( hero.belongings.backpack )).onThrow(hero, hero.pos );
 
 				hero.getSprite().operate( hero.pos );
 

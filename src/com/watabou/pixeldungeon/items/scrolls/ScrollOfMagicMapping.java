@@ -42,7 +42,7 @@ public class ScrollOfMagicMapping extends Scroll {
 	@Override
 	protected void doRead() {
 
-		Level level = Dungeon.level;
+		Level level = curUser.level;
 		int length = level.LENGTH;
 		int[] map = level.map;
 		boolean[] mapped = level.mapped;
@@ -59,7 +59,7 @@ public class ScrollOfMagicMapping extends Scroll {
 				mapped[i] = true;
 				if ((Terrain.flags[terr] & Terrain.SECRET) != 0) {
 
-					Level.set( i, Terrain.discover( terr ) );
+					Level.set(level, i, Terrain.discover( terr ) );
 					GameScene.updateMap( i );
 
 					if (Dungeon.visibleforAnyHero(i)) {

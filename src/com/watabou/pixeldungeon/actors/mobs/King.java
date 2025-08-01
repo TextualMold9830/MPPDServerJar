@@ -138,8 +138,8 @@ public class King extends com.watabou.pixeldungeon.actors.mobs.Mob {
 	@Override
 	public void die( Object cause ) {
 		GameScene.bossSlain();
-		Dungeon.level.drop( new ArmorKit(), pos );
-		Dungeon.level.drop( new SkeletonKey(), pos );
+		level.drop( new ArmorKit(), pos );
+		level.drop( new SkeletonKey(), pos );
 
 		super.die( cause );
 
@@ -160,7 +160,7 @@ public class King extends com.watabou.pixeldungeon.actors.mobs.Mob {
 		Sample.INSTANCE.play( Assets.SND_CHALLENGE );
 
 		boolean[] passable = Level.passable.clone();
-		for (Actor actor : Actor.all()) {
+		for (Actor actor : Actor.all().get(level)) {
 			if (actor instanceof Char) {
 				passable[((Char)actor).pos] = false;
 			}
@@ -179,7 +179,7 @@ public class King extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 						Undead undead = new Undead();
 						undead.pos = j;
-						GameScene.add( undead );
+						GameScene.add( undead, level );
 
 						WandOfBlink.appear( undead, j );
 						new Flare( 3, 32 ).color( 0x000000, false ).show(undead.pos, 2f ) ;

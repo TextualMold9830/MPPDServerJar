@@ -33,7 +33,9 @@ import com.watabou.pixeldungeon.effects.BlobEmitter;
 import com.watabou.pixeldungeon.items.Heap;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.potions.Potion;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.levels.LobbyLevel;
+import com.watabou.pixeldungeon.levels.RegularLevel;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.plants.Plant;
@@ -83,21 +85,20 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		//PixelDungeon.lastClass( Dungeon.hero.heroClass.ordinal() );
 
 
-		Dungeon.level.addVisuals( this );
 
-		for (Mob mob : Dungeon.level.mobs) {
-			addMobSprite( mob );
-			if (Statistics.amuletHeroID>-1) {
-				mob.beckon( Dungeon.heroes[Statistics.amuletHeroID].pos );
-			}
-		}
-
+//		for (Mob mob : level.mobs) {
+//			addMobSprite( mob );
+//			if (Statistics.amuletHeroID>-1) {
+//				mob.beckon( Dungeon.heroes[Statistics.amuletHeroID].pos );
+//			}
+//		}
 
 
-		for (Blob blob : Dungeon.level.blobs.values()) {
-			blob.emitter = null;
-			addBlobSprite( blob );
-		}
+
+//		for (Blob blob : level.blobs.values()) {
+//			blob.emitter = null;
+//			addBlobSprite( blob );
+//		}
 
 
 		for ( Hero heroobj:Dungeon.heroes) {
@@ -111,19 +112,19 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		}
 
 		ArrayList<Item> dropped = Dungeon.droppedItems.get( Dungeon.depth );
-		if (dropped != null) {
-			for (Item item : dropped) {
-				int pos = Dungeon.level.randomRespawnCell();
-				if (item instanceof Potion) {
-					((Potion)item).shatter( pos );
-				} else if (item instanceof Plant.Seed) {
-					Dungeon.level.plant( (Plant.Seed)item, pos );
-				} else {
-					Dungeon.level.drop( item, pos );
-				}
-			}
-			Dungeon.droppedItems.remove( Dungeon.depth );
-		}
+//		if (dropped != null) {
+//			for (Item item : dropped) {
+//				int pos = level.randomRespawnCell();
+//				if (item instanceof Potion) {
+//					((Potion)item).shatter( pos );
+//				} else if (item instanceof Plant.Seed) {
+//					level.plant( (Plant.Seed)item, pos );
+//				} else {
+//					level.drop( item, pos );
+//				}
+//			}
+//			Dungeon.droppedItems.remove( Dungeon.depth );
+//		}
 
 	}
 
@@ -142,36 +143,36 @@ public class GameScene extends PixelScene {     //only client, exclude static
 
 		boolean parsedAnything = Server.parseActions();
 
-		boolean hasConnectedHero = false;
+		//boolean hasConnectedHero = false;
 		for (Hero hero : Dungeon.heroes) {
 			if (hero != null) {
 				if (hero.networkID >= 0) {
-					hasConnectedHero = true;
+		//			hasConnectedHero = true;
 					break;
 				}
 			}
 		}
-
-		if (!hasConnectedHero) {
-			switch (Preferences.noConnectedHeroBehaviour) {
-
-				case STOP_SERVER: {
-					if (!(Dungeon.level instanceof LobbyLevel)) {
-						Server.stopServer();
-						return;
-					}
-					break;
-				}
-				case PAUSE_ACTORS: {
-					waitNewJson();
-					return;
-				}
-				case PROCESS_ACTORS: {
-					//continue
-					break;
-				}
-			}
-		}
+		//TODO: check this. multi level support means levels will be unloaded
+//		if (!hasConnectedHero) {
+//			switch (Preferences.noConnectedHeroBehaviour) {
+//
+//				case STOP_SERVER: {
+//					if (!(level instanceof LobbyLevel)) {
+//						Server.stopServer();
+//						return;
+//					}
+//					break;
+//				}
+//				case PAUSE_ACTORS: {
+//					waitNewJson();
+//					return;
+//				}
+//				case PROCESS_ACTORS: {
+//					//continue
+//					break;
+//				}
+//			}
+//		}
 
 		if (!PixelDungeon.requestedReset()){
 			Actor.process();
@@ -244,8 +245,8 @@ public class GameScene extends PixelScene {     //only client, exclude static
 
 	// -------------------------------------------------------
 
-	public static void add( Blob gas ) {
-		Actor.add( gas );
+	public static void add( Blob gas, Level level ) {
+		Actor.add( gas, level );
 		if (scene != null) {
 			scene.addBlobSprite( gas );
 		}
@@ -259,16 +260,16 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		return;
 	}
 
-	public static void add( Mob mob ) {
-		Dungeon.level.mobs.add( mob );
-		Actor.add( mob );
+	public static void add( Mob mob, Level level ) {
+		mob.level.mobs.add( mob );
+		Actor.add( mob, level );
 		Actor.occupyCell( mob );
 		scene.addMobSprite( mob );
 	}
 
-	public static void add( Mob mob, float delay ) {
-		Dungeon.level.mobs.add( mob );
-		Actor.addDelayed( mob, delay );
+	public static void add( Mob mob, float delay, Level level ) {
+		level.mobs.add( mob );
+		Actor.addDelayed( mob, delay, level );
 		Actor.occupyCell( mob );
 		scene.addMobSprite( mob );
 	}

@@ -30,7 +30,6 @@ import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.network.SendData;
-import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import org.jetbrains.annotations.NotNull;
@@ -51,6 +50,7 @@ public abstract class Actor implements Bundlable {
 	protected abstract boolean act();
 	public static final int MAX_TRIES = 20; //  to free mutex
 
+	public Level level;
 	protected void spend( float time ) {
 		this.time += time;
 		if (this.time >= CRITICAL_TIME) {
@@ -80,11 +80,15 @@ public abstract class Actor implements Bundlable {
 
 	private static final String TIME	= "time";
 	private static final String ID		= "id";
+	private static final String LAST_LEVEL_ID = "last_level_id";
 
 	@Override
 	public void storeInBundle( Bundle bundle ) {
 		bundle.put( TIME, time );
 		bundle.put( ID, id );
+		if( level!= null) {
+			bundle.put(LAST_LEVEL_ID, level.levelID);
+		}
 	}
 
 	@Override
@@ -94,9 +98,13 @@ public abstract class Actor implements Bundlable {
 			time = now + 1;
 		}
 		id = bundle.getInt( ID );
+		if (bundle.contains(LAST_LEVEL_ID)){
+			level = Dungeon.getLevelByID(bundle.getString(LAST_LEVEL_ID));
+		}
 	}
 
 	public int id() {
+		Collection<Actor> actors = all.get(level);
 		if (id > 0) {
 			ids.put(id, this);
 			return id;
@@ -107,10 +115,10 @@ public abstract class Actor implements Bundlable {
 					ids.put(id, this);
 					return id;
 				}
-				if (!all.contains(this)){
+				if (actors == null || !actors.contains(this)){
 					return -1;
 				}
-				for (Actor a : all) {
+				for (Actor a : actors) {
 					if (a.id > max) {
 						max = a.id;
 					}
@@ -127,7 +135,7 @@ public abstract class Actor implements Bundlable {
 
 	//Do not use default java Set because collection because Actor is mutable:
 	//https://stackoverflow.com/questions/43553806/hashset-contains-returns-false-when-it-shouldnt
-	private static final Collection<Actor> all = new LinkedList<>();
+	private static final HashMap<Level, Collection<Actor>> all = new HashMap<>();
 	private volatile static Actor current;
 
 	private static float timeForAct = 2;
@@ -153,45 +161,47 @@ public abstract class Actor implements Bundlable {
 		/*if (Dungeon.hero != null && all.contains( Dungeon.hero )) {
 			Statistics.duration += now;
 		}*/
-		synchronized (all) {
-			float min = Float.MAX_VALUE;
-			for (Actor a : all) {
-				if (a.time < min) {
-					min = a.time;
-				}
-			}
-			for (Actor a : all) {
-				a.time -= min;
-			}
-			now = 0;
-		}
+		//TODO: fix this
+//		synchronized (all) {
+//			float min = Float.MAX_VALUE;
+//			for (Actor a : all) {
+//				if (a.time < min) {
+//					min = a.time;
+//				}
+//			}
+//			for (Actor a : all) {
+//				a.time -= min;
+//			}
+//			now = 0;
+//		}
 	}
 
 	public static void clearTime() {
 		/*if (Dungeon.hero != null && all.contains( Dungeon.hero )) {
 			Statistics.duration += now;
 		}*/
-		synchronized (all) {
-			for (Actor a : all) {
-				a.time = 0;
-			}
-			now = 0;
-		}
+		//Check if this is needed
+//		synchronized (all) {
+//			for (Actor a : all) {
+//				a.time = 0;
+//			}
+//			now = 0;
+//		}
 	}
 
-	public static void init() {
+	public static void init(Level level) {
 		for (Hero hero:Dungeon.heroes) {
-			if (hero!=null) {
-				addDelayed(hero, -Float.MIN_VALUE);
+			if (hero!=null && hero.level == level) {
+				addDelayed(hero, -Float.MIN_VALUE, level);
 			}
 		}
 
-		for (Mob mob : Dungeon.level.mobs) {
-			add( mob );
+		for (Mob mob : level.mobs) {
+			add( mob, level );
 		}
 
-		for (Blob blob : Dungeon.level.blobs.values()) {
-			add( blob );
+		for (Blob blob : level.blobs.values()) {
+			add( blob, level );
 		}
 
 		current = null;
@@ -259,16 +269,17 @@ public abstract class Actor implements Bundlable {
 					current = null;
 
 					Arrays.fill(chars, null);
+					for (Collection<Actor> actors: all.values()) {
+						for (Actor actor : actors) {
+							if (actor.time < now) {
+								now = actor.time;
+								current = actor;
+							}
 
-					for (Actor actor : all) {
-						if (actor.time < now) {
-							now = actor.time;
-							current = actor;
-						}
-
-						if (actor instanceof com.watabou.pixeldungeon.actors.Char) {
-							com.watabou.pixeldungeon.actors.Char ch = (com.watabou.pixeldungeon.actors.Char) actor;
-							chars[ch.pos] = ch;
+							if (actor instanceof com.watabou.pixeldungeon.actors.Char) {
+								com.watabou.pixeldungeon.actors.Char ch = (com.watabou.pixeldungeon.actors.Char) actor;
+								chars[ch.pos] = ch;
+							}
 						}
 					}
 
@@ -305,17 +316,22 @@ public abstract class Actor implements Bundlable {
     If actor is not in Actor.all and gets id, some data can be lost
     */
 
-	public static void add(@NotNull Actor actor ) {
-		add( actor, now );
+	public static void add(@NotNull Actor actor, Level level ) {
+		add( actor, now, level );
 	}
 	
-	public static void addDelayed(@NotNull Actor actor, float delay ) {
-		add( actor, now + delay );
+	public static void addDelayed(@NotNull Actor actor, float delay, Level level ) {
+		add( actor, now + delay, level );
 	}
 	
-	private static void add( @NotNull Actor actor, float time ) {
+	private static void add( @NotNull Actor actor, float time, Level level ) {
+		Collection<Actor> actors = all.get(level);
+		if (actors == null) {
+			actors = new LinkedList<>();
+		}
 		synchronized (all) {
-			if (all.contains(actor)) {
+			actor.level = level;
+			if (actors.contains(actor)) {
 				return;
 			}
 
@@ -323,7 +339,7 @@ public abstract class Actor implements Bundlable {
 				ids.put(actor.id, actor);
 			}
 
-			all.add(actor);
+			actors.add(actor);
 			actor.time += time;
 			actor.onAdd();
 
@@ -331,12 +347,13 @@ public abstract class Actor implements Bundlable {
 				com.watabou.pixeldungeon.actors.Char ch = (com.watabou.pixeldungeon.actors.Char) actor;
 				chars[ch.pos] = ch;
 				for (Buff buff : ch.buffs()) {
-					if (!all.contains(buff)) {
-						all.add(buff);
+					if (!actors.contains(buff)) {
+						actors.add(buff);
 						buff.onAdd();
 					}
 				}
 			}
+			all.put(level, actors);
 		}
 
 		SendData.sendActor(actor);
@@ -367,7 +384,7 @@ public abstract class Actor implements Bundlable {
 		return ids.get( id );
 	}
 
-	public static Collection<Actor> all() {
+	public static HashMap<Level, Collection<Actor>> all() {
 		return all;
 	}
 }

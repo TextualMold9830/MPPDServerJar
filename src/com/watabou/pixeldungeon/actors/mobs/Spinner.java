@@ -89,7 +89,7 @@ public class Spinner extends com.watabou.pixeldungeon.actors.mobs.Mob {
 	@Override
 	public void move( int step ) {
 		if (getState() == FLEEING) {
-			GameScene.add( Blob.seed( pos, Random.Int( 5, 7 ), Web.class ) );
+			GameScene.add( Blob.seed(level, pos, Random.Int( 5, 7 ), Web.class ) , level);
 		}
 		super.move( step );
 	}

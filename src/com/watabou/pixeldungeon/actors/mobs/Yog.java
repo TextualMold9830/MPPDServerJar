@@ -89,8 +89,8 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 			fist2.pos = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
 		} while (!Level.passable[fist1.pos] || !Level.passable[fist2.pos] || fist1.pos == fist2.pos);
 
-		GameScene.add( fist1 );
-		GameScene.add( fist2 );
+		GameScene.add( fist1, level );
+		GameScene.add( fist2 , level);
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 		if (fistsCount > 0) {
 
-			for (com.watabou.pixeldungeon.actors.mobs.Mob mob : Dungeon.level.mobs) {
+			for (com.watabou.pixeldungeon.actors.mobs.Mob mob : level.mobs) {
 				if (mob instanceof BurningFist || mob instanceof RottingFist) {
 					mob.beckon( pos );
 				}
@@ -126,7 +126,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 			Larva larva = new Larva();
 			larva.pos = Random.element( spawnPoints );
 
-			GameScene.add( larva );
+			GameScene.add( larva, level );
 			sendPushing( larva, pos, larva.pos );
 		}
 
@@ -141,14 +141,14 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 	@Override
 	public void die( Object cause ) {
 
-		for (com.watabou.pixeldungeon.actors.mobs.Mob mob : (Iterable<com.watabou.pixeldungeon.actors.mobs.Mob>)Dungeon.level.mobs.clone()) {
+		for (com.watabou.pixeldungeon.actors.mobs.Mob mob : (Iterable<com.watabou.pixeldungeon.actors.mobs.Mob>)level.mobs.clone()) {
 			if (mob instanceof BurningFist || mob instanceof RottingFist) {
 				mob.die( cause );
 			}
 		}
 
 		GameScene.bossSlain();
-		Dungeon.level.drop( new SkeletonKey(), pos );
+		level.drop( new SkeletonKey(), pos );
 		super.die( cause );
 
 		yell( "..." );
@@ -358,7 +358,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 		@Override
 		public boolean act() {
 			for (int i=0; i < Level.NEIGHBOURS9.length; i++) {
-				GameScene.add( Blob.seed( pos + Level.NEIGHBOURS9[i], 2, Fire.class ) );
+				GameScene.add( Blob.seed(level, pos + Level.NEIGHBOURS9[i], 2, Fire.class ), level );
 			}
 
 			return super.act();

@@ -24,6 +24,7 @@ import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.blobs.Fire;
 import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.buffs.Burning;
+import com.watabou.pixeldungeon.actors.hero.Hero;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.scenes.GameScene;
@@ -59,17 +60,17 @@ public class IncendiaryDart extends MissileWeapon {
 	}
 
 	@Override
-	protected void onThrow( int cell ) {
+	protected void onThrow(Hero user, int cell ) {
 		Char enemy = Actor.findChar( cell );
 		if (enemy == null || enemy == curUser) {
 			if (Level.flamable[cell]) {
-				GameScene.add( Blob.seed( cell, 4, Fire.class ) );
+				GameScene.add( Blob.seed(user.level, cell, 4, Fire.class ), user.level );
 			} else {
-				super.onThrow( cell );
+				super.onThrow(user, cell );
 			}
 		} else {
 			if (!curUser.shoot( enemy, this )) {
-				Dungeon.level.drop( this, cell );
+				user.level.drop( this, cell );
 			}
 		}
 	}

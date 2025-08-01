@@ -22,6 +22,7 @@ import com.watabou.noosa.Game;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.buffs.Amok;
+import com.watabou.pixeldungeon.actors.buffs.Buff;
 import com.watabou.pixeldungeon.actors.buffs.Light;
 import com.watabou.pixeldungeon.actors.buffs.Rage;
 import com.watabou.pixeldungeon.actors.hero.Hero;
@@ -39,7 +40,6 @@ import com.watabou.pixeldungeon.items.wands.Wand;
 import com.watabou.pixeldungeon.levels.*;
 import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.network.Server;
-import com.watabou.pixeldungeon.scenes.InterLevelSceneServer;
 import com.watabou.pixeldungeon.scenes.StartScene;
 import com.watabou.pixeldungeon.utils.BArray;
 import com.watabou.pixeldungeon.utils.Utils;
@@ -49,7 +49,6 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import textualmold9830.plugins.PluginManager;
 import textualmold9830.plugins.events.DungeonGenerateLevelEvent;
 
 import java.io.IOException;
@@ -61,7 +60,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 
-import static com.watabou.pixeldungeon.BuildConfig.DEBUG;
 import static com.watabou.pixeldungeon.HeroHelp.getHeroID;
 import static com.watabou.pixeldungeon.network.SendData.*;
 
@@ -77,14 +75,13 @@ public class Dungeon {
 	/**
 	 * Change here to use custom level
 	 */
-	public static Level level;
-
-	public static int depth;
+	public static int depth = 0;
 	//public static int gold;
 	// Reason of death
 	public static String resultDescription;
 
 	public static boolean nightMode;
+	public static final HashMap<String, Level> loadedLevels = new HashMap<>();
 
 	public static HashMap<Integer, ArrayList<Item>> droppedItems;
 
@@ -104,8 +101,6 @@ public class Dungeon {
 
 		Statistics.reset();
 		Journal.reset();
-
-		depth = -1;
 
 		droppedItems = new HashMap<>();
 
@@ -131,7 +126,6 @@ public class Dungeon {
 
 	public static Level newLevel() {
 
-		Dungeon.level = null;
 		Actor.clear();
 
 		depth++;
@@ -210,6 +204,7 @@ public class Dungeon {
 			level = new DeadEndLevel();
 			Statistics.deepestFloor--;
 		}
+		level.levelID = DUNGEON_LEVEL_PREFIX + depth;
 		DungeonGenerateLevelEvent event = new DungeonGenerateLevelEvent(depth, level);
 		Server.pluginManager.fireEvent(event);
 		level = event.level;
@@ -219,7 +214,7 @@ public class Dungeon {
 		return level;
 	}
 
-	public static void resetLevel() {
+	public static void resetLevel(Level level) {
 
 		Actor.clear();
 
@@ -246,7 +241,7 @@ public class Dungeon {
 	}
 
 
-	public static int GetPosNear(int pos)
+	public static int GetPosNear(Level level, int pos)
 	{
 		for (int step:level.NEIGHBOURS9) {
 			if (Actor.findChar(pos+step)==null){
@@ -316,14 +311,14 @@ public class Dungeon {
         switchLevel(level);
         for (Hero hero:heroes) {
             if (hero!=null){
-                switchLevelChangePosition(pos,hero);
+                switchLevelChangePosition(pos,hero, level);
             }
         }
 	}
 
-	private static void switchLevelChangePosition(int pos, @NotNull Hero hero)
+	private static void switchLevelChangePosition(int pos, @NotNull Hero hero, Level level)
     {
-        hero.pos = pos != -1 ? (Level.getNearClearCell(pos)) : Level.getNearClearCell(level.exit);
+        hero.pos = pos != -1 ? (Level.getNearClearCell(level, pos)) : Level.getNearClearCell(level, level.exit);
 
         sendDepth(hero.networkID, depth);
 
@@ -332,29 +327,55 @@ public class Dungeon {
 
         observe(hero);
     }
-	public static void switchLevel(final Level level, int pos, @NotNull Hero hero ) {
-		switchLevelToAll(level, pos);  //todo change this for multilevels support
-		/*
-		switchLevel(level);
-        swichLevelChangePosition(pos,hero);
-		 */
+	public static void switchLevel(String levelID, int pos, @NotNull Hero hero ) {
+		Level destination = loadedLevels.get(levelID);
+		if (destination == null) {
+			try {
+				destination = Dungeon.loadLevel(levelID);
+
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+			Level oldLevel = hero.level;
+			hero.pos = pos;
+			Actor.add(hero, destination);
+			checkUnloadLevel(oldLevel);
+			SendData.sendLevel(destination, hero.networkID);
+			switchLevelChangePosition(pos,hero, destination);
+	}
+
+
+	public static void checkUnloadLevel(Level level) {
+		for (Hero hero: Dungeon.heroes){
+			if (hero != null && hero.level == level){
+				return;
+			}
+		}
+		if (level != null) {
+			unloadLevel(level);
+		}
+	}
+	public static void unloadLevel(@NotNull Level level) {
+        try {
+            Dungeon.saveLevel(level);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        loadedLevels.remove(level);
+		Actor.all().remove(level);
+		System.out.println("Unloaded level with id: " + level.levelID);
 	}
 
 	public static void switchLevel(final Level level) {
-		//todo rewrite
-		//todo add cheking Hero pos is  clear
-		if (Dungeon.level == level) {
-			return;
-		}
 
 		nightMode = new Date().getHours() < 7;
 
-		Dungeon.level = level;
-		Actor.init();
+		Actor.init(level);
 
 		Actor respawner = level.respawner();
 		if (respawner != null) {
-			Actor.add(level.respawner());
+			Actor.add(level.respawner(), level);
 		}
 		for (Hero hero:heroes) {
 			if (hero == null){
@@ -407,7 +428,7 @@ public class Dungeon {
 	}
 
 	public static final String GAME_FILE = "save/game.dat";
-	private static final String DEPTH_FILE = "save/depth%d.dat";
+	private static final String DEPTH_FILE = "save/%s.dat";
 	private static final String HERO_DIRECTORY = "save/heroes/";
 
 	/*
@@ -437,7 +458,7 @@ public class Dungeon {
 	private static final String QUESTS		= "quests";
 	private static final String BADGES		= "badges";
 	private static final String MAX_PLAYERS_SETTING		= "max_players_count";
-
+	public static final String DUNGEON_LEVEL_PREFIX = "dungeon-";
 	private static String thisGameSaveFile;
 	private static String thisGameDepthSaveFile;
 
@@ -456,20 +477,10 @@ public class Dungeon {
 		}*/
 		return GAME_FILE;
 	}
-
-	private static String depthFile( HeroClass cl ) {
-		/*switch (cl) {
-		case WARRIOR:
-			return WR_DEPTH_FILE;
-		case MAGE:
-			return MG_DEPTH_FILE;
-		case ROGUE:
-			return RN_DEPTH_FILE;
-		case HUNTRESS:
-			return HN_DEPTH_FILE;
-		default:
-			return DEPTH_FILE;
-		}*/
+	public static String defaultLevelIDForCurDepth(){
+		return DUNGEON_LEVEL_PREFIX + depth;
+	}
+	private static String depthFile() {
 		return DEPTH_FILE;
 	}
 
@@ -526,10 +537,10 @@ public class Dungeon {
 		}
 	}
 
-	public static void saveLevel() throws IOException {
+	public static void saveLevel(Level level) throws IOException {
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
-		OutputStream output = Files.newOutputStream(Path.of(Utils.format(depthFile(StartScene.curClass), depth)));
+		OutputStream output = Files.newOutputStream(Path.of(Utils.format(depthFile(), level.levelID)));
 		Bundle.write( bundle, output );
 		output.close();
 	}
@@ -537,7 +548,9 @@ public class Dungeon {
 	public static void saveAll() throws IOException { //fixme
 			Actor.fixTime();
 			saveGame();
-			saveLevel();
+			for (Level level: loadedLevels.values()) {
+				saveLevel(level);
+			}
 
 			GamesInProgress.set( null, depth, -1, challenges != 0 );
 
@@ -556,9 +569,6 @@ public class Dungeon {
 		Bundle bundle = gameBundle( GAME_FILE );
 
 		Dungeon.challenges = bundle.getInt( CHALLENGES );
-
-		Dungeon.level = null;
-		Dungeon.depth = -1;
 
 		if (fullLoad) {
 			PathFinder.setMapSize( Level.WIDTH, Level.HEIGHT );
@@ -604,7 +614,6 @@ public class Dungeon {
 		depth = bundle.getInt(DEPTH);
 		Statistics.restoreFromBundle( bundle );
 		Journal.restoreFromBundle( bundle );
-		switchLevel(loadLevel());
 		droppedItems = new HashMap<>();
 		for (int i=2; i <= Statistics.deepestFloor + 1; i++) {
 			ArrayList<Item> dropped = new ArrayList<Item>();
@@ -617,21 +626,18 @@ public class Dungeon {
 		}
 	}
 
-	public static Level loadLevel( HeroClass cl ) throws IOException {
+	public static Level loadLevel(String levelID) throws IOException {
 
-		Dungeon.level = null;
 		Actor.clear();
 
-		InputStream input = Files.newInputStream(Paths.get(Utils.format(depthFile(cl), depth))) ;
+		InputStream input = Files.newInputStream(Paths.get(Utils.format(depthFile(), levelID))) ;
 		Bundle bundle = Bundle.read( input );
 		input.close();
-
-		return (Level)bundle.get( "level" );
+		Level level = (Level)bundle.get( "level" );
+		loadedLevels.put(levelID, level);
+		return level;
 	}
 
-	public static Level loadLevel() throws IOException {
-		return loadLevel(StartScene.curClass);
-	};
 
 	public static void deleteGame( HeroClass cl, boolean deleteLevels ) {
 		deleteGame(deleteLevels);
@@ -729,7 +735,7 @@ public class Dungeon {
 	}
 
 	public static void observe(@NotNull Hero hero, boolean send){
-
+		Level level = hero.level;
 		if (level == null) {
 			return;
 		}
@@ -790,7 +796,7 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Level.LENGTH );
 		}
 
-		for (Actor actor : Actor.all()) {
+		for (Actor actor : Actor.all().get(ch.level)) {
 			if (actor instanceof Char) {
 				int pos = ((Char)actor).pos;
 				if (visible[pos]) {
@@ -811,7 +817,7 @@ public class Dungeon {
 			System.arraycopy( pass, 0, passable, 0, Level.LENGTH );
 		}
 
-		for (Actor actor : Actor.all()) {
+		for (Actor actor : Actor.all().get(ch.level)) {
 			if (actor instanceof Char) {
 				int pos = ((Char)actor).pos;
 				if (visible[pos]) {
@@ -823,5 +829,17 @@ public class Dungeon {
 
 		return PathFinder.getStepBack( cur, from, passable );
 
+	}
+
+	public static Level getLevelByID(String levelID) {
+		Level level = loadedLevels.get(levelID);
+		if (level == null) {
+            try {
+                return Dungeon.loadLevel(levelID);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+		return level;
 	}
 }

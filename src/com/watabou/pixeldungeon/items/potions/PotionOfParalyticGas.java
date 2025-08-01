@@ -44,7 +44,7 @@ public class PotionOfParalyticGas extends Potion {
 				Sample.INSTANCE.play(Assets.SND_SHATTER, hero);
 			}
 		}
-		GameScene.add( Blob.seed( cell, 1000, ParalyticGas.class ) );
+		GameScene.add( Blob.seed(curUser.level, cell, 1000, ParalyticGas.class ), curUser.level );
 	}
 
 	@Override

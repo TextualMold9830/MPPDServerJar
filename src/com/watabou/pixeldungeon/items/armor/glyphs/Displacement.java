@@ -47,7 +47,7 @@ public class Displacement extends Glyph {
 			if (Dungeon.visibleforAnyHero(pos) && Level.passable[pos] && Actor.findChar( pos ) == null) {
 
 				WandOfBlink.appear( defender, pos );
-				Dungeon.level.press( pos, defender );
+				attacker.level.press( pos, defender );
 				Dungeon.observeAll();
 
 				break;

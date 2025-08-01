@@ -45,7 +45,7 @@ public class PotionOfToxicGas extends Potion {
 			}
 		}
 
-		GameScene.add( Blob.seed( cell, 1000, ToxicGas.class ) );
+		GameScene.add( Blob.seed(curUser.level, cell, 1000, ToxicGas.class ), curUser.level );
 	}
 
 	@Override

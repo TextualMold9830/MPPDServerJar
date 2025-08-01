@@ -229,9 +229,9 @@ public class CavesBossLevel extends Level {
 				!passable[boss.pos] ||
 				!outsideEntraceRoom( boss.pos ) ||
 				Dungeon.visibleforAnyHero(boss.pos));
-			GameScene.add( boss );
+				GameScene.add( boss, this );
 			
-			set( arenaDoor, Terrain.WALL );
+			set(this, arenaDoor, Terrain.WALL );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
 			
@@ -251,7 +251,7 @@ public class CavesBossLevel extends Level {
 			
 			CellEmitter.get( arenaDoor ).start( Speck.factory( Speck.ROCK ), 0.07f, 10 );
 			
-			set( arenaDoor, Terrain.EMPTY_DECO );
+			set(this, arenaDoor, Terrain.EMPTY_DECO );
 			GameScene.updateMap( arenaDoor );
 			Dungeon.observeAll();
 		}

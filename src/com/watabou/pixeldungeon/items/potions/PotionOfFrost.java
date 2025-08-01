@@ -37,9 +37,9 @@ public class PotionOfFrost extends Potion {
 	@Override
 	public void shatter( int cell ) {
 
-		PathFinder.buildDistanceMap( cell, BArray.not( Level.losBlocking, null ), DISTANCE );
+		PathFinder.buildDistanceMap( cell, BArray.not( curUser.level.losBlocking, null ), DISTANCE );
 
-		Fire fire = (Fire)Dungeon.level.blobs.get( Fire.class );
+		Fire fire = (Fire)curUser.level.blobs.get( Fire.class );
 
 		boolean[] visible = new boolean[Dungeon.heroes.length];
 		for (int i=0; i < Level.LENGTH; i++) {

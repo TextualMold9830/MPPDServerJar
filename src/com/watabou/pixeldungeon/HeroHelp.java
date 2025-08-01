@@ -1,15 +1,15 @@
 package com.watabou.pixeldungeon;
 
 import com.watabou.pixeldungeon.actors.hero.Hero;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.utils.PathFinder;
 
 import java.util.HashSet;
 
 import static com.watabou.pixeldungeon.Dungeon.heroes;
-import static com.watabou.pixeldungeon.Dungeon.level;
 
 public class HeroHelp {
-    public static Hero GetNearestHero(int pos, int radius) {
+    public static Hero GetNearestHero(int pos, int radius, Level level) {
         int pathLength = Integer.MAX_VALUE;
         Hero nearestHero = null;
         PathFinder.buildDistanceMap(pos, level.passable.clone(), radius);

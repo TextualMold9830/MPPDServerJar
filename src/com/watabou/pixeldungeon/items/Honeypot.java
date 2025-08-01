@@ -68,9 +68,9 @@ public class Honeypot extends Item {
 	}
 
 	@Override
-	protected void onThrow( int cell ) {
+	protected void onThrow(Hero user, int cell ) {
 		if (Level.pit[cell]) {
-			super.onThrow( cell );
+			super.onThrow(user, cell );
 		} else {
 			shatter( cell, curUser );
 		}
@@ -102,7 +102,7 @@ public class Honeypot extends Item {
 			bee.setHP(bee.getHT());
 			bee.pos = newPos;
 
-			GameScene.add( bee );
+			GameScene.add( bee, owner.level );
 			sendPushing( bee, pos, newPos );
 
 			bee.getSprite().alpha( 0 );

@@ -50,9 +50,9 @@ public class Bounce extends Glyph {
 						attacker.pos = newPos;
 						// FIXME
 						if (attacker instanceof Mob) {
-							Dungeon.level.mobPress( (Mob)attacker );
+							attacker.level.mobPress( (Mob)attacker );
 						} else {
-							Dungeon.level.press( newPos, attacker );
+							attacker.level.press( newPos, attacker );
 						}
 
 					}
