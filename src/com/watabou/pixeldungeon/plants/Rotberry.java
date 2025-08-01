@@ -13,6 +13,7 @@ import com.watabou.pixeldungeon.effects.CellEmitter;
 import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.items.bags.Bag;
 import com.watabou.pixeldungeon.items.potions.PotionOfStrength;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.pixeldungeon.utils.GLog;
@@ -28,11 +29,11 @@ public class Rotberry extends com.watabou.pixeldungeon.plants.Plant {
 	}
 
 	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+	public void activate( Char ch, Level level ) {
+		super.activate( ch, level );
 
-		GameScene.add( Blob.seed(ch.level, pos, 100, ToxicGas.class ), ch.level );
-		ch.level.drop( new Seed(), pos );
+		GameScene.add( Blob.seed(level, pos, 100, ToxicGas.class ), level );
+		level.drop( new Seed(), pos );
 
 		if (ch != null) {
 			Buff.prolong( ch, Roots.class, Roots.TICK * 3 );

@@ -24,6 +24,7 @@ import com.watabou.pixeldungeon.actors.buffs.Poison;
 import com.watabou.pixeldungeon.effects.CellEmitter;
 import com.watabou.pixeldungeon.effects.particles.PoisonParticle;
 import com.watabou.pixeldungeon.items.potions.PotionOfToxicGas;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Sorrowmoss extends com.watabou.pixeldungeon.plants.Plant {
@@ -37,8 +38,8 @@ public class Sorrowmoss extends com.watabou.pixeldungeon.plants.Plant {
 	}
 
 	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+	public void activate( Char ch, Level level ) {
+		super.activate( ch, level );
 
 		if (ch != null) {
 			Buff.affect( ch, Poison.class ).set( Poison.durationFactor( ch ) * (4 + Dungeon.depth / 2) );

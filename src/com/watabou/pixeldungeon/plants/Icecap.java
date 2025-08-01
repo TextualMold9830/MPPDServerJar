@@ -37,12 +37,12 @@ public class Icecap extends com.watabou.pixeldungeon.plants.Plant {
 	}
 
 	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+	public void activate( Char ch, Level level ) {
+		super.activate( ch, level );
 
-		PathFinder.buildDistanceMap( pos, BArray.not( ch.level.losBlocking, null ), 1 );
+		PathFinder.buildDistanceMap( pos, BArray.not( level.losBlocking, null ), 1 );
 
-		Fire fire = (Fire)ch.level.blobs.get( Fire.class );
+		Fire fire = (Fire)level.blobs.get( Fire.class );
 
 		for (int i=0; i < Level.LENGTH; i++) {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {

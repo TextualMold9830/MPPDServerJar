@@ -25,6 +25,7 @@ import com.watabou.pixeldungeon.effects.CellEmitter;
 import com.watabou.pixeldungeon.effects.Speck;
 import com.watabou.pixeldungeon.items.potions.PotionOfMindVision;
 import com.watabou.pixeldungeon.items.scrolls.ScrollOfTeleportation;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 
 public class Fadeleaf extends com.watabou.pixeldungeon.plants.Plant {
@@ -39,8 +40,8 @@ public class Fadeleaf extends com.watabou.pixeldungeon.plants.Plant {
 	}
 
 	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+	public void activate( Char ch, Level level ) {
+		super.activate( ch, level );
 
 		if (ch instanceof Hero) {
 
@@ -52,7 +53,7 @@ public class Fadeleaf extends com.watabou.pixeldungeon.plants.Plant {
 			int count = 10;
 			int newPos;
 			do {
-				newPos = ch.level.randomRespawnCell();
+				newPos = level.randomRespawnCell();
 				if (count-- <= 0) {
 					break;
 				}

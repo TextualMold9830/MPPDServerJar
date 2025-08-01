@@ -24,6 +24,7 @@ import com.watabou.pixeldungeon.actors.blobs.Fire;
 import com.watabou.pixeldungeon.effects.CellEmitter;
 import com.watabou.pixeldungeon.effects.particles.FlameParticle;
 import com.watabou.pixeldungeon.items.potions.PotionOfLiquidFlame;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.sprites.ItemSpriteSheet;
 
@@ -37,10 +38,10 @@ public class Firebloom extends com.watabou.pixeldungeon.plants.Plant {
 	}
 
 	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+	public void activate( Char ch, Level level ) {
+		super.activate( ch, level );
 
-		GameScene.add( Blob.seed(ch.level, pos, 2, Fire.class ) , ch.level);
+		GameScene.add( Blob.seed(level, pos, 2, Fire.class ) , level);
 
 		if (Dungeon.visibleforAnyHero(pos)) {
 			CellEmitter.get( pos ).burst( FlameParticle.FACTORY, 5 );
