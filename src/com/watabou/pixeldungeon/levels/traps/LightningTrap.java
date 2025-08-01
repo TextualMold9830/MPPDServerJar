@@ -36,7 +36,7 @@ public class LightningTrap {
 
 	// 00x66CCEE
 
-	public static void trigger( int pos, Char ch ) {
+	public static void trigger( int pos, Char ch, Level level ) {
 
 		if (ch != null) {
 			ch.damage( Math.max( 1, Random.Int( ch.getHP() / 3, 2 * ch.getHP() / 3 ) ), LIGHTNING );

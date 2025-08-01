@@ -24,13 +24,14 @@ import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.mobs.Mob;
 import com.watabou.pixeldungeon.effects.CellEmitter;
 import com.watabou.pixeldungeon.effects.Speck;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.utils.GLog;
 
 public class AlarmTrap {
 
 	// 0xDD3333
 
-	public static void trigger( int pos, Char ch ) {
+	public static void trigger( int pos, Char ch, Level level ) {
 
 		for (Mob mob : ch.level.mobs) {
 			if (mob != ch) {

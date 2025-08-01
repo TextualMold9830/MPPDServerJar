@@ -21,15 +21,16 @@ import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.blobs.ToxicGas;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.scenes.GameScene;
 
 public class ToxicTrap {
 
 	// 0x40CC55
 
-	public static void trigger( int pos, Char ch ) {
+	public static void trigger( int pos, Char ch, Level level ) {
 
-		GameScene.add( Blob.seed(ch.level, pos, 300 + 20 * Dungeon.depth, ToxicGas.class ), ch.level );
+		GameScene.add( Blob.seed(ch.level, pos, 300 + 20 * Dungeon.depth, ToxicGas.class ), level );
 
 	}
 }

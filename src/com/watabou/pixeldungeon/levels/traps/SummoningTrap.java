@@ -37,7 +37,7 @@ public class SummoningTrap {
 
 	// 0x770088
 
-	public static void trigger( int pos, Char c ) {
+	public static void trigger( int pos, Char c, Level level ) {
 
 		if (Dungeon.bossLevel(Dungeon.depth)) {
 			return;
@@ -59,7 +59,7 @@ public class SummoningTrap {
 
 		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
 			int p = pos + Level.NEIGHBOURS8[i];
-			if (Actor.findChar( p ) == null && (c.level.passable[p] || c.level.avoid[p])) {
+			if (Actor.findChar( p ) == null && (level.passable[p] || level.avoid[p])) {
 				candidates.add( p );
 			}
 		}
@@ -77,10 +77,9 @@ public class SummoningTrap {
 		}
 
 		for (Integer point : respawnPoints) {
-			Mob mob = Bestiary.mob( Dungeon.depth );
+			Mob mob = Bestiary.mob( level.depth );
 			mob.setState(mob.WANDERING);
-			//TODO: check this
-			GameScene.add( mob, DELAY, c.level );
+			GameScene.add( mob, DELAY, level );
 			WandOfBlink.appear( mob, point );
 		}
 	}

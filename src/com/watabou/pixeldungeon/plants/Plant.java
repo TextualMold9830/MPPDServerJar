@@ -48,24 +48,24 @@ public class Plant implements Bundlable {
 	public int image;
 	public int pos;
 
-	public void activate( Char ch ) {
+	public void activate( Char ch, Level level ) {
 
 		if (ch instanceof Hero && ((Hero)ch).subClass == HeroSubClass.WARDEN) {
 			Buff.affect( ch, Barkskin.class ).level( ch.getHT() / 3 );
 		}
 
 		SendData.sendPlant(pos, null);
-		wither(ch);
+		wither(ch, level);
 	}
 
-	public void wither(Char ch) {
-		wither(ch.level);
+	public void wither(Char ch, Level level) {
+		wither(level);
 		if (ch instanceof Hero && ((Hero)ch).subClass == HeroSubClass.WARDEN) {
 			if (Random.Int( 5 ) == 0) {
-				ch.level.drop(Generator.random( Generator.Category.SEED ), pos );
+				level.drop(Generator.random( Generator.Category.SEED ), pos );
 			}
 			if (Random.Int( 5 ) == 0) {
-				ch.level.drop( new Dewdrop(), pos );
+				level.drop( new Dewdrop(), pos );
 			}
 		}
 	}

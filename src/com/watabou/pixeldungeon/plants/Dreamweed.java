@@ -35,11 +35,11 @@ public class Dreamweed extends Plant {
 	}
 	
 	@Override
-	public void activate( Char ch ) {
-		super.activate( ch );
+	public void activate( Char ch, Level level ) {
+		super.activate( ch, level );
 		
 		if (ch != null) {
-			GameScene.add( Blob.seed(ch.level, pos, 400, ConfusionGas.class ), ch.level );
+			GameScene.add( Blob.seed(level, pos, 400, ConfusionGas.class ), level );
 		}
 	}
 	

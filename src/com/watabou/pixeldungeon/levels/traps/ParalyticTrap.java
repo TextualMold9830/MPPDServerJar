@@ -21,13 +21,14 @@ import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.actors.Char;
 import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.blobs.ParalyticGas;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.scenes.GameScene;
 
 public class ParalyticTrap {
 
 	// 0xCCCC55
 
-	public static void trigger( int pos, Char ch ) {
+	public static void trigger( int pos, Char ch, Level level ) {
 
 		GameScene.add( Blob.seed(ch.level, pos, 80 + 5 * Dungeon.depth, ParalyticGas.class ), ch.level );
 
