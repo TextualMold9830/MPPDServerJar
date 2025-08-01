@@ -123,7 +123,7 @@ public class Blob extends Actor {
 
 	protected void evolve() {
 
-		boolean[] notBlocking = BArray.not( Level.solid, null );
+		boolean[] notBlocking = BArray.not( level.solid, null );
 
 		for (int i=1; i < HEIGHT-1; i++) {
 

@@ -98,7 +98,7 @@ public class WellWater extends Blob {
 				int newPlace;
 				do {
 					newPlace = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
-				} while (!Level.passable[newPlace] && !Level.avoid[newPlace]);
+				} while (!level.passable[newPlace] && !level.avoid[newPlace]);
 				level.drop( heap.pickUp(level), newPlace ).sendDropVisualAction(pos);
 
 				return false;

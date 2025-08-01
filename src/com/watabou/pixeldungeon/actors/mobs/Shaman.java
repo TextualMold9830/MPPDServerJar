@@ -74,7 +74,7 @@ public class Shaman extends Mob implements Callback {
 
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return Ballistica.cast( pos, enemy.pos, false, true ) == enemy.pos;
+		return Ballistica.cast( pos, enemy.pos, false, true, level ) == enemy.pos;
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class Shaman extends Mob implements Callback {
 
 			if (hit( this, enemy, true )) {
 				int dmg = Random.Int( 2, 12 );
-				if (Level.water[enemy.pos] && !enemy.flying) {
+				if (level.water[enemy.pos] && !enemy.flying) {
 					dmg *= 1.5f;
 				}
 				enemy.damage( dmg, LightningTrap.LIGHTNING );

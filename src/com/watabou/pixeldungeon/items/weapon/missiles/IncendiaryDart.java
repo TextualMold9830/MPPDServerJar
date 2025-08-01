@@ -63,7 +63,7 @@ public class IncendiaryDart extends MissileWeapon {
 	protected void onThrow(Hero user, int cell ) {
 		Char enemy = Actor.findChar( cell );
 		if (enemy == null || enemy == curUser) {
-			if (Level.flamable[cell]) {
+			if (user.level.flamable[cell]) {
 				GameScene.add( Blob.seed(user.level, cell, 4, Fire.class ), user.level );
 			} else {
 				super.onThrow(user, cell );

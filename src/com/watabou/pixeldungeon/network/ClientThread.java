@@ -329,7 +329,7 @@ public class ClientThread {
 
             curClass.initHero(newHero);
             if (newHero.level == null){
-                Dungeon.switchLevel(Dungeon.defaultLevelIDForCurDepth(), newHero.pos, newHero);
+                Dungeon.switchLevel(Dungeon.defaultLevelIDForCurDepth(), newHero);
             }
             newHero.pos = Dungeon.GetPosNear(newHero.level, newHero.level.entrance);
 

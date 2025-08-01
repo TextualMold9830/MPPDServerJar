@@ -236,7 +236,7 @@ class Mob extends Char {
 		}
 
 		int step = Dungeon.findPath(this, pos, target,
-				Level.passable,
+				level.passable,
 				this.fieldOfView);
 		if (step != -1) {
 			move(step);
@@ -248,7 +248,7 @@ class Mob extends Char {
 
 	protected boolean getFurther(int target) {
 		int step = Dungeon.flee(this, pos, target,
-				Level.passable,
+				level.passable,
 				this.fieldOfView);
 		if (step != -1) {
 			move(step);

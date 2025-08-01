@@ -69,7 +69,7 @@ public class Honeypot extends Item {
 
 	@Override
 	protected void onThrow(Hero user, int cell ) {
-		if (Level.pit[cell]) {
+		if (user.level.pit[cell]) {
 			super.onThrow(user, cell );
 		} else {
 			shatter( cell, curUser );
@@ -84,7 +84,7 @@ public class Honeypot extends Item {
 		int newPos = pos;
 		if (Actor.findChar( pos ) != null) {
 			ArrayList<Integer> candidates = new ArrayList<Integer>();
-			boolean[] passable = Level.passable;
+			boolean[] passable = owner.level.passable;
 
 			for (int n : Level.NEIGHBOURS4) {
 				int c = pos + n;

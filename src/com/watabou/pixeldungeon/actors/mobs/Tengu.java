@@ -120,7 +120,7 @@ public class Tengu extends Mob {
 
     @Override
     protected boolean canAttack(Char enemy) {
-        return Ballistica.cast(pos, enemy.pos, false, true) == enemy.pos;
+        return Ballistica.cast(pos, enemy.pos, false, true, level) == enemy.pos;
     }
 
     @Override
@@ -141,7 +141,7 @@ public class Tengu extends Mob {
             int trapPos;
             do {
                 trapPos = Random.Int(Level.LENGTH);
-            } while (!this.fieldOfView[trapPos] || !Level.passable[trapPos]); //todo possible infinity lop
+            } while (!this.fieldOfView[trapPos] || !level.passable[trapPos]); //todo possible infinity lop
 
             if (level.map[trapPos] == Terrain.INACTIVE_TRAP) {
                 Level.set(level, trapPos, Terrain.POISON_TRAP);
@@ -155,8 +155,8 @@ public class Tengu extends Mob {
             newPos = Random.Int(Level.LENGTH);
         } while (
                 !this.fieldOfView[newPos] ||
-                        !Level.passable[newPos] ||
-                        (enemy != null && Level.adjacent(newPos, enemy.pos)) ||
+                        !level.passable[newPos] ||
+                        (enemy != null && level.adjacent(newPos, enemy.pos)) ||
                         Actor.findChar(newPos) != null);
 
         getSprite().move(pos, newPos);

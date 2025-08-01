@@ -159,7 +159,7 @@ public class King extends com.watabou.pixeldungeon.actors.mobs.Mob {
 		getSprite().centerEmitter().start( Speck.factory( Speck.SCREAM ), 0.4f, 2 );
 		Sample.INSTANCE.play( Assets.SND_CHALLENGE );
 
-		boolean[] passable = Level.passable.clone();
+		boolean[] passable = level.passable.clone();
 		for (Actor actor : Actor.all().get(level)) {
 			if (actor instanceof Char) {
 				passable[((Char)actor).pos] = false;

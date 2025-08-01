@@ -554,7 +554,7 @@ public abstract class RegularLevel extends Level {
 			}
 			
 			cell = room.random();
-			if (!Dungeon.visibleforAnyHero(cell) && Actor.findChar( cell ) == null && Level.passable[cell]) {
+			if (!Dungeon.visibleforAnyHero(cell) && Actor.findChar( cell ) == null && passable[cell]) {
 				return cell;
 			}
 			
@@ -574,7 +574,7 @@ public abstract class RegularLevel extends Level {
 			}
 			
 			cell = room.random();
-			if (Level.passable[cell]) {
+			if (passable[cell]) {
 				return cell;
 			}
 			

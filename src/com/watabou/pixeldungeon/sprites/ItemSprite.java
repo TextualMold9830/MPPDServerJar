@@ -56,7 +56,7 @@ public abstract class ItemSprite  {
 				Sample.INSTANCE.play(Assets.SND_GOLD, 1, 1, Random.Float(0.9f, 1.1f));
 			}
 		} else {
-			boolean water = Level.water[heap.pos];
+			boolean water = level.water[heap.pos];
 			if (water) {
 				GameScene.ripple(heap.pos);
 			} else {

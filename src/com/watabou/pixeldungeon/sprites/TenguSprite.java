@@ -46,7 +46,7 @@ public class TenguSprite extends MobSprite {
 		play( run );
 		turnTo( from , to );
 
-		if (Level.water[to]) {
+		if (ch.level.water[to]) {
 			GameScene.ripple( to );
 		}
 

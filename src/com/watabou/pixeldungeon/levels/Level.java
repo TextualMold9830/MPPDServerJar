@@ -610,7 +610,7 @@ public abstract class Level implements Bundlable {
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.FIRE_TRAP:
 			trap = true;
-			FireTrap.trigger( cell, ch );
+			FireTrap.trigger( cell, ch, this );
 			break;
 
 		case Terrain.SECRET_PARALYTIC_TRAP:
@@ -652,7 +652,7 @@ public abstract class Level implements Bundlable {
 			GLog.i( TXT_HIDDEN_PLATE_CLICKS );
 		case Terrain.SUMMONING_TRAP:
 			trap = true;
-			SummoningTrap.trigger( cell, ch );
+			SummoningTrap.trigger( cell, ch, this );
 			break;
 
 		case Terrain.HIGH_GRASS:
@@ -706,7 +706,7 @@ public abstract class Level implements Bundlable {
 			break;
 
 		case Terrain.FIRE_TRAP:
-			FireTrap.trigger( cell, mob );
+			FireTrap.trigger( cell, mob, this );
 			break;
 
 		case Terrain.PARALYTIC_TRAP:

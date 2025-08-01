@@ -72,7 +72,7 @@ public class CursePersonification extends com.watabou.pixeldungeon.actors.mobs.M
 			int ofs = Level.NEIGHBOURS8[i];
 			if (enemy.pos - pos == ofs) {
 				int newPos = enemy.pos + ofs;
-				if ((Level.passable[newPos] || Level.avoid[newPos]) && Actor.findChar( newPos ) == null) {
+				if ((level.passable[newPos] || level.avoid[newPos]) && Actor.findChar( newPos ) == null) {
 
 					sendPushing( enemy, enemy.pos, newPos );
 

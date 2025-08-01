@@ -57,7 +57,7 @@ public class WandOfAvalanche extends Wand {
 		Ballistica.distance = Math.min( Ballistica.distance, 8 + level );
 
 		int size = 1 + level / 3;
-		PathFinder.buildDistanceMap( cell, BArray.not( Level.solid, null ), size );
+		PathFinder.buildDistanceMap( cell, BArray.not( curUser.level.solid, null ), size );
 
 		int[] shake = new int[Dungeon.heroes.length];
 		for (int i=0; i < Level.LENGTH; i++) {
@@ -99,7 +99,7 @@ public class WandOfAvalanche extends Wand {
 
 				if (Dungeon.visibleforAnyHero(i)) {
 					CellEmitter.get(i).start(Speck.factory(Speck.ROCK), 0.07f, 3 + (size - d));
-					if (Level.water[i]) {
+					if (curUser.level.water[i]) {
 						GameScene.ripple( i );
 					}
 				}

@@ -47,7 +47,7 @@ public class PotionOfPurity extends Potion {
 	@Override
 	public void shatter( int cell ) {
 
-		PathFinder.buildDistanceMap(cell, BArray.not(Level.losBlocking, null), DISTANCE);
+		PathFinder.buildDistanceMap(cell, BArray.not(curUser.level.losBlocking, null), DISTANCE);
 
 		boolean procd = false;
 

@@ -133,7 +133,7 @@ public class Mimic extends com.watabou.pixeldungeon.actors.mobs.Mob {
 			ArrayList<Integer> candidates = new ArrayList<Integer>();
 			for (int n : Level.NEIGHBOURS8) {
 				int cell = pos + n;
-				if ((Level.passable[cell] || Level.avoid[cell]) && Actor.findChar( cell ) == null) {
+				if ((ch.level.passable[cell] || ch.level.avoid[cell]) && Actor.findChar( cell ) == null) {
 					candidates.add( cell );
 				}
 			}

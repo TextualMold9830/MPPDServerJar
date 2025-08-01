@@ -43,7 +43,7 @@ public class Bounce extends Glyph {
 				int ofs = Level.NEIGHBOURS8[i];
 				if (attacker.pos - defender.pos == ofs) {
 					int newPos = attacker.pos + ofs;
-					if ((Level.passable[newPos] || Level.avoid[newPos]) && Actor.findChar( newPos ) == null) {
+					if ((attacker.level.passable[newPos] || attacker.level.avoid[newPos]) && Actor.findChar( newPos ) == null) {
 
 						sendPushing( attacker, attacker.pos, newPos );
 

@@ -22,15 +22,16 @@ import com.watabou.pixeldungeon.actors.blobs.Blob;
 import com.watabou.pixeldungeon.actors.blobs.Fire;
 import com.watabou.pixeldungeon.effects.CellEmitter;
 import com.watabou.pixeldungeon.effects.particles.FlameParticle;
+import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.scenes.GameScene;
 
 public class FireTrap {
 
 	// 0xFF7708
 
-	public static void trigger( int pos, Char ch ) {
+	public static void trigger( int pos, Char ch, Level level ) {
 
-		GameScene.add( Blob.seed(ch.level, pos, 2, Fire.class ) , ch.level);
+		GameScene.add( Blob.seed(ch.level, pos, 2, Fire.class ), level);
 		CellEmitter.get( pos ).burst( FlameParticle.FACTORY, 5 );
 
 	}

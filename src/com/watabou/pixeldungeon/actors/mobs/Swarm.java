@@ -78,7 +78,7 @@ public class Swarm extends Mob {
 
 		if (getHP() >= damage + 2) {
 			ArrayList<Integer> candidates = new ArrayList<Integer>();
-			boolean[] passable = Level.passable;
+			boolean[] passable = level.passable;
 
 			int[] neighbours = {pos + 1, pos - 1, pos + Level.WIDTH, pos - Level.WIDTH};
 			for (int n : neighbours) {

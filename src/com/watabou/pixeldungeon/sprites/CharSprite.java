@@ -205,7 +205,7 @@ public class CharSprite extends MovieClip implements MovieClip.Listener {
 
 		turnTo( from , to );
 
-		if (visible && Level.water[from] && !ch.flying) {
+		if (visible && ch.level.water[from] && !ch.flying) {
 			GameScene.ripple( from );
 		}
 

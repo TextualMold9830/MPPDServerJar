@@ -103,7 +103,7 @@ public class Burning extends com.watabou.pixeldungeon.actors.buffs.Buff implemen
 				target.getSprite().emitter().burst( ElmoParticle.FACTORY, 6 );
 			}
 
-		if (Level.flamable[target.pos]) {
+		if (target.level.flamable[target.pos]) {
 			GameScene.add( Blob.seed(level, target.pos, 4, Fire.class ), level );
 		}
 
@@ -112,7 +112,7 @@ public class Burning extends com.watabou.pixeldungeon.actors.buffs.Buff implemen
 
 		if (left <= 0 ||
 			Random.Float() > (2 + (float) target.getHP() / target.getHT()) / 3 ||
-			(Level.water[target.pos] && !target.flying)) {
+			(target.level.water[target.pos] && !target.flying)) {
 
 			detach();
 		}

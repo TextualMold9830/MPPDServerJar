@@ -122,6 +122,7 @@ public class Potion extends Item {
 
 	@Override
 	public void execute( final Hero hero, String action ) {
+		curUser = hero;
 		if (action.equals( AC_DRINK )) {
 
 			if (isKnown() && (
@@ -198,7 +199,7 @@ public class Potion extends Item {
 
 			apply( (Hero)Actor.findChar(cell));
 
-		} else if (user.level.map[cell] == Terrain.WELL || Level.pit[cell]) {
+		} else if (user.level.map[cell] == Terrain.WELL || user.level.pit[cell]) {
 
 			super.onThrow(user, cell );
 

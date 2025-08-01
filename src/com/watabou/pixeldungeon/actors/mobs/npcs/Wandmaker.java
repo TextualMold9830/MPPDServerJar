@@ -202,7 +202,7 @@ public class Wandmaker extends NPC {
 					type = Type.FISH;
 					int water = 0;
 					for (int i=0; i < Level.LENGTH; i++) {
-						if (Level.water[i]) {
+						if (level.water[i]) {
 							if (++water > Level.LENGTH / 16) {
 								type = Random.Int( 2 ) == 0 ? Type.BERRY : Type.DUST;
 								break;
@@ -377,7 +377,7 @@ public class Wandmaker extends NPC {
 			Heap heap = null;
 			for (int i=0; i < 100; i++) {
 				int pos = Random.Int( Level.LENGTH );
-				if (Level.water[pos]) {
+				if (level.water[pos]) {
 					heap = level.drop( new PhantomFish(), pos );
 					heap.type = Heap.Type.HIDDEN;
 					return;

@@ -48,7 +48,7 @@ public class Multiplicity extends Glyph {
 
 			for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
 				int p = defender.pos + Level.NEIGHBOURS8[i];
-				if (Actor.findChar( p ) == null && (Level.passable[p] || Level.avoid[p])) {
+				if (Actor.findChar( p ) == null && (defender.level.passable[p] || defender.level.avoid[p])) {
 					respawnPoints.add( p );
 				}
 			}

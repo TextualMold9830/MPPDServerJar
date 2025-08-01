@@ -53,7 +53,7 @@ public class WandOfFlock extends Wand {
 			cell = Ballistica.trace[Ballistica.distance - 2];
 		}
 
-		boolean[] passable = BArray.or( Level.passable, Level.avoid, null );
+		boolean[] passable = BArray.or( curUser.level.passable, curUser.level.avoid, null );
 		for (Actor actor : Actor.all().get(curUser.level)) {
 			if (actor instanceof Char) {
 				passable[((Char)actor).pos] = false;

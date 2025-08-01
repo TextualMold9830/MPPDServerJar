@@ -958,12 +958,12 @@ public class Hero extends Char {
 		if (Level.adjacent( pos, target )) {
 
 			if (Actor.findChar( target ) == null) {
-				if (Level.pit[target] && !flying && !Chasm.jumpConfirmed) {
+				if (level.pit[target] && !flying && !Chasm.jumpConfirmed) {
 					Chasm.heroJump( this );
 					interrupt();
 					return false;
 				}
-				if (Level.passable[target] || Level.avoid[target]) {
+				if (level.passable[target] || level.avoid[target]) {
 					step = target;
 				}
 			}
@@ -971,7 +971,7 @@ public class Hero extends Char {
 		} else {
 
 			int len = Level.LENGTH;
-			boolean[] p = Level.passable;
+			boolean[] p = level.passable;
 			boolean[] v = level.visited;
 			boolean[] m = level.mapped;
 			boolean[] passable = new boolean[len];
@@ -1254,7 +1254,7 @@ public class Hero extends Char {
 		ArrayList<Integer> passable = new ArrayList<Integer>();
 		for (Integer ofs : Level.NEIGHBOURS8) {
 			int cell = pos + ofs;
-			if ((Level.passable[cell] || Level.avoid[cell]) && level.heaps.get( cell ) == null) {
+			if ((level.passable[cell] || level.avoid[cell]) && level.heaps.get( cell ) == null) {
 				passable.add( cell );
 			}
 		}
@@ -1321,7 +1321,7 @@ public class Hero extends Char {
 
 		if (!flying) {
 
-			if (Level.water[pos]) {
+			if (level.water[pos]) {
 				Sample.INSTANCE.play( Assets.SND_WATER, 1, 1, Random.Float( 0.8f, 1.25f ) );
 			} else {
 				Sample.INSTANCE.play( Assets.SND_STEP );
@@ -1435,7 +1435,7 @@ public class Hero extends Char {
 						CheckedCell.SendCheckedCell(p, this);
 					}
 
-					if (Level.secret[p] && (intentional || Random.Float() < level)) {
+					if (this.level.secret[p] && (intentional || Random.Float() < awareness)) {
 
 						int oldValue = this.level.map[p];
 

@@ -422,7 +422,7 @@ public abstract class Wand extends KindOfWeapon {
 
 				curWand.setKnown();
 
-				int cell = Ballistica.cast( curUser.pos, target, true, curWand.hitChars );
+				int cell = Ballistica.cast( curUser.pos, target, true, curWand.hitChars, curUser.level );
 				curUser.getSprite().zap( cell );
 
 				if (curWand.getCurCharges() > 0) {

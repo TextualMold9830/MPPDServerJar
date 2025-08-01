@@ -701,7 +701,7 @@ public abstract class Item implements Bundlable {
 
 	public void cast( final Hero user, int dst ) {
 
-		final int cell = Ballistica.cast( user.pos, dst, false, true );
+		final int cell = Ballistica.cast( user.pos, dst, false, true, user.level );
 		user.getSprite().zap( cell );
 		user.busy();
 

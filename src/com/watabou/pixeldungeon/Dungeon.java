@@ -344,7 +344,19 @@ public class Dungeon {
 			SendData.sendLevel(destination, hero.networkID);
 			switchLevelChangePosition(pos,hero, destination);
 	}
+	//Switches level and chanes position to level entrace
+	public static void switchLevel(String destinationID, @NotNull Hero hero){
+		Level destination = loadedLevels.get(destinationID);
+		if (destination == null) {
+			try {
+				destination = Dungeon.loadLevel(destinationID);
 
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		switchLevel(destination.levelID, destination.entrance, hero);
+	}
 
 	public static void checkUnloadLevel(Level level) {
 		for (Hero hero: Dungeon.heroes){
@@ -787,11 +799,11 @@ public class Dungeon {
 	public static int findPath( Char ch, int from, int to, boolean[] pass, boolean[] visible ) {
 
 		if (Level.adjacent( from, to )) {
-			return Actor.findChar( to ) == null && (pass[to] || Level.avoid[to]) ? to : -1;
+			return Actor.findChar( to ) == null && (pass[to] || ch.level.avoid[to]) ? to : -1;
 		}
 
 		if (ch.flying || ch.buff( Amok.class ) != null || ch.buff( Rage.class ) != null) {
-			BArray.or( pass, Level.avoid, passable );
+			BArray.or( pass, ch.level.avoid, passable );
 		} else {
 			System.arraycopy( pass, 0, passable, 0, Level.LENGTH );
 		}
@@ -812,7 +824,7 @@ public class Dungeon {
 	public static int flee( Char ch, int cur, int from, boolean[] pass, boolean[] visible ) {
 
 		if (ch.flying) {
-			BArray.or( pass, Level.avoid, passable );
+			BArray.or( pass, ch.level.avoid, passable );
 		} else {
 			System.arraycopy( pass, 0, passable, 0, Level.LENGTH );
 		}

@@ -89,7 +89,7 @@ public class WandOfReach extends Wand {
 			if (before == Terrain.OPEN_DOOR) {
 				Level.set(curUser.level, c, Terrain.DOOR );
 				GameScene.updateMap( c );
-			} else if (Level.water[c]) {
+			} else if (curUser.level.water[c]) {
 				GameScene.ripple( c );
 			}
 

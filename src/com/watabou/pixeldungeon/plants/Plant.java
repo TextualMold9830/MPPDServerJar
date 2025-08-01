@@ -121,7 +121,7 @@ public class Plant implements Bundlable {
 
 		@Override
 		protected void onThrow(Hero user, int cell ) {
-			if (user.level.map[cell] == Terrain.ALCHEMY || Level.pit[cell]) {
+			if (user.level.map[cell] == Terrain.ALCHEMY || user.level.pit[cell]) {
 				super.onThrow(user, cell );
 			} else {
 				user.level.plant( this, cell );

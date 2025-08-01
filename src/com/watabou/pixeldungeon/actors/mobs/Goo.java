@@ -82,7 +82,7 @@ public class Goo extends Mob {
 	@Override
 	public boolean act() {
 
-		if (Level.water[pos] && getHP() < getHT()) {
+		if (level.water[pos] && getHP() < getHT()) {
 			getSprite().emitter().burst( Speck.factory( Speck.HEALING ), 1 );
 			setHP(getHP() + 1);
 		}
@@ -119,7 +119,7 @@ public class Goo extends Mob {
 
 				// Pumped up attack WITH accuracy penalty
 				jumped = true;
-				if (Ballistica.cast( pos, enemy.pos, false, true ) == enemy.pos) {
+				if (Ballistica.cast( pos, enemy.pos, false, true, level ) == enemy.pos) {
 					final int dest = Ballistica.trace[Ballistica.distance - 2];
 
 					Callback afterJump = new Callback() {

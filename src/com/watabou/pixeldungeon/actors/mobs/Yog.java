@@ -87,7 +87,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 		do {
 			fist1.pos = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
 			fist2.pos = pos + Level.NEIGHBOURS8[Random.Int( 8 )];
-		} while (!Level.passable[fist1.pos] || !Level.passable[fist2.pos] || fist1.pos == fist2.pos);
+		} while (!level.passable[fist1.pos] || !level.passable[fist2.pos] || fist1.pos == fist2.pos);
 
 		GameScene.add( fist1, level );
 		GameScene.add( fist2 , level);
@@ -117,7 +117,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 		for (int i=0; i < Level.NEIGHBOURS8.length; i++) {
 			int p = pos + Level.NEIGHBOURS8[i];
-			if (Actor.findChar( p ) == null && (Level.passable[p] || Level.avoid[p])) {
+			if (Actor.findChar( p ) == null && (level.passable[p] || level.avoid[p])) {
 				spawnPoints.add( p );
 			}
 		}
@@ -239,7 +239,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 		@Override
 		public boolean act() {
 
-			if (Level.water[pos] && getHP() < getHT()) {
+			if (level.water[pos] && getHP() < getHT()) {
 				getSprite().emitter().burst( ShadowParticle.UP, 2 );
 				setHP(getHP() + REGENERATION);
 			}
@@ -322,7 +322,7 @@ public class Yog extends com.watabou.pixeldungeon.actors.mobs.Mob {
 
 		@Override
 		protected boolean canAttack( Char enemy ) {
-			return Ballistica.cast( pos, enemy.pos, false, true ) == enemy.pos;
+			return Ballistica.cast( pos, enemy.pos, false, true, level ) == enemy.pos;
 		}
 
 		@Override
