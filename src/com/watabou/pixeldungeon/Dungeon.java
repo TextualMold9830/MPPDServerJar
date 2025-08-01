@@ -83,6 +83,9 @@ public class Dungeon {
 	public static boolean nightMode;
 	public static final HashMap<String, Level> loadedLevels = new HashMap<>();
 
+	public static void addLoadedLevel(Level level){
+		loadedLevels.put(level.levelID, level);
+	}
 	public static HashMap<Integer, ArrayList<Item>> droppedItems;
 
 	public static void init() {
@@ -344,7 +347,7 @@ public class Dungeon {
 			SendData.sendLevel(destination, hero.networkID);
 			switchLevelChangePosition(pos,hero, destination);
 	}
-	//Switches level and chanes position to level entrace
+	//Switches level and changes position to level entrance
 	public static void switchLevel(String destinationID, @NotNull Hero hero){
 		Level destination = loadedLevels.get(destinationID);
 		if (destination == null) {
@@ -646,7 +649,7 @@ public class Dungeon {
 		Bundle bundle = Bundle.read( input );
 		input.close();
 		Level level = (Level)bundle.get( "level" );
-		loadedLevels.put(levelID, level);
+		addLoadedLevel(level);
 		return level;
 	}
 

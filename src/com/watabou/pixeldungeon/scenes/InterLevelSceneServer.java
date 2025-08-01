@@ -110,8 +110,11 @@ public class InterLevelSceneServer {
     public static void descend(@Nullable Hero hero)  {// спуск
         try {
             Generator.reset();
-            SendData.sendInterLevelSceneForAll("DESCEND");
-
+            if (hero != null) {
+                SendData.sendInterLevelScene(hero.networkID, "DESCEND", true);
+            } else {
+                SendData.sendInterLevelSceneForAll("DESCEND", true);
+            }
             Actor.fixTime();
             if (Dungeon.depth > 0) {
                 if (hero != null) {
@@ -129,14 +132,16 @@ public class InterLevelSceneServer {
                 level.descendDestinationID = DUNGEON_LEVEL_PREFIX + level.depth + 1;
                 level.create();
             }
-            loadedLevels.put(level.levelID, level);
+            Dungeon.addLoadedLevel(level);
             if (hero == null) {
                 Dungeon.switchLevel(level);
+                SendData.sendInterLevelSceneFadeOutForAll();
             } else {
                 Dungeon.switchLevel(level.levelID, level.entrance, hero);
+                SendData.sendInterLevelSceneFadeOut(hero.networkID);
+
             }
-            SendData.sendInterLevelSceneFadeOutForAll();
-            ShowStoryIfNeed(Dungeon.depth);
+            ShowStoryIfNeed(level.depth);
             sendMessage(level, false);
         }catch (IOException e){
             throw new RuntimeException(e);

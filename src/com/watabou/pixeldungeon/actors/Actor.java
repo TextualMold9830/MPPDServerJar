@@ -43,7 +43,7 @@ public abstract class Actor implements Bundlable {
 	public static final float TICK	= 1f;
 	private static final float CRITICAL_TIME = Float.MAX_VALUE / 2;
 
-	private volatile float time;
+	public volatile float time;
 
 	private volatile int id = 0;
 
