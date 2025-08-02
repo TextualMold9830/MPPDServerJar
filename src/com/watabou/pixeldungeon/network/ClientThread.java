@@ -358,7 +358,6 @@ public class ClientThread {
         GameScene.addHeroSprite(newHero);
         newHero.next();
         sendInitData();
-        SendData.sendInterLevelSceneFadeOut(clientHero.networkID);
     }
 
     protected void addCharToSend(@NotNull Char ch) {
