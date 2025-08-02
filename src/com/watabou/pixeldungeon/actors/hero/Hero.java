@@ -21,6 +21,7 @@ import com.nikita22007.multiplayer.noosa.Camera;
 import com.nikita22007.multiplayer.noosa.audio.Sample;
 import com.nikita22007.multiplayer.server.effects.Flare;
 import com.nikita22007.multiplayer.server.ui.AttackIndicator;
+import com.watabou.noosa.Game;
 import com.watabou.pixeldungeon.*;
 import com.watabou.pixeldungeon.actors.Actor;
 import com.watabou.pixeldungeon.actors.Alignment;

@@ -136,7 +136,7 @@ public class GameScene extends PixelScene {     //only client, exclude static
 		super.destroy();
 	}
 
-	public static final double PING_TIME = 2.0;
+	public static final double PING_TIME = 1.5;
 	private double lastPingTime = 0;
 
 	public synchronized void update() {
@@ -187,8 +187,14 @@ public class GameScene extends PixelScene {     //only client, exclude static
 				hero.resendReady();
 			}
 		}
+		boolean isHeroActing = false;
+		for (Level level: Dungeon.loadedLevels.values()) {
+			isHeroActing = Actor.currentActor(level) instanceof Hero;
+			if (isHeroActing){
+				break;
+			}
+		}
 
-		boolean isHeroActing = Actor.currentActor() instanceof Hero;
 
 		for (Hero hero : Dungeon.heroes) {
 			if (hero == null) {

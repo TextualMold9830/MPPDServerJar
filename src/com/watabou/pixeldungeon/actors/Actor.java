@@ -136,7 +136,7 @@ public abstract class Actor implements Bundlable {
 	//Do not use default java Set because collection because Actor is mutable:
 	//https://stackoverflow.com/questions/43553806/hashset-contains-returns-false-when-it-shouldnt
 	private static final HashMap<Level, Collection<Actor>> all = new HashMap<>();
-	private volatile static Actor current;
+	private volatile static HashMap<Level,Actor> currentActors = new HashMap<>();
 
 	private static float timeForAct = 2;
 
@@ -146,14 +146,15 @@ public abstract class Actor implements Bundlable {
 
 	private static com.watabou.pixeldungeon.actors.Char[] chars = new com.watabou.pixeldungeon.actors.Char[Level.LENGTH];
 	public static void clear() {
-		synchronized (all) {
+		//todo: check this
+		/*synchronized (all) {
 			now = 0;
 
 			Arrays.fill(chars, null);
 			all.clear();
 
 			ids.clear();
-		}
+		}*/
 	}
 
 	// because "time: int32, we can have overflow of time counter
@@ -204,7 +205,7 @@ public abstract class Actor implements Bundlable {
 			add( blob, level );
 		}
 
-		current = null;
+		//current = null;
 	}
 
 	public static void occupyCell( com.watabou.pixeldungeon.actors.Char ch ) {
@@ -220,13 +221,11 @@ public abstract class Actor implements Bundlable {
 	}
 
 	/*protected*/public void next() {
-		if (current == this) {
-			current = null;
-		}
+		currentActors.remove(level);
 	}
 
-	public static Actor currentActor() {
-		return current;
+	public static Actor currentActor(Level level) {
+		return currentActors.get(level);
 	}
 
 	public static void process() {
@@ -234,79 +233,83 @@ public abstract class Actor implements Bundlable {
 			return;
 		}
 		boolean busy_hero = false;
-		if (current instanceof Hero) {
-			Hero hero = (Hero) current;
-			timeForAct -= Game.elapsed;
-			//GLog.i("%f",timeForAct);
-			if (hero.networkID == -1) {
-				hero.rest(false);
-			} else {
-				if (hero.hasWindow())
-				{
-					timeForAct = Settings.timeForAct;
-				} else if (timeForAct < 0) {
-
+		Actor current;
+		for (Map.Entry<Level, Collection<Actor>> entry : all.entrySet()) {
+			current = currentActor(entry.getKey());
+			Collection<Actor> actors = entry.getValue();
+			if (current instanceof Hero) {
+				Hero hero = (Hero) current;
+				timeForAct -= Game.elapsed;
+				//GLog.i("%f",timeForAct);
+				if (hero.networkID == -1) {
 					hero.rest(false);
+				} else {
+					if (hero.hasWindow()) {
+						timeForAct = Settings.timeForAct;
+					} else if (timeForAct < 0) {
+
+						hero.rest(false);
+						timeForAct = Settings.timeForAct;
+					}
+				}
+				if (hero.level != entry.getKey()){
+					current = null;
+				}
+				//busy_hero = !hero.getReady();
+			}
+			if (current instanceof Hero){
+				continue;
+			}
+
+			boolean doNext;
+			int tries = 0;
+			do {
+				synchronized (all) {
+					synchronized (chars) {
+						if (all.isEmpty()) {
+							now = 0.0F;
+							return;
+						}
+						now = Float.MAX_VALUE;
+						current = null;
+
+						Arrays.fill(chars, null);
+							for (Actor actor : actors) {
+								if (actor.time < now) {
+									now = actor.time;
+									current = actor;
+								}
+								if (actor instanceof com.watabou.pixeldungeon.actors.Char) {
+									com.watabou.pixeldungeon.actors.Char ch = (com.watabou.pixeldungeon.actors.Char) actor;
+									chars[ch.pos] = ch;
+								}
+							}
+
+						if (current != null) {
+							doNext = current.act();
+							if (doNext && !HeroHelp.haveAliveHero()) {
+								doNext = false;
+								current = null;
+							}
+							currentActors.put(entry.getKey(), current);
+						} else {
+							doNext = false;
+						}
+					}
+				}
+				tries += 1;
+				if (tries >= MAX_TRIES) {
+					doNext = false;
+					continue;
+				}
+				if (doNext) {
 					timeForAct = Settings.timeForAct;
 				}
-			}
-			//busy_hero = !hero.getReady();
+				if (PixelDungeon.requestedReset()) {
+					doNext = false;
+				}
+			} while (doNext);
 		}
-		if ((!busy_hero)&&(current != null)) {
-			return;
-		}
-
-		boolean doNext;
-		int tries = 0;
-		do {
-			synchronized (all) {
-			synchronized (chars) {
-					if (all.isEmpty()){
-						now = 0.0F;
-						return;
-					}
-					now = Float.MAX_VALUE;
-					current = null;
-
-					Arrays.fill(chars, null);
-					for (Collection<Actor> actors: all.values()) {
-						for (Actor actor : actors) {
-							if (actor.time < now) {
-								now = actor.time;
-								current = actor;
-							}
-
-							if (actor instanceof com.watabou.pixeldungeon.actors.Char) {
-								com.watabou.pixeldungeon.actors.Char ch = (com.watabou.pixeldungeon.actors.Char) actor;
-								chars[ch.pos] = ch;
-							}
-						}
-					}
-
-					if (current != null) {
-						doNext = current.act();
-						if (doNext && !HeroHelp.haveAliveHero()) {
-							doNext = false;
-							current = null;
-						}
-					} else {
-						doNext = false;
-					}
-			}
-		}
-			tries += 1;
-			if (tries >= MAX_TRIES){
-				doNext = false;
-				current = null;
-			}
-			if (doNext)
-			{
-				timeForAct = Settings.timeForAct;
-			}
-			if (PixelDungeon.requestedReset()) {
-				doNext = false;
-			}
-		} while (doNext);
 	}
 
 	/*
@@ -353,7 +356,9 @@ public abstract class Actor implements Bundlable {
 					}
 				}
 			}
-			all.put(level, actors);
+			if (level != null) {
+				all.put(level, actors);
+			}
 		}
 
 		SendData.sendActor(actor);
@@ -362,14 +367,17 @@ public abstract class Actor implements Bundlable {
 	public static void remove( Actor actor ) {
 		synchronized (all) {
 			if (actor != null) {
-				all.remove(actor);
+				Collection<Actor> actors = all.get(actor.level);
+				if (actors != null) {
+					actors.remove(actor);
+				}
 				actor.onRemove();
 
 				if (actor.id > 0) {
 					ids.remove(actor.id);
 				}
-				if (current == actor){
-					current = null;
+				if (currentActor(actor.level) == actor){
+					currentActors.put(actor.level, null);
 				}
 				sendActorRemoving(actor);
 			}

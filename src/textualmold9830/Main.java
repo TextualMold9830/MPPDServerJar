@@ -1,6 +1,7 @@
 package textualmold9830;
 
 import com.watabou.pixeldungeon.Dungeon;
+import com.watabou.pixeldungeon.network.SendData;
 import com.watabou.pixeldungeon.network.Server;
 import com.watabou.pixeldungeon.texturepack.TexturePackManager;
 

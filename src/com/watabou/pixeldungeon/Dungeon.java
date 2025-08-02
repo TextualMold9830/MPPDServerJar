@@ -340,12 +340,13 @@ public class Dungeon {
 				throw new RuntimeException(e);
 			}
 		}
-			Level oldLevel = hero.level;
-			hero.pos = pos;
-			Actor.add(hero, destination);
-			checkUnloadLevel(oldLevel);
-			SendData.sendLevel(destination, hero.networkID);
-			switchLevelChangePosition(pos,hero, destination);
+		Level oldLevel = hero.level;
+		Actor.remove(hero);
+		hero.pos = pos;
+		Actor.add(hero, destination);
+		checkUnloadLevel(oldLevel);
+		SendData.sendLevel(destination, hero.networkID);
+		switchLevelChangePosition(pos,hero, destination);
 	}
 	//Switches level and changes position to level entrance
 	public static void switchLevel(String destinationID, @NotNull Hero hero){

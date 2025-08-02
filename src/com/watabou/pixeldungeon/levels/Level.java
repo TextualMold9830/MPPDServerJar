@@ -281,6 +281,7 @@ public abstract class Level implements Bundlable {
 		collection = bundle.getCollection( BLOBS );
 		for (Bundlable b : collection) {
 			Blob blob = (Blob)b;
+			blob.level = this;
 			blobs.put( blob.getClass(), blob );
 		}
 
