@@ -120,6 +120,7 @@ public class ClientThread {
 
     public void parse(@NotNull JSONObject data) throws JSONException {
         Server.pluginManager.fireEvent(new ClientParseEvent(this, data));
+        System.out.println("client: " + data.toString(4));
         for (Iterator<String> it = data.keys(); it.hasNext(); ) {
             String token = it.next();
             try {
