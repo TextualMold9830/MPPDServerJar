@@ -42,9 +42,13 @@ public class SendData {
     }
 
     public static void addToSendLevelVisitedState(Level level, boolean[] diff) {
+        ClientThread client;
         for (int ID =0; ID < clients.length; ID++)
         {
-            addToSendLevelVisitedState(level,ID,diff);
+            client = clients[ID];
+            if (client != null && client.clientHero != null && client.clientHero.level == level) {
+                addToSendLevelVisitedState(level, ID, diff);
+            }
         }
     }
 

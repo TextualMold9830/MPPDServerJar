@@ -31,7 +31,7 @@ public class FireTrap {
 
 	public static void trigger( int pos, Char ch, Level level ) {
 
-		GameScene.add( Blob.seed(ch.level, pos, 2, Fire.class ), level);
+		GameScene.add( Blob.seed(level, pos, 2, Fire.class ), level);
 		CellEmitter.get( pos ).burst( FlameParticle.FACTORY, 5 );
 
 	}

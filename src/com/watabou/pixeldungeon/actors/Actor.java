@@ -35,6 +35,7 @@ import com.watabou.utils.Bundle;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.watabou.pixeldungeon.network.SendData.sendActorRemoving;
 
@@ -104,6 +105,9 @@ public abstract class Actor implements Bundlable {
 	}
 
 	public int id() {
+		if (level == null){
+			return -1;
+		}
 		Collection<Actor> actors = all.get(level);
 		if (id > 0) {
 			ids.put(id, this);
@@ -135,7 +139,7 @@ public abstract class Actor implements Bundlable {
 
 	//Do not use default java Set because collection because Actor is mutable:
 	//https://stackoverflow.com/questions/43553806/hashset-contains-returns-false-when-it-shouldnt
-	private static final HashMap<Level, Collection<Actor>> all = new HashMap<>();
+	private static final ConcurrentHashMap<Level, Collection<Actor>> all = new ConcurrentHashMap<>();
 	private volatile static HashMap<Level,Actor> currentActors = new HashMap<>();
 
 	private static float timeForAct = 2;
@@ -366,7 +370,7 @@ public abstract class Actor implements Bundlable {
 
 	public static void remove( Actor actor ) {
 		synchronized (all) {
-			if (actor != null) {
+			if (actor != null && actor.level != null) {
 				Collection<Actor> actors = all.get(actor.level);
 				if (actors != null) {
 					actors.remove(actor);
@@ -392,7 +396,7 @@ public abstract class Actor implements Bundlable {
 		return ids.get( id );
 	}
 
-	public static HashMap<Level, Collection<Actor>> all() {
+	public static ConcurrentHashMap<Level, Collection<Actor>> all() {
 		return all;
 	}
 }

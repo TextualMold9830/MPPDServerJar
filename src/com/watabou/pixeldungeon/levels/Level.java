@@ -145,6 +145,9 @@ public abstract class Level implements Bundlable {
 	private static final String PLANTS		= "plants";
 	private static final String MOBS		= "mobs";
 	private static final String BLOBS		= "blobs";
+	private static final String LEVEL_ID = "level_id";
+	private static final String ASCENDING_LEVEL_ID = "ascending_level_id";
+	private static final String DESCENDING_LEVEL_ID = "descending_level_id";
 
 	public void create() {
 
@@ -257,6 +260,9 @@ public abstract class Level implements Bundlable {
 
 		weakFloorCreated = false;
 
+		levelID = bundle.getString(LEVEL_ID);
+		ascendDestinationID = bundle.getString(ASCENDING_LEVEL_ID);
+		descendDestinationID = bundle.getString(DESCENDING_LEVEL_ID);
 		Collection<Bundlable> collection = bundle.getCollection( HEAPS );
 		for (Bundlable h : collection) {
 			Heap heap = (Heap)h;
@@ -300,6 +306,9 @@ public abstract class Level implements Bundlable {
 		bundle.put( PLANTS, plants.values() );
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );
+		bundle.put( LEVEL_ID, levelID );
+		bundle.put( ASCENDING_LEVEL_ID, ascendDestinationID );
+		bundle.put( DESCENDING_LEVEL_ID, descendDestinationID );
 	}
 
 	public int tunnelTile() {

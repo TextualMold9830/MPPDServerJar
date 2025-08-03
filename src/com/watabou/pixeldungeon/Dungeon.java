@@ -341,9 +341,17 @@ public class Dungeon {
 			}
 		}
 		Level oldLevel = hero.level;
+		Set<Buff> buffs = hero.buffs();
+		for (Buff buff : buffs) {
+			Actor.remove(buff);
+		}
 		Actor.remove(hero);
 		hero.pos = pos;
 		Actor.add(hero, destination);
+		for (Buff buff : buffs) {
+			buff.attachTo(hero);
+			Actor.add(buff,hero.level);
+		}
 		checkUnloadLevel(oldLevel);
 		SendData.sendLevel(destination, hero.networkID);
 		switchLevelChangePosition(pos,hero, destination);
@@ -391,16 +399,15 @@ public class Dungeon {
 
 		Actor respawner = level.respawner();
 		if (respawner != null) {
-			Actor.add(level.respawner(), level);
+			Actor.add(respawner, level);
 		}
 		for (Hero hero:heroes) {
-			if (hero == null){
+			if (hero == null || hero.level != level){
 				continue;
 			}
 			if (hero.networkID == -1){
 				continue;
 			}
-
 			sendLevel(level, hero.networkID);
 			sendAllChars(hero.networkID);
 			sendHeroNewID(hero, hero.networkID);
